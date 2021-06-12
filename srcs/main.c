@@ -7,6 +7,8 @@
 #include <stdio.h>
 // #include <termios.h>
 
+#include "ft_parser.h"
+
 void	ft_handler(int sig)
 {
 	write(1, "\n", 1);
@@ -41,6 +43,7 @@ int	main(int ac, char **av, char **envp)
 		if (buf && !strcmp(buf, "exit"))
 			break ;
 		add_history(buf);
+		ft_parser((const char *)buf);
 		free(buf);
 	}
 	free(buf);
