@@ -6,12 +6,14 @@ SRCS_DIR	= srcs/
 
 PARSER_DIR	= $(SRCS_DIR)parser/
 
+BUILTINS_DIR	= $(SRCS_DIR)builtins/
+
 OBJ_DIR		= objs/
 
 INCLUDES	= includes/
 
 SRCS		= $(SRCS_DIR)main.c					$(PARSER_DIR)ft_parser.c \
-			  $(PARSER_DIR)select_command.c
+			  $(PARSER_DIR)select_command.c		$(BUILTINS_DIR)ft_echo.c
 
 CFLAGS		= #-Wall -Wextra -Werror
 
@@ -31,7 +33,8 @@ all:		$(NAME)
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
-	@mkdir -p $(OBJ_DIR)/parser
+	@mkdir -p $(OBJ_DIR)parser
+	@mkdir -p $(OBJ_DIR)builtins
 
 clean:
 	rm -rf $(OBJS)

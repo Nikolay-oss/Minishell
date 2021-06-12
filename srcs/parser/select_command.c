@@ -2,11 +2,11 @@
 #include "libft.h"
 #include <stdio.h>
 
-void	select_command(const char **command)
+void	select_command(char **command)
 {
 	if (!ft_strcmp(*command, "echo"))
 	{
-
+		ft_echo(command + 1);
 	}
 	else if (!ft_strcmp(*command, "cd"))
 	{
