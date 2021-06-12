@@ -9,7 +9,6 @@
 
 void	ft_handler(int sig)
 {
-	//signal(sig, SIG_IGN)
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -56,4 +55,4 @@ int	main(int ac, char **av, char **envp)
 /*
   export LDFLAGS="-L/Users/dkenchur/.brew/opt/readline/lib"
   export CPPFLAGS="-I/Users/dkenchur/.brew/opt/readline/include"
-  */
+*/
