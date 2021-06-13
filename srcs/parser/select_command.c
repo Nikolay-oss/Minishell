@@ -13,11 +13,11 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else if (!ft_strcmp(*command, "pwd"))
 	{
-
+		ft_pwd();
 	}
 	else if (!ft_strcmp(*command, "export"))
 	{
-
+		ft_export(&minishell->env, *(command + 1));
 	}
 	else if (!ft_strcmp(*command, "unset"))
 	{

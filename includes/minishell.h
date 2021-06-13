@@ -7,9 +7,12 @@
 #include <string.h>
 #include <errno.h>
 
+#include <limits.h> // It is allowed? use define from limits
+
 typedef struct s_minishell
 {
 	t_list		*env;
+	t_list		*hide_vars; // for variables in bash
 }				t_minishell;
 
 // region init
@@ -23,7 +26,8 @@ t_node	*getenv_node(t_list *env, const char *env_variable);
 void	ft_echo(char **command);
 void	ft_env(t_list *env);
 void	ft_cd(t_list *env, char *path);
-void	ft_export(t_minishell *minishell, char *env_variable);
+void	ft_export(t_list **env, char *env_variable);
+int		ft_pwd();
 // end region
 
 // region execve
