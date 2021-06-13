@@ -1,0 +1,4 @@
+/snap/clion/152/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/gcc -G "CodeBlocks - Unix Makefiles" "/home/galads/Рабочий стол/Minishell/minishell_kolia"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/galads/Рабочий стол/Minishell/minishell_kolia/cmake-build-debug

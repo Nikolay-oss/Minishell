@@ -1,0 +1,3 @@
+/home/galads/Рабочий стол/Minishell/minishell_kolia/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/galads/Рабочий стол/Minishell/minishell_kolia/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/galads/Рабочий стол/Minishell/minishell_kolia/cmake-build-debug/CMakeFiles/minishell_kolia.dir
