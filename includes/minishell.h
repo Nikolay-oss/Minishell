@@ -1,7 +1,11 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
+#include "libft.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
 
 typedef struct s_minishell
 {
@@ -18,7 +22,7 @@ t_node	*getenv_node(t_list *env, const char *env_variable);
 // region builtins
 void	ft_echo(char **command);
 void	ft_env(t_list *env);
-void	ft_cd(char *path);
+void	ft_cd(t_list *env, char *path);
 void	ft_export(t_minishell *minishell, char *env_variable);
 // end region
 

@@ -10,11 +10,12 @@
 
 void	ft_cd(char *path)
 {
-	int	res;
+	int res;
+	char buf[100];
 
 	res = chdir(path);
 	if(res < 0)
 		printf("Error: %s\n", strerror(errno));
 	else
-		printf("Error: %s\n", strerror(errno));
+		printf("%s\n", getcwd(buf, 100));
 }
