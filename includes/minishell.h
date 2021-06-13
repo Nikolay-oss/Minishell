@@ -1,7 +1,11 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
+#include "libft.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
 
 typedef struct s_minishell
 {

@@ -9,7 +9,7 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else if (!ft_strcmp(*command, "cd"))
 	{
-
+		ft_cd(command[1]);
 	}
 	else if (!ft_strcmp(*command, "pwd"))
 	{
