@@ -1,6 +1,4 @@
 #include "ft_parser.h"
-#include "libft.h"
-#include "minishell.h"
 #include "data_types.h"
 #include <stdlib.h>
 
@@ -14,14 +12,14 @@ void	destroy_command_buf(char **command)
 	free(command);
 }
 
-void	ft_parser(char *buf)
+void	ft_parser(t_minishell *minishell, char *buf)
 {
 	char	**command;
 
 	command = ft_split(buf, ' ');
 	if (*command)
 	{
-		select_command(command);
+		select_command(minishell, command);
 		destroy_command_buf(command);
 	}
 }

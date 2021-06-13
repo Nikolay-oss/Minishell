@@ -1,8 +1,7 @@
 #include "minishell.h"
-#include "libft.h"
 #include <stdio.h>
 
-void	select_command(char **command)
+void	select_command(t_minishell *minishell, char **command)
 {
 	if (!ft_strcmp(*command, "echo"))
 	{
@@ -14,7 +13,7 @@ void	select_command(char **command)
 	}
 	else if (!ft_strcmp(*command, "pwd"))
 	{
-		printf("pwd\n");
+
 	}
 	else if (!ft_strcmp(*command, "export"))
 	{
@@ -26,7 +25,7 @@ void	select_command(char **command)
 	}
 	else if (!ft_strcmp(*command, "env"))
 	{
-
+		ft_env(minishell->env);
 	}
 	else if (!ft_strcmp(*command, "exit"))
 	{
