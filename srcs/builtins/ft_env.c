@@ -1,6 +1,36 @@
 #include "minishell.h"
 #include "data_types.h"
 
+t_node	*getenv_node(t_list *env, const char *env_variable)
+{
+	t_node	*current;
+	t_uint	size;
+	char	*p_equal;
+	char	*tmp;
+
+	current = env->head;
+	size = 0;
+	while (current)
+	{
+		p_equal = ft_strchr((char *)current->content, '=');
+		if (p_equal)
+		{
+			size = (t_uint)(p_equal - (char *)current->content);
+			tmp = ft_substr((char *)current->content, 0, size);
+			if (!tmp)
+				; // error
+			if (!ft_strncmp(tmp, env_variable, size))
+			{
+				free(tmp);
+				return (current);
+			}
+			free(tmp);
+		}
+		current = current->next;
+	}
+	return (NULL);
+}
+
 void	init_env(t_list **env, char **envp)
 {
 	t_uint	i;

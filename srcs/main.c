@@ -38,7 +38,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		signal(SIGINT, &ft_handler);
-		buf = readline("prompt> ");
+		buf = readline("\033[0;32mprompt> \033[0m");
 		if (!buf)
 			break ;
 		// printf("%s\n", buf);
