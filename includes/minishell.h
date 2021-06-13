@@ -22,7 +22,7 @@ t_node	*getenv_node(t_list *env, const char *env_variable);
 // region builtins
 void	ft_echo(char **command);
 void	ft_env(t_list *env);
-void	ft_cd(char *path);
+void	ft_cd(t_list *env, char *path);
 // end region
 
 // region execve
