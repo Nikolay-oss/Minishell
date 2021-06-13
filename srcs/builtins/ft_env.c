@@ -13,19 +13,18 @@ t_node	*getenv_node(t_list *env, const char *env_variable)
 	while (current)
 	{
 		p_equal = ft_strchr((char *)current->content, '=');
-		if (p_equal)
+		if (!p_equal)
+			continue ;
+		size = (t_uint)(p_equal - (char *)current->content);
+		tmp = ft_substr((char *)current->content, 0, size);
+		if (!tmp)
+			; // error
+		if (!ft_strncmp(tmp, env_variable, size))
 		{
-			size = (t_uint)(p_equal - (char *)current->content);
-			tmp = ft_substr((char *)current->content, 0, size);
-			if (!tmp)
-				; // error
-			if (!ft_strncmp(tmp, env_variable, size))
-			{
-				free(tmp);
-				return (current);
-			}
 			free(tmp);
+			return (current);
 		}
+		free(tmp);
 		current = current->next;
 	}
 	return (NULL);

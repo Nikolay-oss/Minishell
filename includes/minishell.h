@@ -19,6 +19,7 @@ t_node	*getenv_node(t_list *env, const char *env_variable);
 void	ft_echo(char **command);
 void	ft_env(t_list *env);
 void	ft_cd(char *path);
+void	ft_export(t_minishell *minishell, char *env_variable);
 // end region
 
 // region execve
