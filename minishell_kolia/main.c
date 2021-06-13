@@ -3,6 +3,6 @@
 
 int main() {
 	printf("Hello, World!\n");
-	ft_cd("..");
+	ft_cd("/dev");
 	return 0;
 }

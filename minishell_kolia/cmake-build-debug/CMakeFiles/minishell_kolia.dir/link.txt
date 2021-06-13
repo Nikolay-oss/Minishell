@@ -1,0 +1,1 @@
+/usr/bin/gcc -g CMakeFiles/minishell_kolia.dir/main.c.o CMakeFiles/minishell_kolia.dir/ft_cd.c.o -o minishell_kolia 

@@ -16,5 +16,5 @@ void	ft_cd(char *path)
 	if(res < 0)
 		printf("Error: %s\n", strerror(errno));
 	else
-		printf("ok\n");
+		printf("Error: %s\n", strerror(errno));
 }
