@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 #include "libft.h"
+#include "data_types.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
@@ -30,8 +31,21 @@ void	ft_export(t_list **env, char *env_variable);
 int		ft_pwd();
 // end region
 
+// region redirect
+// ------only test!!!-------
+void	ft_redir(char **command, char *str);
+// end region
+
 // region execve
 
+// end region
+
+// region history
+// typedef struct s_history
+// {
+// 	t_list	*history;
+// 	t_uint	max;
+// }			t_history;
 // end region
 
 #endif

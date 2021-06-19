@@ -49,7 +49,6 @@ int	main(int ac, char **av, char **envp)
 		free(buf);
 	}
 	free(buf);
-	clear_history();
 	ft_lst_clear(minishell->env, &free);
 	free(minishell);
 	write(1, "exit\n", 5);

@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "data_types.h"
 
 t_uint	get_args_count(char **command)
 {
