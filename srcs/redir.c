@@ -17,8 +17,21 @@ static char	**copy_args(char **command)
 	args = (char **)ft_calloc(size + 1, sizeof(char *));
 	i = 0;
 	while (i < size)
-		*(args + i) = ft_strdup(*(command + i++));
+	{
+		*(args + i) = ft_strdup(*(command + i));
+		i++;
+	}
 	return (args);
+}
+
+static void	destroy_args(char **args)
+{
+	t_uint	i;
+
+	i = 0;
+	while (*(args + i))
+		free(*(args + i++));
+	free(args);
 }
 
 void	ft_redir(char **command, char *str)
@@ -34,8 +47,8 @@ void	ft_redir(char **command, char *str)
 	if (new_fd == -1)
 		exit(2);
 	args = copy_args(command);
-	ft_echo(command + 1);
-	// free(args);
+	ft_echo(args + 1);
+	destroy_args(args);
 	close(fd);
 	exit(0);
 }

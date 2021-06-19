@@ -41,13 +41,14 @@ void	ft_parser(t_minishell *minishell, char *buf)
 		if (idx)
 		{
 			pid = fork();
-			if (pid != -1)
+			if (!pid)
 			{
 				ft_redir(command, *(command + idx));
 			}
-			wait(&status);
-			printf("%d\n", pid);
-			printf("exit code of child process (WEXITSTATUS), status -> %d, %d\n",
+			else
+				wait(&status);
+			printf("pid -> %d\n", pid);
+			printf("exit code of child process WEXITSTATUS, status -> %d, %d\n",
 				WEXITSTATUS(status), status);
 		}
 		else
