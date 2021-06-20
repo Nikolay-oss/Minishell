@@ -3,13 +3,15 @@
 
 void	select_command(t_minishell *minishell, char **command)
 {
+	minishell->home_path
+	= getvar_node(minishell->env, "HOME")->content;
 	if (!ft_strcmp(*command, "echo"))
 	{
 		ft_echo(command + 1);
 	}
 	else if (!ft_strcmp(*command, "cd"))
 	{
-		ft_cd(minishell->env, command[1]);
+		ft_cd(minishell, command[1]);
 	}
 	else if (!ft_strcmp(*command, "pwd"))
 	{
@@ -21,7 +23,7 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else if (!ft_strcmp(*command, "unset"))
 	{
-
+		ft_unset(minishell->env, command[1]);
 	}
 	else if (!ft_strcmp(*command, "env"))
 	{
