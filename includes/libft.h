@@ -72,5 +72,8 @@ t_node				*ft_create_node(void *data);
 void				ft_push_front(t_list *lst, void *data);
 void				ft_push_back(t_list *lst, void *data);
 void				ft_lst_clear(t_list *lst, void (*del)(void*));
+void				ft_lst_delfirst(t_list *lst, void (*del)(void*));
+void				ft_del_node(t_list *lst, void (*del)(void*),
+						t_node *node);
 
 #endif

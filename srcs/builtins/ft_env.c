@@ -1,30 +1,25 @@
 #include "minishell.h"
-#include "data_types.h"
 
-t_node	*getenv_node(t_list *env, const char *env_variable)
+t_node	*getvar_node(t_list *vars, const char *var_name)
 {
 	t_node	*current;
-	t_uint	size;
+	size_t	size;
 	char	*p_equal;
 	char	*tmp;
 
-	current = env->head;
+	if (!vars)
+		return (NULL);
+	current = vars->head;
 	size = 0;
 	while (current)
 	{
 		p_equal = ft_strchr((char *)current->content, '=');
-		if (!p_equal)
-			continue ;
-		size = (t_uint)(p_equal - (char *)current->content);
-		tmp = ft_substr((char *)current->content, 0, size);
-		if (!tmp)
-			; // error
-		if (!ft_strncmp(tmp, env_variable, size))
+		if (p_equal)
 		{
-			free(tmp);
-			return (current);
+			size = (size_t)(p_equal - (char *)current->content);
+			if (!ft_memcmp(current->content, var_name, size))
+				return (current);
 		}
-		free(tmp);
 		current = current->next;
 	}
 	return (NULL);
@@ -44,7 +39,7 @@ void	init_env(t_list **env, char **envp)
 		env_variable = ft_strdup(*(envp + i));
 		if (!env_variable)
 			; // errror
-		ft_push_back(*env, (void *)env_variable);
+		ft_push_back(*env, env_variable);
 		i++;
 	}
 }
@@ -56,7 +51,7 @@ void	ft_env(t_list *env)
 	current = env->head;
 	while (current)
 	{
-		ft_putendl_fd((char *)current->content, 1);
+		ft_putendl_fd(current->content, 1);
 		current = current->next;
 	}
 }

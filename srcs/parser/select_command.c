@@ -17,7 +17,7 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else if (!ft_strcmp(*command, "export"))
 	{
-		ft_export(&minishell->env, *(command + 1));
+		ft_export(minishell, command);
 	}
 	else if (!ft_strcmp(*command, "unset"))
 	{
