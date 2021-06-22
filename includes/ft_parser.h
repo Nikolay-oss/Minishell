@@ -3,5 +3,6 @@
 # include "minishell.h"
 
 void	ft_parser(t_minishell *minishell, char *buf);
+void	destroy_command_buf(char **command);
 
 #endif

@@ -53,6 +53,7 @@ char				*ft_substr(char const *s, unsigned int start,
 char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*ft_itoa(int n);
+int					ft_get_index_symbol(char *str, char find);
 
 typedef struct s_node
 {

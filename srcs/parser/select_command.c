@@ -23,7 +23,7 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else if (!ft_strcmp(*command, "unset"))
 	{
-		ft_unset(minishell->env, command[1]);
+		ft_unset(minishell->env, command[1]); //двумерный массив
 	}
 	else if (!ft_strcmp(*command, "env"))
 	{
@@ -35,21 +35,8 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else
 	{
-		char *path_arr[20][20] = {
-				"/Users/brice/.brew/bin",
-				"/usr/local/bin",
-				"/usr/bin",
-				"/bin",
-				"/usr/sbin",
-				"/sbin",
-				"/usr/local/munki"
-		};
-		char *arg_arr[10][10] = {
-				"-l",
-				"-la",
-				"-h",
-		};
-		ft_exec("ls", (char **) arg_arr, (char **) path_arr);
-		printf("%s: command not found\n", *command);
+//		char* argv[] = { "cat", "Makefile",   NULL };
+		ft_exec(minishell->env, command);
+//		printf("%s: command not found\n", *command);
 	}
 }

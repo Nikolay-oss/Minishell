@@ -57,7 +57,8 @@ SRCS		= 	ft_memset.c \
 				ft_push_front.c \
 				ft_push_back.c \
 				ft_lst_delfirst.c \
-				ft_del_node.c
+				ft_del_node.c \
+				ft_get_index_symbol.c\
 
 CFLAGS		= -Wall -Wextra -Werror
 
