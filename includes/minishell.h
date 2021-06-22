@@ -39,7 +39,7 @@ void	ft_redir(char **command, char *str);
 // end region
 
 // region execve
-
+void	ft_exec(char *name, char **arv, char **envp);
 // end region
 
 // region history
