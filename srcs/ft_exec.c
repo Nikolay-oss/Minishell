@@ -29,11 +29,18 @@ void	ft_exec(t_list *env, char **arv)
 //			printf("|%d|\n", result);
 			free(str_concat);
 			free(str_free);
+			printf("result $?:%d\n", result);
 		}
 		if (result == -1)
 			printf("%s: command not found\n", *arv);
+			printf("result $?234234234:%d\n", 123);
+//		printf("result $?:%d\n", result);
 		destroy_command_buf(path_arr);
 		exit(0);
 	}
-	wait(&status);
+	else
+	{
+		wait(&status);
+	}
+//	wait(&status);
 }
