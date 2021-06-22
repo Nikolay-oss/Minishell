@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/22 18:24:13 by dkenchur          #+#    #+#             */
+/*   Updated: 2021/06/22 19:44:46 by dkenchur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <signal.h>
 // #include <termios.h>
 
@@ -9,7 +21,7 @@
 	global struct signals
 */
 
-void rl_replace_line();
+// void rl_replace_line();
 
 void	ft_handler(int sig)
 {
@@ -40,7 +52,7 @@ int	main(int ac, char **av, char **envp)
 		if (!buf)
 			break ;
 		// printf("%s\n", buf);
-		if (buf && !strcmp(buf, "exit"))
+		if (buf && !ft_strcmp(buf, "exit"))
 			break ;
 		add_history(buf);
 		ft_parser(minishell, buf);
@@ -50,6 +62,7 @@ int	main(int ac, char **av, char **envp)
 	ft_lst_clear(minishell->env, &free);
 	free(minishell);
 	write(1, "exit\n", 5);
+	return (0);
 }
 
 

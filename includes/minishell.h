@@ -14,6 +14,7 @@ typedef struct s_minishell
 {
 	t_list		*env;
 	t_list		*hide_vars; // for variables in bash
+	t_list		*commands;
 	char		*home_path;
 }				t_minishell;
 
