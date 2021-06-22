@@ -1,17 +1,15 @@
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <string.h> // change to libft.h
-#include <unistd.h>
 #include <signal.h>
-#include <stdio.h>
 // #include <termios.h>
 
 #include "ft_parser.h"
 
+#include "readline/readline.h"
+#include "readline/history.h"
 /*
 	global struct signals
 */
+
+void rl_replace_line();
 
 void	ft_handler(int sig)
 {
