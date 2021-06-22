@@ -37,24 +37,24 @@ void	ft_parser(t_minishell *minishell, char *buf)
 	command = ft_split(buf, ' ');
 	if (*command)
 	{
-		idx = isredir(command);
-		if (idx)
-		{
-			pid = fork();
-			if (!pid)
-			{
-				ft_redir(command, *(command + idx));
-			}
-			else
-				wait(&status);
-			printf("pid -> %d\n", pid);
-			printf("exit code of child process WEXITSTATUS, status -> %d, %d\n",
-				WEXITSTATUS(status), status);
-		}
-		else
-		{
+//		idx = isredir(command);
+//		if (idx)
+//		{
+//			pid = fork();
+//			if (!pid)
+//			{
+//				ft_redir(command, *(command + idx));
+//			}
+//			else
+//				wait(&status);
+//			printf("pid -> %d\n", pid);
+//			printf("exit code of child process WEXITSTATUS, status -> %d, %d\n",
+//				WEXITSTATUS(status), status);
+//		}
+//		else
+//		{
 			select_command(minishell, command);
-		}
+//		}
 		destroy_command_buf(command);
 	}
 }
