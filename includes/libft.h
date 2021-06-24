@@ -53,6 +53,8 @@ char				*ft_substr(char const *s, unsigned int start,
 char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*ft_itoa(int n);
+char				*ft_del_substr(const char *s, const char *set);
+char				*ft_insert_substr(const char *s, const char *substr, size_t pos);
 
 typedef struct s_node
 {

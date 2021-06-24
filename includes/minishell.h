@@ -24,6 +24,7 @@ void	init_env(t_list **env, char **envp);
 
 void	select_command(t_minishell *minishell, char **command);
 t_node	*getvar_node(t_list *vars, const char *var_name);
+char	*getvar_value(t_list *vars, const char *var_name);
 
 // region builtins
 void	ft_echo(char **command);

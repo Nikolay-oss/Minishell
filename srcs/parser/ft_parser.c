@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 #include "ft_parser.h"
-#include <sys/wait.h>
+
+#define DEBUG
 
 /*
 	Примерный алгоритм:
@@ -21,66 +22,84 @@
 			1.2.1 поиск стандартных аргументов (пример: echo hello bird)
 			1.2.2 поиск аргументов в кавычках
 			1.2.3 интерпретация переменных (символ $)
-		1.3 посик пайпов и редиректов
+		1.3 поиск пайпов и редиректов
 	2. добавление в список
 	3. запись команды и ее аргументов в массив строк (массив строк должен заканчиваться NULL указателем)
 */
 
-t_uint	search_str_in_quotes(char *buf, t_bool *isquote1, t_bool *isquote2)
+t_uint	get_command_size(t_node *node)
 {
-	t_uint	i;
+	t_node	*cur;
+	t_uint	size;
+	char	c;
 
-	i = 0;
-	while(*(buf + i))
+	size = 0;
+	cur = node;
+	while (cur)
 	{
-		if (*(buf + i) == '\'')
-			change_flag(isquote1);
-		else if (*(buf + i) == '"')
-			change_flag(isquote2);
-		if (*(buf + i) == ' ' && *isquote1 && *isquote2)
+		c = *(char *)cur->content;
+		if (isredir(c) || ispipe(c))
 			break ;
-		i++;
+		size++;
+		cur = cur->next;
 	}
-	return (i);
+	return (size);
 }
 
-t_uint	search_command(char *buf, char **str_cmd)
+char	**create_command_buf(t_minishell *minishell, t_node **node)
 {
+	char	**cmd;
+	t_uint	cmd_size;
 	t_uint	i;
-	t_bool	isquote1;
-	t_bool	isquote2;
-	
+	t_list	*vars;
+	t_uint	sizenovars;
+
+	cmd_size = get_command_size(*node);
+	cmd = (char **)ft_calloc(cmd_size + 1, sizeof(char *));
+	if (!cmd)
+		return (NULL); // error
 	i = 0;
-	isquote1 = 0;
-	isquote2 = 0;
-	while (*(buf + i))
+	while (i < cmd_size && *node)
 	{
-		if (*(buf + i) == '\'')
+		vars = ft_create_lst();
+		if (search_vars(minishell, &vars, (*node)->content, &sizenovars))
+			*(cmd + i) = insert_vars_in_str(vars, (*node)->content, sizenovars);
+		else
+			*(cmd + i) = ft_strdup((*node)->content);
+		ft_lst_clear(vars, &free);
+		if (!*(cmd + i))
 		{
-			isquote2 = 1;
-			i += search_str_in_quotes(buf, &isquote1, &isquote2);
+			destroy_command_buf(cmd);
+			return (NULL); // error
 		}
-		else if (*(buf + i) == '"')
-		{
-			isquote1 = 1;
-			i += search_str_in_quotes(buf, &isquote1, &isquote2);
-		}
-		if (*(buf + i) == '|' || *(buf + i) == '>')
-		{
-			copy_command(buf, str_cmd, i);
-			return (i);
-		}
+		*node = (*node)->next;
 		i++;
 	}
-	if (!*str_cmd)
-		*str_cmd = ft_strdup(buf);
-	return (i);
+	return (cmd);
+}
+
+void	commands_handler(t_minishell *minishell)
+{
+	t_node	*node;
+	char	**cmd;
+
+	node = minishell->commands->head;
+	while (node)
+	{
+		cmd = create_command_buf(minishell, &node);
+		if (cmd)
+		{
+			select_command(minishell, cmd);
+			destroy_command_buf(cmd);
+		}
+		if (node)
+			node = node->next;
+	}
 }
 
 void	ft_parser(t_minishell *minishell, char *buf)
 {
 	t_uint	i;
-	char	*str_cmd;
 
 	i = 0;
 	minishell->commands = ft_create_lst();
@@ -90,16 +109,20 @@ void	ft_parser(t_minishell *minishell, char *buf)
 		return ;
 	}
 	while (*(buf + i))
-	{
-		str_cmd = NULL;
-		i += search_command(buf + i, &str_cmd);
-		printf("%s\n", str_cmd);
-		if (str_cmd)
-			ft_push_back(minishell->commands, str_cmd);
-		if (*(buf + i))
-			i++;
-	}
-	// temp
+		i += search_tokens(minishell, buf + i);
+	if (i > 0)
+		commands_handler(minishell);
+	#ifndef DEBUG
+		t_node	*cur = minishell->commands->head;
+		t_uint	j = 0;
+
+		while (j < minishell->commands->size)
+		{
+			printf("%s\n", (char *)cur->content);
+			j++;
+			cur = cur->next;
+		}
+	#endif
 	ft_lst_clear(minishell->commands, &free);
 }
 

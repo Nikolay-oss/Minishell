@@ -32,14 +32,18 @@ void	destroy_command_buf(char **command)
 	free(command);
 }
 
-void	copy_command(char *buf, char **str_cmd, t_uint idx)
+void	add_command_to_list(t_minishell *minishell, char *buf, t_uint idx)
 {
-	char	cmdend;
+	char	*str_cmd;
+	char	chr_endcmd;
 
-	cmdend = *(buf + idx);
+	chr_endcmd = *(buf + idx);
 	*(buf + idx) = 0;
-	*str_cmd = ft_strdup(buf);
-	*(buf + idx) = cmdend;
+	str_cmd = ft_strdup(buf);
+	if (!str_cmd)
+		return ; // error
+	*(buf + idx) = chr_endcmd;
+	ft_push_back(minishell->commands, str_cmd);
 }
 
 void	change_flag(t_bool *flag)
@@ -48,4 +52,19 @@ void	change_flag(t_bool *flag)
 		*flag = 0;
 	else
 		*flag = 1;
+}
+
+char	*get_str_withoutquotes(char *str, char quotetype, t_uint end_idx)
+{
+	char	*buf;
+	char	chr_end;
+
+	chr_end = *(str + end_idx);
+	*(str + end_idx) = 0;
+	if (quotetype == '\'')
+		buf = ft_del_substr(str, "'");
+	else
+		buf = ft_del_substr(str, "\"");
+	*(str + end_idx) = chr_end;
+	return (buf);
 }
