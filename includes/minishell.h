@@ -28,7 +28,7 @@ t_node	*getvar_node(t_list *vars, const char *var_name);
 void	ft_echo(char **command);
 void	ft_env(t_list *env);
 void	ft_cd(t_minishell *minishell, char *path);
-void	ft_unset(t_list *env, char *var);
+void	ft_unset(t_list *env, char **var);
 int		ft_export(t_minishell *minishell, char **vars);
 int		ft_pwd();
 // end region
