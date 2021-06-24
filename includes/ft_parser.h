@@ -34,8 +34,7 @@ t_uint	search_vars(t_minishell *minishell, t_list **vars, char *cmd_str,
 // end region
 
 // region vars_handler
-t_bool	save_var(t_minishell *minishell, t_list **vars, char *var_name);
-char	*insert_vars_in_str(t_list *vars, char *cmd_str, t_uint sizenovars);
+
 // end region
 
 // region check_tokens

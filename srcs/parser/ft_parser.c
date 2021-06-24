@@ -51,8 +51,6 @@ char	**create_command_buf(t_minishell *minishell, t_node **node)
 	char	**cmd;
 	t_uint	cmd_size;
 	t_uint	i;
-	t_list	*vars;
-	t_uint	sizenovars;
 
 	cmd_size = get_command_size(*node);
 	cmd = (char **)ft_calloc(cmd_size + 1, sizeof(char *));
@@ -61,12 +59,7 @@ char	**create_command_buf(t_minishell *minishell, t_node **node)
 	i = 0;
 	while (i < cmd_size && *node)
 	{
-		vars = ft_create_lst();
-		if (search_vars(minishell, &vars, (*node)->content, &sizenovars))
-			*(cmd + i) = insert_vars_in_str(vars, (*node)->content, sizenovars);
-		else
-			*(cmd + i) = ft_strdup((*node)->content);
-		ft_lst_clear(vars, &free);
+		*(cmd + i) = ft_strdup((*node)->content);
 		if (!*(cmd + i))
 		{
 			destroy_command_buf(cmd);
