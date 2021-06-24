@@ -29,12 +29,10 @@ t_uint	search_str_in_quotes(t_minishell *minishell, char *buf, char type);
 t_uint	search_simple_args(t_minishell *minishell, char *buf);
 t_uint	search_redirects(t_minishell *minishell, char *buf, char type);
 t_uint	search_tokens(t_minishell *minishell, char *buf);
-t_uint	search_vars(t_minishell *minishell, t_list **vars, char *cmd_str,
-			t_uint *sizenovars);
 // end region
 
 // region vars_handler
-
+char	*get_str_withvars(t_minishell *minishell, char *str);
 // end region
 
 // region check_tokens

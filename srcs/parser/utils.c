@@ -54,6 +54,7 @@ void	change_flag(t_bool *flag)
 		*flag = 1;
 }
 
+// обработать выделения памяти
 char	*get_str_withoutquotes(char *str, char quotetype, t_uint end_idx)
 {
 	char	*buf;

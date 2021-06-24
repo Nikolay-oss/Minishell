@@ -22,6 +22,8 @@ t_uint	search_str_in_quotes(t_minishell *minishell, char *buf, char type)
 	else
 		idx_end = i;
 	str_noquotes = get_str_withoutquotes(buf + 1, type, idx_end);
+	if (type == '"')
+		str_noquotes = get_str_withvars(minishell, str_noquotes);
 	// нужен обработчик ошибок
 	ft_push_back(minishell->commands, str_noquotes);
 	return (i);
@@ -38,7 +40,7 @@ t_uint	search_simple_args(t_minishell *minishell, char *buf)
 	{
 		if (*(buf + i) == ' ')
 		{
-			add_command_to_list(minishell, buf + start, i - start);
+			ft_push_back(minishell->commands, get_str_withvars(minishell, ft_substr(buf, start, i - start)));
 			start = i;
 		}
 		start += skip_spaces(buf + i);
@@ -50,7 +52,7 @@ t_uint	search_simple_args(t_minishell *minishell, char *buf)
 			i++;
 	}
 	if (!*(buf + i))
-		add_command_to_list(minishell, buf + start, i - start);
+		ft_push_back(minishell->commands, get_str_withvars(minishell, ft_substr(buf, start, i - start)));
 	return (i);
 }
 
@@ -70,7 +72,7 @@ t_uint	search_tokens(t_minishell *minishell, char *buf)
 	t_uint	i;
 
 	i = skip_spaces(buf);
-	if (*buf == '\'' || *buf == '"')
+	if (*(buf) == '\'' || *(buf) == '"')
 		i += search_str_in_quotes(minishell, buf + i, *buf);
 	else if (*(buf + i) == '>' || *(buf + i) == '<')
 		i += search_redirects(minishell, buf + i, *(buf + i));
@@ -79,37 +81,4 @@ t_uint	search_tokens(t_minishell *minishell, char *buf)
 	else
 		i += search_simple_args(minishell, buf + i);
 	return (i);
-}
-
-t_uint	search_vars(t_minishell *minishell, t_list **vars, char *cmd_str,
-	t_uint *sizenovars)
-{
-	char	end_var;
-	t_uint	i;
-	t_uint	dollar_pos;
-	t_uint	vars_count;
-
-	i = 0;
-	*sizenovars = 0;
-	vars_count = 0;
-	while (*(cmd_str + i))
-	{
-		if (*(cmd_str + i) == '$')
-		{
-			vars_count++;
-			dollar_pos = i++;
-			while (ft_isalpha(*(cmd_str + i)) && !ft_memchr(" =$'\"", *(cmd_str + i), 5))
-				i++;
-			end_var = *(cmd_str + i);
-			*(cmd_str + i) = 0;
-			save_var(minishell, vars, cmd_str + dollar_pos + 1);
-			*(cmd_str + i) = end_var;
-		}
-		if (*(cmd_str + i) && *(cmd_str + i) != '$')
-		{
-			i++;
-			(*sizenovars)++;
-		}
-	}
-	return (vars_count);
 }
