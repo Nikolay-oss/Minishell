@@ -22,16 +22,6 @@ t_uint	skip_spaces(char *str)
 	return (i);
 }
 
-void	destroy_command_buf(char **command)
-{
-	t_uint	i;
-
-	i = 0;
-	while (*(command + i))
-		free(*(command + i++));
-	free(command);
-}
-
 void	add_command_to_list(t_minishell *minishell, char *buf, t_uint idx)
 {
 	char	*str_cmd;
@@ -68,4 +58,11 @@ char	*get_str_withoutquotes(char *str, char quotetype, t_uint end_idx)
 		buf = ft_del_substr(str, "\"");
 	*(str + end_idx) = chr_end;
 	return (buf);
+}
+
+char	*check_memory(char **str)
+{
+	if (!*str)
+		; // error
+	return (*str);
 }

@@ -1,86 +1,115 @@
 #include "ft_parser.h"
 
-// обработать ошибки
-// можно переделать!
-char	*add_var_to_str(char **str, char *var_value, t_uint start, t_uint end)
-{
-	char	*newstr;
-	char	*tmp;
-	char	buf;
+#define DEBUG
 
-	buf = *(*str + start);
-	*(*str + start) = 0;
-	newstr = ft_strjoin(*str, var_value);
-	tmp = newstr;
-	*(*str + start) = buf;
-	newstr = ft_strjoin(newstr, *str + end);
-	free(*str);
-	free(tmp);
-	*str = NULL;
-	return (newstr);
+void	search_var_value(t_minishell *minishell, char **var, t_node *node)
+{
+	*var = getvar_value(minishell->env, (char *)(node->content) + 1);
+	if (!*var)
+		*var = getvar_value(minishell->hide_vars, (char *)(node->content) + 1);
 }
 
-char	*insert_vars_in_str(t_minishell *minishell, t_list **vars, char *str)
+void	special_cases_handler(t_minishell *minishell, t_node **node)
 {
 	char	*var;
-	char	*var_value;
-	t_node	*node;
-	t_uint	var_size;
-	char	*newstr;
+	// char	*new_var;
 
-	node = (*vars)->head;
-	newstr = ft_strdup(str);
-	free(str);
+	var = (char *)(*node)->content;
+	// if (!ft_strcmp(var, "~"))
+	// {
+	// 	free((*node)->content);
+	// 	(*node)->content = getvar_value(minishell->env, "HOME");
+	// }
+	if (ft_strcmp(var, "$"))
+	{
+		free((*node)->content);
+		(*node)->content = NULL;
+	}
+}
+
+void	swap_nametovalue(t_minishell *minishell, t_list **str_parts)
+{
+	t_node	*node;
+	char	*var;
+	char	*tmp;
+
+	node = (*str_parts)->head;
 	while (node)
 	{
-		var_size = ft_strlen(node->content);
-		var = ft_strnstr(newstr, node->content, 4096);
-		if (var)
+		if (*(char *)node->content == '$') // || *(char *)node->content == '~')
 		{
-			var_value = getvar_value(minishell->env, node->content + 1);
-			if (var_value)
-				newstr = add_var_to_str(&newstr, var_value, var - newstr,
-					(var - newstr) + var_size);
+			search_var_value(minishell, &var, node);
+			if (var)
+			{
+				tmp = (char *)node->content;
+				node->content = (void *)ft_strdup(var);
+				free(tmp);
+				if (!node->content)
+					return ; // error
+			}
 			else
-				newstr = add_var_to_str(&newstr, "", var - newstr,
-					(var - newstr) + var_size);
+				special_cases_handler(minishell, &node);
 		}
 		node = node->next;
 	}
-	ft_lst_clear(*vars, &free);
-	return (newstr);
 }
 
-char	*get_str_withvars(t_minishell *minishell, char *str)
+void	split_str(t_list **str_parts, char *str)
 {
-	t_list	*vars;
-	t_uint	i;
-	t_uint	var_start;
-	char	chr_end_var;
-	char	*var_name;
+	t_uint	start;
+	t_uint	end;
+	char	*var;
+	char	*str_part;
 
-	i = 0;
-	vars = ft_create_lst();
-	while (*(str + i))
+	start = 0;
+	end = 0;
+	var = ft_strchr(str, '$');
+	while (var)
 	{
-		if (*(str + i) == '$')
-		{
-			var_start = (++i) - 1;
-			while (ft_isalpha(*(str + i)))
-				i++;
-			if (ft_isalpha(*(str + i - 1)))
-			{
-				chr_end_var = *(str + i);
-				*(str + i) = 0;
-				var_name = ft_strdup(str + var_start);
-				if (!var_name)
-					return (NULL); // error
-				ft_push_back(vars, var_name);
-				*(str + i) = chr_end_var;
-			}
-		}
-		if (*(str + i) && *(str + i) != '$')
-			i++;
+		start = (t_uint)(end + (var - (str + end)));
+		str_part = ft_substr(str, end, start - end);
+		ft_push_back(*str_parts, check_memory(&str_part));
+		end = ++start;
+		while (ft_isalpha(*(str + end)))
+			end++;
+		str_part = ft_substr(str, start, end - --start);
+		ft_push_back(*str_parts, check_memory(&str_part));
+		var = ft_strchr(++var, '$');
 	}
-	return (insert_vars_in_str(minishell, &vars, str));
+	if (*(str + end) && !ft_strchr(str + end, '$'))
+	{
+		str_part = ft_substr(str, end, (size_t)(ft_strchr(str + end, 0) - end));
+		ft_push_back(*str_parts, check_memory(&str_part));
+	}
+}
+
+void	set_str_withvars(t_minishell *minishell, char *str)
+{
+	t_list	*str_parts;
+	char	*new_arg;
+
+	str_parts = ft_create_lst();
+	split_str(&str_parts, str);
+	if (!str_parts->head)
+		return ;
+	swap_nametovalue(minishell, &str_parts);
+	new_arg = ft_lst_to_str(str_parts);
+	if (new_arg)
+	{
+		free(minishell->commands->tail->content);
+		minishell->commands->tail->content = (void *)new_arg;
+	}
+	else
+		; // error
+	#ifndef DEBUG
+		t_node *node;
+
+		node = str_parts->head;
+		while (node)
+		{
+			printf("|%s|\n", (char *)node->content);
+			node = node->next;
+		}
+	#endif
+	ft_lst_clear(str_parts, &free);
 }

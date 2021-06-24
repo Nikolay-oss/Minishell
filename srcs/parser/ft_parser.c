@@ -27,6 +27,16 @@
 	3. запись команды и ее аргументов в массив строк (массив строк должен заканчиваться NULL указателем)
 */
 
+void	destroy_command_buf(char **command)
+{
+	t_uint	i;
+
+	i = 0;
+	while (*(command + i))
+		free(*(command + i++));
+	free(command);
+}
+
 t_uint	get_command_size(t_node *node)
 {
 	t_node	*cur;

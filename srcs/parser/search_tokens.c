@@ -22,10 +22,8 @@ t_uint	search_str_in_quotes(t_minishell *minishell, char *buf, char type)
 	else
 		idx_end = i;
 	str_noquotes = get_str_withoutquotes(buf + 1, type, idx_end);
-	if (type == '"')
-		str_noquotes = get_str_withvars(minishell, str_noquotes);
 	// нужен обработчик ошибок
-	ft_push_back(minishell->commands, str_noquotes);
+	ft_push_back(minishell->commands, check_memory(&str_noquotes));
 	return (i);
 }
 
@@ -40,7 +38,8 @@ t_uint	search_simple_args(t_minishell *minishell, char *buf)
 	{
 		if (*(buf + i) == ' ')
 		{
-			ft_push_back(minishell->commands, get_str_withvars(minishell, ft_substr(buf, start, i - start)));
+			add_command_to_list(minishell, buf + start, i - start);
+			set_str_withvars(minishell, minishell->commands->tail->content);
 			start = i;
 		}
 		start += skip_spaces(buf + i);
@@ -52,7 +51,7 @@ t_uint	search_simple_args(t_minishell *minishell, char *buf)
 			i++;
 	}
 	if (!*(buf + i))
-		ft_push_back(minishell->commands, get_str_withvars(minishell, ft_substr(buf, start, i - start)));
+		add_command_to_list(minishell, buf + start, i - start);
 	return (i);
 }
 
@@ -72,13 +71,21 @@ t_uint	search_tokens(t_minishell *minishell, char *buf)
 	t_uint	i;
 
 	i = skip_spaces(buf);
-	if (*(buf) == '\'' || *(buf) == '"')
+	if (*buf == '\'' || *buf == '"')
+	{
 		i += search_str_in_quotes(minishell, buf + i, *buf);
+		if (*buf == '"')
+			set_str_withvars(minishell, minishell->commands->tail->content);
+	}
 	else if (*(buf + i) == '>' || *(buf + i) == '<')
 		i += search_redirects(minishell, buf + i, *(buf + i));
 	else if (*(buf + i) == '|')
 		add_command_to_list(minishell, buf, ++i);
 	else
+	{
 		i += search_simple_args(minishell, buf + i);
+		if (!*(buf + i))
+			set_str_withvars(minishell, minishell->commands->tail->content);
+	}
 	return (i);
 }

@@ -18,10 +18,10 @@ void	ft_parser(t_minishell *minishell, char *buf);
 
 // region utils
 t_uint	skip_spaces(char *str);
-void	destroy_command_buf(char **command);
 void	add_command_to_list(t_minishell *minishell, char *buf, t_uint idx);
 void	change_flag(t_bool *flag);
 char	*get_str_withoutquotes(char *str, char quotetype, t_uint end_idx);
+char	*check_memory(char **str);
 // end region
 
 // region search_tokens
@@ -32,7 +32,7 @@ t_uint	search_tokens(t_minishell *minishell, char *buf);
 // end region
 
 // region vars_handler
-char	*get_str_withvars(t_minishell *minishell, char *str);
+void	set_str_withvars(t_minishell *minishell, char *str);
 // end region
 
 // region check_tokens
