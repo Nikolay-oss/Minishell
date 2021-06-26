@@ -128,15 +128,3 @@ void	ft_parser(t_minishell *minishell, char *buf)
 	#endif
 	ft_lst_clear(minishell->commands, &free);
 }
-
-// void	ft_parser(t_minishell *minishell, char *buf)
-// {
-// 	char	**command;
-
-// 	command = ft_split(buf, ' ');
-// 	if (*command)
-// 	{
-// 		select_command(minishell, command);
-// 		destroy_command_buf(command);
-// 	}
-// }

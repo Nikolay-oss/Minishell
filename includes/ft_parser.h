@@ -25,14 +25,13 @@ char	*check_memory(char **str);
 // end region
 
 // region search_tokens
-t_uint	search_str_in_quotes(t_minishell *minishell, char *buf, char type);
-t_uint	search_simple_args(t_minishell *minishell, char *buf);
-t_uint	search_redirects(t_minishell *minishell, char *buf, char type);
 t_uint	search_tokens(t_minishell *minishell, char *buf);
 // end region
 
 // region vars_handler
 void	set_str_withvars(t_minishell *minishell, char *str);
+void	search_var_value(t_minishell *minishell, char **var, t_node *node);
+void	tilda_handler(t_minishell *minishell, void **str);
 // end region
 
 // region check_tokens

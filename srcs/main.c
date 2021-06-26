@@ -45,6 +45,9 @@ int	main(int ac, char **av, char **envp)
 	if (!minishell)
 		return (1);
 	init_env(&minishell->env, envp);
+	// ---delete---
+	minishell->exitcode_last = 0;
+	// ----
 	while (1)
 	{
 		signal(SIGINT, &ft_handler);

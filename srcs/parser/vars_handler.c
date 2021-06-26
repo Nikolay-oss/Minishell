@@ -2,32 +2,19 @@
 
 #define DEBUG
 
-void	search_var_value(t_minishell *minishell, char **var, t_node *node)
-{
-	*var = getvar_value(minishell->env, (char *)(node->content) + 1);
-	if (!*var)
-		*var = getvar_value(minishell->hide_vars, (char *)(node->content) + 1);
-}
-
-void	special_cases_handler(t_minishell *minishell, t_node **node)
+static void	special_cases_handler(t_minishell *minishell, t_node **node)
 {
 	char	*var;
-	// char	*new_var;
 
 	var = (char *)(*node)->content;
-	// if (!ft_strcmp(var, "~"))
-	// {
-	// 	free((*node)->content);
-	// 	(*node)->content = getvar_value(minishell->env, "HOME");
-	// }
-	if (ft_strcmp(var, "$"))
+	if (ft_strcmp(var, "$") && *var == '$')
 	{
 		free((*node)->content);
 		(*node)->content = NULL;
 	}
 }
 
-void	swap_nametovalue(t_minishell *minishell, t_list **str_parts)
+static void	swap_nametovalue(t_minishell *minishell, t_list **str_parts)
 {
 	t_node	*node;
 	char	*var;
@@ -54,7 +41,19 @@ void	swap_nametovalue(t_minishell *minishell, t_list **str_parts)
 	}
 }
 
-void	split_str(t_list **str_parts, char *str)
+static t_uint	skip_varname(char *str, t_uint end)
+{
+	if (*(str + end) == '?')
+		end++;
+	else
+	{
+		while (ft_isalpha(*(str + end)))
+			end++;
+	}
+	return (end);
+}
+
+static void	split_str_into_vars(t_list **str_parts, char *str)
 {
 	t_uint	start;
 	t_uint	end;
@@ -70,8 +69,7 @@ void	split_str(t_list **str_parts, char *str)
 		str_part = ft_substr(str, end, start - end);
 		ft_push_back(*str_parts, check_memory(&str_part));
 		end = ++start;
-		while (ft_isalpha(*(str + end)))
-			end++;
+		end = skip_varname(str, end);
 		str_part = ft_substr(str, start, end - --start);
 		ft_push_back(*str_parts, check_memory(&str_part));
 		var = ft_strchr(++var, '$');
@@ -89,9 +87,12 @@ void	set_str_withvars(t_minishell *minishell, char *str)
 	char	*new_arg;
 
 	str_parts = ft_create_lst();
-	split_str(&str_parts, str);
+	split_str_into_vars(&str_parts, str);
 	if (!str_parts->head)
-		return ;
+	{
+		ft_lst_clear(str_parts, &free);
+		return ;	
+	}
 	swap_nametovalue(minishell, &str_parts);
 	new_arg = ft_lst_to_str(str_parts);
 	if (new_arg)

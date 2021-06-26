@@ -1,6 +1,7 @@
 #include "ft_parser.h"
 
-t_uint	search_str_in_quotes(t_minishell *minishell, char *buf, char type)
+static t_uint	search_str_in_quotes(t_minishell *minishell, char *buf,
+	char type)
 {
 	t_uint	i;
 	t_bool	isopenquote;
@@ -27,7 +28,7 @@ t_uint	search_str_in_quotes(t_minishell *minishell, char *buf, char type)
 	return (i);
 }
 
-t_uint	search_simple_args(t_minishell *minishell, char *buf)
+static t_uint	search_simple_args(t_minishell *minishell, char *buf)
 {
 	t_uint	i;
 	t_uint	start;
@@ -40,6 +41,7 @@ t_uint	search_simple_args(t_minishell *minishell, char *buf)
 		{
 			add_command_to_list(minishell, buf + start, i - start);
 			set_str_withvars(minishell, minishell->commands->tail->content);
+			tilda_handler(minishell, &minishell->commands->tail->content);
 			start = i;
 		}
 		start += skip_spaces(buf + i);
@@ -55,15 +57,26 @@ t_uint	search_simple_args(t_minishell *minishell, char *buf)
 	return (i);
 }
 
-t_uint	search_redirects(t_minishell *minishell, char *buf, char type)
+static t_uint	search_redirects(t_minishell *minishell, char *buf, char type)
 {
 	t_uint	i;
 
 	i = 0;
 	if (*(buf + i + 1) == type)
-		i += 1;
+		i++;
 	add_command_to_list(minishell, buf, ++i);
 	return (i);
+}
+
+static void	search_vars_in_str(t_minishell *minishell, char buf_chr, char c,
+	t_bool type)
+{
+	if (buf_chr == c)
+	{
+		if (type)
+			tilda_handler(minishell, &minishell->commands->tail->content);
+		set_str_withvars(minishell, minishell->commands->tail->content);
+	}
 }
 
 t_uint	search_tokens(t_minishell *minishell, char *buf)
@@ -74,18 +87,19 @@ t_uint	search_tokens(t_minishell *minishell, char *buf)
 	if (*buf == '\'' || *buf == '"')
 	{
 		i += search_str_in_quotes(minishell, buf + i, *buf);
-		if (*buf == '"')
-			set_str_withvars(minishell, minishell->commands->tail->content);
+		search_vars_in_str(minishell, *buf, '"', 0);
 	}
 	else if (*(buf + i) == '>' || *(buf + i) == '<')
 		i += search_redirects(minishell, buf + i, *(buf + i));
 	else if (*(buf + i) == '|')
-		add_command_to_list(minishell, buf, ++i);
+	{
+		add_command_to_list(minishell, buf + i, i + 1 - i);
+		i++;
+	}
 	else
 	{
 		i += search_simple_args(minishell, buf + i);
-		if (!*(buf + i))
-			set_str_withvars(minishell, minishell->commands->tail->content);
+		search_vars_in_str(minishell, *(buf + i), 0, 1);
 	}
 	return (i);
 }
