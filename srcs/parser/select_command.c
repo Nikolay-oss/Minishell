@@ -5,8 +5,6 @@ void	select_command(t_minishell *minishell, char **command)
 {
 	if (!*command)
 		return ;
-	minishell->home_path
-	= getvar_node(minishell->env, "HOME")->content;
 	if (!ft_strcmp(*command, "echo"))
 	{
 		ft_echo(command + 1);

@@ -81,7 +81,7 @@ static void	split_str_into_vars(t_list **str_parts, char *str)
 	}
 }
 
-void	set_str_withvars(t_minishell *minishell, char *str)
+char	*get_str_withvars(t_minishell *minishell, char *str)
 {
 	t_list	*str_parts;
 	char	*new_arg;
@@ -91,17 +91,10 @@ void	set_str_withvars(t_minishell *minishell, char *str)
 	if (!str_parts->head)
 	{
 		ft_lst_clear(str_parts, &free);
-		return ;	
+		return (NULL);
 	}
 	swap_nametovalue(minishell, &str_parts);
 	new_arg = ft_lst_to_str(str_parts);
-	if (new_arg)
-	{
-		free(minishell->commands->tail->content);
-		minishell->commands->tail->content = (void *)new_arg;
-	}
-	else
-		; // error
 	#ifndef DEBUG
 		t_node *node;
 
@@ -113,4 +106,8 @@ void	set_str_withvars(t_minishell *minishell, char *str)
 		}
 	#endif
 	ft_lst_clear(str_parts, &free);
+	if (new_arg)
+		return (new_arg);
+	else
+		return (NULL); // error
 }

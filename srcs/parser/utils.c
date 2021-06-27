@@ -44,22 +44,6 @@ void	change_flag(t_bool *flag)
 		*flag = 1;
 }
 
-// обработать выделения памяти
-char	*get_str_withoutquotes(char *str, char quotetype, t_uint end_idx)
-{
-	char	*buf;
-	char	chr_end;
-
-	chr_end = *(str + end_idx);
-	*(str + end_idx) = 0;
-	if (quotetype == '\'')
-		buf = ft_del_substr(str, "'");
-	else
-		buf = ft_del_substr(str, "\"");
-	*(str + end_idx) = chr_end;
-	return (buf);
-}
-
 char	*check_memory(char **str)
 {
 	if (!*str)

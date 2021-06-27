@@ -45,6 +45,7 @@ int	main(int ac, char **av, char **envp)
 	if (!minishell)
 		return (1);
 	init_env(&minishell->env, envp);
+	minishell->home_path = getvar_value(minishell->env, "HOME");
 	// ---delete---
 	minishell->exitcode_last = 0;
 	// ----

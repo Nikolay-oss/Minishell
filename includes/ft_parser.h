@@ -20,18 +20,22 @@ void	ft_parser(t_minishell *minishell, char *buf);
 t_uint	skip_spaces(char *str);
 void	add_command_to_list(t_minishell *minishell, char *buf, t_uint idx);
 void	change_flag(t_bool *flag);
-char	*get_str_withoutquotes(char *str, char quotetype, t_uint end_idx);
 char	*check_memory(char **str);
 // end region
 
 // region search_tokens
 t_uint	search_tokens(t_minishell *minishell, char *buf);
+t_uint	get_endquote_idx(char *buf, char type);
+// end region
+
+// region arg_handler
+void	arg_handler(t_minishell *minishell, char **arg, char *buf, t_uint len);
 // end region
 
 // region vars_handler
-void	set_str_withvars(t_minishell *minishell, char *str);
+char	*get_str_withvars(t_minishell *minishell, char *str);
 void	search_var_value(t_minishell *minishell, char **var, t_node *node);
-void	tilda_handler(t_minishell *minishell, void **str);
+char	*tilda_handler(t_minishell *minishell, char *str);
 // end region
 
 // region check_tokens

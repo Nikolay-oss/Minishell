@@ -119,9 +119,10 @@ void	ft_parser(t_minishell *minishell, char *buf)
 		t_node	*cur = minishell->commands->head;
 		t_uint	j = 0;
 
-		while (j < minishell->commands->size)
+		while (j < minishell->commands->size && cur)
 		{
-			printf("%s\n", (char *)cur->content);
+			if ((char *)cur->content)
+				printf("%s\n", (char *)cur->content);
 			j++;
 			cur = cur->next;
 		}

@@ -12,13 +12,16 @@ void	search_var_value(t_minishell *minishell, char **var, t_node *node)
 	}
 }
 
-void	tilda_handler(t_minishell *minishell, void **str)
+char	*tilda_handler(t_minishell *minishell, char *str)
 {
-	if (!ft_strcmp(*str, "~"))
+	char	*home_path;
+
+	home_path = NULL;
+	if (*(str + 1) == ' ' || !*(str + 1))
 	{
-		free(*str);
-		*str = (void *)getvar_value(minishell->env, "HOME");
-		if (!*str)
-			; // error
+		home_path = ft_strdup(minishell->home_path);
+		if (!home_path)
+			return (NULL); // error
 	}
+	return (home_path);
 }

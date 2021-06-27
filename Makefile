@@ -19,7 +19,7 @@ SRCS		= $(SRCS_DIR)main.c					$(PARSER_DIR)ft_parser.c \
 			  $(SRCS_DIR)redir.c				$(BUILTINS_DIR)ft_unset.c\
 			  $(PARSER_DIR)utils.c				$(PARSER_DIR)search_tokens.c \
 			  $(PARSER_DIR)check_tokens.c		$(PARSER_DIR)vars_handler.c \
-			  $(PARSER_DIR)vars_handler_utils.c	
+			  $(PARSER_DIR)vars_handler_utils.c	$(PARSER_DIR)args_handler.c
 
 CFLAGS		= #-Wall -Wextra -Werror
 
