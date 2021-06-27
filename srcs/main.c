@@ -9,10 +9,13 @@
 	global struct signals
 */
 
-void rl_replace_line();
+t_signal	signals;
+
+void	rl_replace_line();
 
 void	ft_handler(int sig)
 {
+	signals.sig_int = 1;
 	(void)sig; // temprorary
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
@@ -32,7 +35,11 @@ int	main(int ac, char **av, char **envp)
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	if (!minishell)
 		return (1);
-	init_env(&minishell->env, envp);
+	init_env(&minishell->env, envp); // в инит лучше передавать указаьтель на минишелл
+	minishell->exit_status = (long long int)NULL; // 1
+	minishell->home_path = (char *)NULL; // 2
+	signals.sig_int = 0; // 3
+	signals.sig_quit = 0; // 4
 	while (1)
 	{
 		signal(SIGINT, &ft_handler);
@@ -40,8 +47,8 @@ int	main(int ac, char **av, char **envp)
 		if (!buf)
 			break ;
 		// printf("%s\n", buf);
-		if (buf && !strcmp(buf, "exit"))
-			break ;
+//		if (buf && !strcmp(buf, "exit"))
+//			break ;
 		add_history(buf);
 		ft_parser(minishell, buf);
 		free(buf);
@@ -49,7 +56,7 @@ int	main(int ac, char **av, char **envp)
 	free(buf);
 	ft_lst_clear(minishell->env, &free);
 	free(minishell);
-	write(1, "exit\n", 5);
+//	write(1, "exit\n", 5);
 }
 
 

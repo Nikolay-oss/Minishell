@@ -59,6 +59,7 @@ SRCS		= 	ft_memset.c \
 				ft_lst_delfirst.c \
 				ft_del_node.c \
 				ft_get_index_symbol.c\
+				ft_count_args.c\
 
 CFLAGS		= -Wall -Wextra -Werror
 

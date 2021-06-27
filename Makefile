@@ -17,19 +17,19 @@ SRCS		= $(SRCS_DIR)main.c					$(PARSER_DIR)ft_parser.c \
 			  $(BUILTINS_DIR)ft_env.c			$(BUILTINS_DIR)ft_cd.c \
 			  $(BUILTINS_DIR)ft_export.c		$(BUILTINS_DIR)ft_pwd.c \
 			  $(SRCS_DIR)redir.c				$(BUILTINS_DIR)ft_unset.c\
-			  $(SRCS_DIR)ft_exec.c
+			  $(SRCS_DIR)ft_exec.c				$(BUILTINS_DIR)ft_exit.c\
 
 CFLAGS		= #-Wall -Wextra -Werror
 
-# LIBS		= -lreadline -Llibft -lft # ubuntu
-LIBS		= -L/Users/brice/.brew/opt/readline/lib -lreadline -Llibft -lft
+LIBS		= -lreadline -Llibft -lft # ubuntu
+#LIBS		= -L/Users/brice/.brew/opt/readline/lib -lreadline -Llibft -lft
 
 #OBJS		= $(SRCS:.c=.o)
 OBJS		= $(patsubst $(SRCS_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS)) 
 
 $(OBJ_DIR)%.o:	$(SRCS_DIR)%.c
-	$(CC) $(CFLAGS) -I $(INCLUDES) -I/Users/brice/.brew/opt/readline/include -c $< -o $@
-
+	#$(CC) $(CFLAGS) -I $(INCLUDES) -I/Users/brice/.brew/opt/readline/include -c $< -o $@
+	$(CC) -g $(CFLAGS) -I $(INCLUDES) -c $< -o $@
 $(NAME):	$(OBJ_DIR) $(OBJS)
 	make -C libft/
 	$(CC) -o $(NAME) $(CFLAGS) $(OBJS) $(LIBS)

@@ -31,7 +31,7 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else if (!ft_strcmp(*command, "exit"))
 	{
-
+		ft_exit(minishell, command);
 	}
 	else
 	{

@@ -35,7 +35,7 @@ static int	select_sign(const char c)
 	return (1);
 }
 
-int	ft_atoi(const char *str)
+long long int	ft_atoi(const char *str)
 {
 	unsigned long long int	res;
 	unsigned long long int	max;
@@ -44,7 +44,7 @@ int	ft_atoi(const char *str)
 
 	res = 0;
 	i = 0;
-	max = 922337203685477580;
+	max = 9223372036854775807;
 	while (ft_isspace(*(str + i)))
 		i++;
 	sign = select_sign(*str);
