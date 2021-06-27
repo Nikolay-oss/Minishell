@@ -1,6 +1,6 @@
 #include "ft_parser.h"
 
-void	add_to_arg(char **arg, char *new_arg)
+static void	add_to_arg(char **arg, char *new_arg)
 {
 	char	*tmp;
 
@@ -16,7 +16,7 @@ void	add_to_arg(char **arg, char *new_arg)
 		; // error
 }
 
-void	simple_arg_handler(t_minishell *minishell, char **arg, char *buf)
+static void	simple_arg_handler(t_minishell *minishell, char **arg, char *buf)
 {
 	char	*new_arg;
 
@@ -30,7 +30,7 @@ void	simple_arg_handler(t_minishell *minishell, char **arg, char *buf)
 		add_to_arg(arg, buf);
 }
 
-t_uint	quote_handler(t_minishell *minishell, char **arg, char *buf, char type)
+static t_uint	quote_handler(t_minishell *minishell, char **arg, char *buf, char type)
 {
 	t_uint	i;
 	char	chr_old;
@@ -51,7 +51,7 @@ t_uint	quote_handler(t_minishell *minishell, char **arg, char *buf, char type)
 	return (i);
 }
 
-void	arg_handler_tool(char *buf, t_uint *i_end, char *quote_type)
+static void	arg_handler_tool(char *buf, t_uint *i_end, char *quote_type)
 {
 	while (!ft_memchr("\"'", *(buf + *i_end), 3))
 			(*i_end)++;
