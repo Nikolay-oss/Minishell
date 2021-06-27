@@ -18,14 +18,12 @@ t_uint	get_endquote_idx(char *buf, char type)
 	return (i);
 }
 
-static t_uint	search_arg(t_minishell *minishell, char *buf)
+static t_uint	search_arg(t_minishell *minishell, char *buf, char **arg)
 {
 	t_uint	len;
-	char	*arg;
 	char	chr_old;
 
 	len = 0;
-	arg = NULL;
 	while (!ft_memchr("<>| ", *(buf + len), 5))
 	{
 		if (ft_memchr("'\"", *(buf + len), 2))
@@ -38,10 +36,10 @@ static t_uint	search_arg(t_minishell *minishell, char *buf)
 	}
 	chr_old = *(buf + len);
 	*(buf + len) = 0;
-	arg_handler(minishell, &arg, buf, len);
+	arg_handler(minishell, arg, buf, len);
 	*(buf + len) = chr_old;
-	if (arg)
-		ft_push_back(minishell->commands, check_memory(&arg));
+	if (*arg)
+		ft_push_back(minishell->commands, check_memory(arg));
 	return (len);
 }
 
@@ -59,21 +57,18 @@ static t_uint	search_redirects(t_minishell *minishell, char *buf, char type)
 t_uint	search_tokens(t_minishell *minishell, char *buf)
 {
 	t_uint	i;
-	char	*tilda;
+	char	*arg;
 
+	arg = NULL;
 	i = skip_spaces(buf);
 	if (*(buf + i) == '>' || *(buf + i) == '<')
 		i += search_redirects(minishell, buf + i, *(buf + i));
 	else if (*(buf + i) == '~')
 	{
-		tilda = tilda_handler(minishell, buf + i);
-		if (tilda)
-		{
-			ft_push_back(minishell->commands, tilda);
+		arg = tilda_handler(minishell, buf + i);
+		if (arg)
 			i++;
-		}
-		else
-			i += search_arg(minishell, buf + i);
+		i += search_arg(minishell, buf + i, &arg);
 	}
 	else if (*(buf + i) == '|')
 	{
@@ -81,6 +76,6 @@ t_uint	search_tokens(t_minishell *minishell, char *buf)
 		i++;
 	}
 	else
-		i += search_arg(minishell, buf + i);
+		i += search_arg(minishell, buf + i, &arg);
 	return (i);
 }

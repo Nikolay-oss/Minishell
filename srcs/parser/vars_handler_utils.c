@@ -17,7 +17,7 @@ char	*tilda_handler(t_minishell *minishell, char *str)
 	char	*home_path;
 
 	home_path = NULL;
-	if (*(str + 1) == ' ' || !*(str + 1))
+	if (ft_memchr(" /", *(str + 1), 3))
 	{
 		home_path = ft_strdup(minishell->home_path);
 		if (!home_path)
