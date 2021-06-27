@@ -1,7 +1,5 @@
 #include "minishell.h"
-/*
-	дописать под PATH
-*/
+
 static t_uint	var_parser(char *var, int *errorcode)
 {
 	t_uint	var_type;

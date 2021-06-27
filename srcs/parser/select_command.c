@@ -15,11 +15,11 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else if (!ft_strcmp(*command, "pwd"))
 	{
-		ft_pwd();
+		minishell->exitcode_last = ft_pwd();
 	}
 	else if (!ft_strcmp(*command, "export"))
 	{
-		ft_export(minishell, command);
+		minishell->exitcode_last = ft_export(minishell, command);
 	}
 	else if (!ft_strcmp(*command, "unset"))
 	{
