@@ -65,8 +65,7 @@ void	arg_handler(t_minishell *minishell, char **arg, char *buf, t_uint len)
 	char	quote_type;
 	char	*p_quote;
 
-	i_start = 0;
-	i_end = 0;
+	init_range(&i_start, &i_end, 0, 0);
 	while (i_start < len)
 	{
 		arg_handler_tool(buf, &i_end, &quote_type);

@@ -21,6 +21,7 @@ t_uint	skip_spaces(char *str);
 void	add_command_to_list(t_minishell *minishell, char *buf, t_uint idx);
 void	change_flag(t_bool *flag);
 char	*check_memory(char **str);
+void	init_range(t_uint *start, t_uint *end, t_uint s_val, t_uint e_val);
 // end region
 
 // region search_tokens

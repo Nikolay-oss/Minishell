@@ -50,3 +50,9 @@ char	*check_memory(char **str)
 		; // error
 	return (*str);
 }
+
+void	init_range(t_uint *start, t_uint *end, t_uint s_val, t_uint e_val)
+{
+	*start = s_val;
+	*end = e_val;
+}
