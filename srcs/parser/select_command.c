@@ -3,8 +3,8 @@
 
 void	select_command(t_minishell *minishell, char **command)
 {
-	minishell->home_path
-	= getvar_node(minishell->env, "HOME")->content;
+	if (!*command)
+		return ;
 	if (!ft_strcmp(*command, "echo"))
 	{
 		ft_echo(command + 1);
@@ -15,11 +15,11 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else if (!ft_strcmp(*command, "pwd"))
 	{
-		ft_pwd();
+		minishell->exit_status = ft_pwd();
 	}
 	else if (!ft_strcmp(*command, "export"))
 	{
-		ft_export(minishell, command);
+		minishell->exit_status = ft_export(minishell, command);
 	}
 	else if (!ft_strcmp(*command, "unset"))
 	{

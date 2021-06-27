@@ -3,26 +3,44 @@
 t_node	*getvar_node(t_list *vars, const char *var_name)
 {
 	t_node	*current;
-	size_t	size;
 	char	*p_equal;
 	char	*tmp;
+	char	buf;
 
 	if (!vars)
 		return (NULL);
 	current = vars->head;
-	size = 0;
 	while (current)
 	{
 		p_equal = ft_strchr((char *)current->content, '=');
 		if (p_equal)
 		{
-			size = (size_t)(p_equal - (char *)current->content);
-			if (!ft_memcmp(current->content, var_name, size))
+			buf = *p_equal;
+			*p_equal = 0;
+			if (!ft_strcmp(var_name, current->content))
+			{
+				*p_equal = buf;
 				return (current);
+			}
+			*p_equal = buf;
 		}
 		current = current->next;
 	}
 	return (NULL);
+}
+
+char	*getvar_value(t_list *vars, const char *var_name)
+{
+	t_node	*node_var;
+	char	*var_value;
+
+	node_var = getvar_node(vars, var_name);
+	if (!node_var)
+		return (NULL);
+	var_value = ft_strdup(ft_strchr(node_var->content, '=') + 1);
+	if (!var_value)
+		return (NULL); // error
+	return (var_value);
 }
 
 void	init_env(t_list **env, char **envp)

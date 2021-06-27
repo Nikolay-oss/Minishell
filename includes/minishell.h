@@ -14,6 +14,7 @@ typedef struct s_minishell
 {
 	t_list			*env;
 	t_list			*hide_vars; // for variables in bash
+	t_list			*commands;
 	char			*home_path;
 	long long int	exit_status;
 }				t_minishell;
@@ -32,6 +33,7 @@ void	init_env(t_list **env, char **envp);
 
 void	select_command(t_minishell *minishell, char **command);
 t_node	*getvar_node(t_list *vars, const char *var_name);
+char	*getvar_value(t_list *vars, const char *var_name);
 
 // region builtins
 void	ft_echo(char **command);

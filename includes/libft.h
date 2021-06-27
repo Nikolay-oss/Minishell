@@ -55,6 +55,8 @@ char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*ft_itoa(int n);
 int					ft_get_index_symbol(char *str, char find);
 int					ft_count_args(char **var);
+char				*ft_del_substr(const char *s, const char *set);
+char				*ft_insert_substr(const char *s, const char *substr, size_t pos);
 
 typedef struct s_node
 {
@@ -74,6 +76,7 @@ t_node				*ft_create_node(void *data);
 void				ft_push_front(t_list *lst, void *data);
 void				ft_push_back(t_list *lst, void *data);
 void				ft_lst_clear(t_list *lst, void (*del)(void*));
+char				*ft_lst_to_str(t_list *lst);
 void				ft_lst_delfirst(t_list *lst, void (*del)(void*));
 void				ft_del_node(t_list *lst, void (*del)(void*),
 						t_node *node);

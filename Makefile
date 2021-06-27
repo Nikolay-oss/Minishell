@@ -18,6 +18,9 @@ SRCS		= $(SRCS_DIR)main.c					$(PARSER_DIR)ft_parser.c \
 			  $(BUILTINS_DIR)ft_export.c		$(BUILTINS_DIR)ft_pwd.c \
 			  $(SRCS_DIR)redir.c				$(BUILTINS_DIR)ft_unset.c\
 			  $(SRCS_DIR)ft_exec.c				$(BUILTINS_DIR)ft_exit.c\
+			  $(PARSER_DIR)utils.c				$(PARSER_DIR)search_tokens.c \
+			  $(PARSER_DIR)check_tokens.c		$(PARSER_DIR)vars_handler.c \
+			  $(PARSER_DIR)vars_handler_utils.c	$(PARSER_DIR)args_handler.c
 
 CFLAGS		= #-Wall -Wextra -Werror
 
@@ -30,9 +33,10 @@ OBJS		= $(patsubst $(SRCS_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
 $(OBJ_DIR)%.o:	$(SRCS_DIR)%.c
 	#$(CC) $(CFLAGS) -I $(INCLUDES) -I/Users/brice/.brew/opt/readline/include -c $< -o $@
 	$(CC) -g $(CFLAGS) -I $(INCLUDES) -c $< -o $@
+	#$(CC) -g $(CFLAGS) -I $(INCLUDES) -I/Users/dkenchur/.brew/opt/readline/include -c $< -o $@
 $(NAME):	$(OBJ_DIR) $(OBJS)
 	make -C libft/
-	$(CC) -o $(NAME) $(CFLAGS) $(OBJS) $(LIBS)
+	$(CC) -g -o $(NAME) $(CFLAGS) $(OBJS) $(LIBS)
 
 all:		$(NAME)
 

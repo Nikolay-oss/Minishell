@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/22 18:24:13 by dkenchur          #+#    #+#             */
+/*   Updated: 2021/06/22 19:44:46 by dkenchur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <signal.h>
 // #include <termios.h>
 
@@ -17,8 +29,8 @@ void	ft_handler(int sig)
 {
 	signals.sig_int = 1;
 	(void)sig; // temprorary
-	write(1, "\n", 1);
 	rl_replace_line("", 0);
+	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
 }
@@ -40,6 +52,7 @@ int	main(int ac, char **av, char **envp)
 	minishell->home_path = (char *)NULL; // 2
 	signals.sig_int = 0; // 3
 	signals.sig_quit = 0; // 4
+	minishell->home_path = getvar_value(minishell->env, "HOME");
 	while (1)
 	{
 		signal(SIGINT, &ft_handler);
@@ -56,7 +69,8 @@ int	main(int ac, char **av, char **envp)
 	free(buf);
 	ft_lst_clear(minishell->env, &free);
 	free(minishell);
-//	write(1, "exit\n", 5);
+	write(1, "exit\n", 5);
+	return (0);
 }
 
 
