@@ -7,7 +7,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
-// #include <stdlib.h>
+//# include <stdlib.h>
 # include <limits.h> // It is allowed? use define from limits
 
 typedef struct s_minishell

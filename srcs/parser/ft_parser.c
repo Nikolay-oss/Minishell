@@ -90,6 +90,9 @@ void	commands_handler(t_minishell *minishell)
 	while (node)
 	{
 		cmd = create_command_buf(minishell, &node);
+		int i = 0;
+
+		printf("node = |%s|\n", (char *)node->content);
 		if (cmd)
 		{
 			select_command(minishell, cmd);
@@ -112,7 +115,7 @@ void	ft_parser(t_minishell *minishell, char *buf)
 		return ;
 	}
 	while (*(buf + i))
-		i += search_tokens(minishell, buf + i);
+		i += search_tokens(minishell, buf + i); // после все в списке
 	if (i > 0)
 		commands_handler(minishell);
 	#ifndef DEBUG
