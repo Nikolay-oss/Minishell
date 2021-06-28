@@ -121,7 +121,7 @@ void	ft_parser(t_minishell *minishell, char *buf)
 
 		while (j < minishell->commands->size && cur)
 		{
-			if ((char *)cur->content)
+			if (cur)
 				printf("%s\n", (char *)cur->content);
 			j++;
 			cur = cur->next;
