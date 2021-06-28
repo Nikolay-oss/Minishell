@@ -36,10 +36,14 @@ static t_uint	search_arg(t_minishell *minishell, char *buf, char **arg)
 	}
 	chr_old = *(buf + len);
 	*(buf + len) = 0;
+	// var_parser
+	// if !*arg -> call arg_handler
 	arg_handler(minishell, arg, buf, len);
 	*(buf + len) = chr_old;
-	if (*arg)
+	if (*arg && **arg)
 		ft_push_back(minishell->commands, check_memory(arg));
+	else if (*arg)
+		free(*arg);
 	return (len);
 }
 

@@ -15,11 +15,18 @@ void	search_var_value(t_minishell *minishell, char **var, t_node *node)
 char	*tilda_handler(t_minishell *minishell, char *str)
 {
 	char	*home_path;
+	t_uint	i;
 
 	home_path = NULL;
-	if (ft_memchr(" /", *(str + 1), 3))
+	i = 0;
+	if (*str == '=')
+		i++;
+	if (ft_memchr(" /", *(str + i + 1), 3))
 	{
-		home_path = ft_strdup(minishell->home_path);
+		if (*str == '=')
+			home_path = ft_strjoin("=", minishell->home_path);
+		else
+			home_path = ft_strdup(minishell->home_path);
 		if (!home_path)
 			return (NULL); // error
 	}

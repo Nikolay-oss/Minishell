@@ -23,7 +23,7 @@ static void	swap_nametovalue(t_minishell *minishell, t_list **str_parts)
 	node = (*str_parts)->head;
 	while (node)
 	{
-		if (*(char *)node->content == '$') // || *(char *)node->content == '~')
+		if (*(char *)node->content == '$')
 		{
 			search_var_value(minishell, &var, node);
 			if (var)
