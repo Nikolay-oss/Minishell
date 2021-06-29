@@ -70,7 +70,7 @@ static void	split_str_into_vars(t_list **str_parts, char *str)
 		ft_push_back(*str_parts, check_memory(&str_part));
 		end = ++start;
 		end = skip_varname(str, end);
-		str_part = ft_substr(str, start, end - --start);
+		str_part = ft_substr(str, start - 1, end - (start - 1));
 		ft_push_back(*str_parts, check_memory(&str_part));
 		var = ft_strchr(++var, '$');
 	}

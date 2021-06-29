@@ -41,7 +41,7 @@ static t_uint	search_arg(t_minishell *minishell, char *buf, char **arg)
 	arg_handler(minishell, arg, buf, len);
 	*(buf + len) = chr_old;
 	if (*arg && **arg)
-		ft_push_back(minishell->commands, check_memory(arg));
+		ft_push_back(minishell->all_commands, check_memory(arg));
 	else if (*arg)
 		free(*arg);
 	return (len);
@@ -54,7 +54,7 @@ static t_uint	search_redirects(t_minishell *minishell, char *buf, char type)
 	i = 0;
 	if (*(buf + i + 1) == type)
 		i++;
-	add_command_to_list(minishell, buf, ++i);
+	add_command_to_allcommands(minishell, buf, ++i);
 	return (i);
 }
 
@@ -76,7 +76,7 @@ t_uint	search_tokens(t_minishell *minishell, char *buf)
 	}
 	else if (*(buf + i) == '|')
 	{
-		add_command_to_list(minishell, buf + i, i + 1 - i);
+		add_command_to_allcommands(minishell, buf + i, i + 1 - i);
 		i++;
 	}
 	else
