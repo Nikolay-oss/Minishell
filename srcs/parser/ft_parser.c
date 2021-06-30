@@ -12,7 +12,7 @@
 
 #include "ft_parser.h"
 
-#define DEBUG
+// #define DEBUG
 
 /*
 	Примерный алгоритм:
@@ -40,8 +40,8 @@ void	ft_parser(t_minishell *minishell, char *buf)
 	}
 	while (*(buf + i))
 		i += search_tokens(minishell, buf + i); // после все в списке
-	if (i > 0)
-		commands_handler(minishell);
+	// if (i > 0)
+	// 	commands_handler(minishell);
 	#ifndef DEBUG
 		t_node	*cur = minishell->all_commands->head;
 		t_uint	j = 0;

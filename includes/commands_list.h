@@ -17,6 +17,7 @@ typedef struct s_commands
 {
 	struct s_commands	*next;
 	char				**cmd;
+	// int					*flags_quotes;
 }						t_commands;
 
 void	add_to_command_list(t_commands **head, char **cmd);
