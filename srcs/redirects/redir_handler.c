@@ -5,6 +5,10 @@
 	Разобраться какие коды ошибок возвращает баш, если dup или open не срабатывает
 	bash: warning: here-document at line 148 delimited by end-of-file (wanted `end')
 	148????
+	Узнать что делать, если unlink не удалил файл
+
+	sort << "arg" - не искать переменные
+	sort << arg - искать переменные
 */
 
 static int	ft_redir(const char *filename, int o_flags, int s_flags,
