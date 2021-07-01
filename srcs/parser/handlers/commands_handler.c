@@ -22,21 +22,24 @@ void	destroy_command_buf(char **command)
 	free(command);
 }
 
-static t_uint	get_command_size(t_node *node)
+static t_uint	get_command_size(t_node *cmd_node, t_node *f_node)
 {
-	t_node	*cur;
+	t_node	*cur_cmdnode;
+	t_node	*cur_fnode;
 	t_uint	size;
 	char	c;
 
 	size = 0;
-	cur = node;
-	while (cur)
+	cur_cmdnode = cmd_node;
+	cur_fnode = f_node;
+	while (cur_cmdnode)
 	{
-		c = *(char *)cur->content;
-		if (ispipe(c))
+		c = *(char *)cur_cmdnode->content;
+		if (ispipe(c) && !*(t_bool *)f_node->content)
 			break ;
 		size++;
-		cur = cur->next;
+		cur_cmdnode = cur_cmdnode->next;
+		f_node = f_node->next;
 	}
 	return (size);
 }
@@ -48,7 +51,7 @@ static char	**create_command_buf(t_minishell *minishell, t_node **cmd_node,
 	t_uint	cmd_size;
 	t_uint	i;
 
-	cmd_size = get_command_size(*cmd_node);
+	cmd_size = get_command_size(*cmd_node, *f_node);
 	cmd = (char **)ft_calloc(cmd_size + 1, sizeof(char *));
 	*flags = (t_bool *)malloc(sizeof(t_bool) * cmd_size);
 	if (!cmd || !*flags)
