@@ -28,34 +28,31 @@ static int	ft_redir(const char *filename, int o_flags, int s_flags,
 	return (ret);
 }
 
-static void	select_redirect(t_minishell *minishell, t_bool *in2red, char *filename,
-	char *redir_type, t_stdstreams *stdstreams)
+static void	select_redirect(t_minishell *minishell, t_bool *in2red, char **cmd,
+	t_stdstreams *stdstreams)
 {
-	int	exit_status;
-
-	if (!ft_strcmp(">", redir_type))
+	if (!ft_strcmp(">", *cmd))
 	{
-		exit_status = ft_redir((const char *)filename,
+		minishell->exit_status = ft_redir((const char *)(*(cmd + 1)),
 			O_CREAT | O_WRONLY | O_TRUNC, __S_IWRITE | __S_IREAD, 1);
 	}
-	else if (!ft_strcmp("<", redir_type))
+	else if (!ft_strcmp("<", *cmd))
 	{
-		exit_status = ft_redir((const char *)filename,
+		minishell->exit_status = ft_redir((const char *)(*(cmd + 1)),
 			O_RDONLY, 0, 0);
 	}
-	else if (!ft_strcmp(">>", redir_type))
+	else if (!ft_strcmp(">>", *cmd))
 	{
-		exit_status = ft_redir((const char *)filename,
+		minishell->exit_status = ft_redir((const char *)(*(cmd + 1)),
 			O_CREAT | O_WRONLY | O_APPEND, __S_IWRITE | __S_IREAD, 1);
 	}
-	else if (!ft_strcmp("<<", redir_type))
+	else if (!ft_strcmp("<<", *cmd))
 	{
-		exit_status = ft_redir_in2(minishell, (const char *)filename,
+		minishell->exit_status = ft_redir_in2(minishell, (const char *)(*(cmd + 1)),
 			stdstreams);
-		if (!exit_status)
+		if (!minishell->exit_status)
 		{
-			exit_status = ft_redir(".redir_buf",
-				O_RDONLY, 0, 0);
+			minishell->exit_status = ft_redir(".redir_buf", O_RDONLY, 0, 0);
 			*in2red = 1;
 		}
 	}
@@ -84,17 +81,20 @@ void	redir_handler(t_minishell *minishell, char **cmd)
 	i = 0;
 	redir_pos = -1;
 	in2red = 0;
-	save_std_descriptors(&stdstrms);
+	minishell->exit_status = save_std_descriptors(&stdstrms);
 	while (*(cmd + i))
 	{
 		if (isredir(**(cmd + i)))
 		{
 			if (redir_pos == -1)
 				redir_pos = i;
-			select_redirect(minishell, &in2red, *(cmd + i + 1), *(cmd + i), &stdstrms);
+			select_redirect(minishell, &in2red, cmd + i, &stdstrms);
+			if (minishell->exit_status)
+				break ;
 		}
 		i++;
 	}
-	exec_cmd(minishell, cmd, redir_pos, in2red);
-	revert_std_descriptors(&stdstrms);
+	if (!minishell->exit_status)
+		exec_cmd(minishell, cmd, redir_pos, in2red);
+	minishell->exit_status = revert_std_descriptors(&stdstrms);
 }
