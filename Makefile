@@ -12,6 +12,8 @@ CMDLST_DIR	= $(SRCS_DIR)commands_list/
 
 HNDRS_DIR	= $(PARSER_DIR)handlers/
 
+REDIR_DIR	= $(SRCS_DIR)redirects/
+
 OBJ_DIR		= objs/
 
 INCLUDES	= includes/
@@ -20,13 +22,14 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 			  $(PARSER_DIR)select_command.c			$(BUILTINS_DIR)ft_echo.c \
 			  $(BUILTINS_DIR)ft_env.c				$(BUILTINS_DIR)ft_cd.c \
 			  $(BUILTINS_DIR)ft_export.c			$(BUILTINS_DIR)ft_pwd.c \
-			  $(SRCS_DIR)redir.c					$(BUILTINS_DIR)ft_unset.c\
+			  $(REDIR_DIR)redir_handler.c			$(BUILTINS_DIR)ft_unset.c\
 			  $(SRCS_DIR)ft_exec.c					$(BUILTINS_DIR)ft_exit.c\
 			  $(PARSER_DIR)utils.c					$(PARSER_DIR)search_tokens.c \
 			  $(PARSER_DIR)check_tokens.c			$(HNDRS_DIR)vars_handler.c \
 			  $(HNDRS_DIR)vars_handler_utils.c		$(HNDRS_DIR)args_handler.c \
 			  $(HNDRS_DIR)commands_handler.c		$(CMDLST_DIR)add_to_command_list.c \
-			  $(CMDLST_DIR)destroy_command_list.c
+			  $(CMDLST_DIR)destroy_command_list.c	$(REDIR_DIR)stdstreams_handler.c \
+			  $(REDIR_DIR)ft_redir_in2.c			
 
 CFLAGS		= #-Wall -Wextra -Werror
 
@@ -54,6 +57,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)builtins
 	@mkdir -p $(OBJ_DIR)commands_list
 	@mkdir -p $(OBJ_DIR)parser/handlers
+	@mkdir -p $(OBJ_DIR)redirects
 
 clean:
 	rm -rf $(OBJS)

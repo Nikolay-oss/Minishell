@@ -66,8 +66,9 @@ int	main(int ac, char **av, char **envp)
 		ft_parser(minishell, buf);
 		free(buf);
 	}
-	free(buf);
+	// free(buf);
 	ft_lst_clear(minishell->env, &free);
+	free(minishell->home_path);
 	free(minishell);
 	write(1, "exit\n", 5);
 	return (0);

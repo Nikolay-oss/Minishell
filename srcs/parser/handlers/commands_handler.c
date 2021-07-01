@@ -84,6 +84,8 @@ void	commands_handler(t_minishell *minishell)
 		if (node)
 			node = node->next;
 	}
+	// ft_exec(minishell->env, minishell->commands->cmd);
+	redir_handler(minishell, minishell->commands->cmd);
 	/*
 		где-то тут должен быть обработчик пайпов
 	*/

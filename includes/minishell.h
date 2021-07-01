@@ -3,13 +3,17 @@
 
 # include "libft.h"
 # include "data_types.h"
-#include "commands_list.h"
+# include "commands_list.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
 //# include <stdlib.h>
 # include <limits.h> // It is allowed? use define from limits
+
+# define STDIN	0
+# define STDOUT	1
+# define STDER	2
 
 typedef struct s_minishell
 {
@@ -51,8 +55,17 @@ void	ft_exit(t_minishell *minishell, char **var);
 // end region
 
 // region redirect
-// ------only test!!!-------
-void	ft_redir(char **command, char *str);
+typedef struct s_stdstreams
+{
+	int	std_in;
+	int	std_out;
+}		t_stdstreams;
+
+void	redir_handler(t_minishell *minishaell, char **cmd);
+int		ft_redir_in2(t_minishell *minishell, const char *stop_value,
+			t_stdstreams *stdstreams);
+int		save_std_descriptors(t_stdstreams *stdstreams);
+int		revert_std_descriptors(t_stdstreams *stdstreams);
 // end region
 
 // region execve
