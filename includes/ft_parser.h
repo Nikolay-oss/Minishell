@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 18:24:34 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/06/22 21:41:45 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/06/29 19:02:36 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,16 @@
 # include "minishell.h"
 
 void	ft_parser(t_minishell *minishell, char *buf);
+void	add_to_f_quotes(t_minishell *minishell, t_bool flag);
+
+// region commands_handler
 void	destroy_command_buf(char **command);
+void	commands_handler(t_minishell *minishell);
+// end region
 
 // region utils
 t_uint	skip_spaces(char *str);
-void	add_command_to_list(t_minishell *minishell, char *buf, t_uint idx);
+void	add_command_to_allcommands(t_minishell *minishell, char *buf, t_uint idx);
 void	change_flag(t_bool *flag);
 char	*check_memory(char **str);
 void	init_range(t_uint *start, t_uint *end, t_uint s_val, t_uint e_val);

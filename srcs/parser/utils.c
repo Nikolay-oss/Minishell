@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 18:24:06 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/06/22 21:58:54 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/06/29 18:43:40 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_uint	skip_spaces(char *str)
 	return (i);
 }
 
-void	add_command_to_list(t_minishell *minishell, char *buf, t_uint idx)
+void	add_command_to_allcommands(t_minishell *minishell, char *buf, t_uint idx)
 {
 	char	*str_cmd;
 	char	chr_endcmd;
@@ -33,7 +33,7 @@ void	add_command_to_list(t_minishell *minishell, char *buf, t_uint idx)
 	if (!str_cmd)
 		return ; // error
 	*(buf + idx) = chr_endcmd;
-	ft_push_back(minishell->commands, str_cmd);
+	ft_push_back(minishell->all_commands, str_cmd);
 }
 
 void	change_flag(t_bool *flag)

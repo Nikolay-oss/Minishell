@@ -6,7 +6,7 @@
 #    By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/04 06:46:45 by dkenchur          #+#    #+#              #
-#    Updated: 2021/02/12 19:16:30 by dkenchur         ###   ########.fr        #
+#    Updated: 2021/06/29 19:00:57 by dkenchur         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ SRCS		= 	ft_memset.c \
 				ft_count_args.c\
 				ft_del_substr.c \
 				ft_insert_substr.c \
-				ft_lst_to_str.c
+				ft_lst_to_str.c 
 
 CFLAGS		= -Wall -Wextra -Werror
 

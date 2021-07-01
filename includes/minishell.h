@@ -3,21 +3,24 @@
 
 # include "libft.h"
 # include "data_types.h"
+#include "commands_list.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
-// #include <stdlib.h>
+//# include <stdlib.h>
 # include <limits.h> // It is allowed? use define from limits
 
 typedef struct s_minishell
 {
 	t_list			*env;
 	t_list			*hide_vars; // for variables in bash
-	t_list			*commands;
+	t_list			*all_commands;
+	t_list			*f_quotes;
+	t_commands		*commands;
 	char			*home_path;
 	long long int	exit_status;
-}				t_minishell;
+}					t_minishell;
 
 //region global structure
 typedef struct	s_signal
@@ -33,7 +36,6 @@ void	init_env(t_list **env, char **envp);
 
 // region commands
 void	select_command(t_minishell *minishell, char **command);
-char	**create_command_buf(t_minishell *minishell, t_node **node);
 // region end
 
 t_node	*getvar_node(t_list *vars, const char *var_name);
