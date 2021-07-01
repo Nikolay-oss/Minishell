@@ -95,7 +95,7 @@ void	commands_handler(t_minishell *minishell)
 		}
 	}
 	// ft_exec(minishell->env, minishell->commands->cmd);
-	redir_handler(minishell, minishell->commands->cmd);
+	redir_handler(minishell, minishell->commands);
 	/*
 		где-то тут должен быть обработчик пайпов
 	*/

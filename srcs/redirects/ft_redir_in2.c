@@ -23,12 +23,12 @@ static void	substitute_vars(t_minishell *minishell, char **line)
 }
 
 static void	read_values(t_minishell *minishell, t_list **strs,
-	const char *stop_value, t_stdstreams *stdstreams)
+	const char *stop_value, t_bool f_quotes)
 {
 	char			*line;
 	t_stdstreams	fd_cur;
 
-	minishell->exit_status = swap_fd(&fd_cur, stdstreams);
+	minishell->exit_status = swap_fd(&fd_cur, &minishell->stdstreams);
 	if (minishell->exit_status)
 		return ;
 	line = NULL;
@@ -43,10 +43,11 @@ static void	read_values(t_minishell *minishell, t_list **strs,
 		}
 		if (!ft_strcmp(line, stop_value))
 			break ;
-		substitute_vars(minishell, &line);
+		if (!f_quotes)
+			substitute_vars(minishell, &line);
 		ft_push_back(*strs, check_memory(&line));
 	}
-	minishell->exit_status = swap_fd(stdstreams, &fd_cur);
+	minishell->exit_status = swap_fd(&minishell->stdstreams, &fd_cur);
 }
 
 static void	data_output(t_list *strs, int fd)
@@ -65,13 +66,13 @@ static void	data_output(t_list *strs, int fd)
 }
 
 int	ft_redir_in2(t_minishell *minishell, const char *stop_value,
-	t_stdstreams *stdstreams)
+	t_bool f_quotes)
 {
 	t_list	*strs;
 	int		fd;
 
 	strs = ft_create_lst();
-	read_values(minishell, &strs, stop_value, stdstreams);
+	read_values(minishell, &strs, stop_value, f_quotes);
 	if (minishell->exit_status)
 	{
 		ft_lst_clear(strs, &free);

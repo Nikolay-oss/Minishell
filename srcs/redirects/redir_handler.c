@@ -1,5 +1,6 @@
 #include "ft_parser.h"
 #include <fcntl.h>
+#include <sys/stat.h>
 
 /*
 	Разобраться какие коды ошибок возвращает баш, если dup или open не срабатывает
@@ -10,6 +11,18 @@
 	sort << "arg" - не искать переменные
 	sort << arg - искать переменные
 */
+
+t_bool	file_exists(const char *filename)
+{
+	struct stat	buf;
+	int			ret;
+
+	ret = stat(filename, &buf);
+	if (ret < 0)
+		return (0);
+	else
+		return (1);
+}
 
 static int	ft_redir(const char *filename, int o_flags, int s_flags,
 	t_bool dir_type)
@@ -32,8 +45,8 @@ static int	ft_redir(const char *filename, int o_flags, int s_flags,
 	return (ret);
 }
 
-static void	select_redirect(t_minishell *minishell, t_bool *in2red, char **cmd,
-	t_stdstreams *stdstreams)
+static void	select_redirect(t_minishell *minishell, char **cmd,
+	t_bool f_quotes)
 {
 	if (!ft_strcmp(">", *cmd))
 	{
@@ -52,18 +65,14 @@ static void	select_redirect(t_minishell *minishell, t_bool *in2red, char **cmd,
 	}
 	else if (!ft_strcmp("<<", *cmd))
 	{
-		minishell->exit_status = ft_redir_in2(minishell, (const char *)(*(cmd + 1)),
-			stdstreams);
+		minishell->exit_status = ft_redir_in2(minishell,
+			(const char *)(*(cmd + 1)), f_quotes);
 		if (!minishell->exit_status)
-		{
 			minishell->exit_status = ft_redir(".redir_buf", O_RDONLY, 0, 0);
-			*in2red = 1;
-		}
 	}
 }
 
-static void	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos,
-	t_bool in2red)
+static void	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos)
 {
 	char	*tmp;
 
@@ -71,34 +80,32 @@ static void	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos,
 	*(cmd + redir_pos) = NULL;
 	select_command(minishell, cmd);
 	*(cmd + redir_pos) = tmp;
-	if (in2red)
-		unlink(".redir_buf");
+	if (file_exists(".redir_buf"))
+		minishell->exit_status = unlink(".redir_buf");
 }
 
-void	redir_handler(t_minishell *minishell, char **cmd)
+void	redir_handler(t_minishell *minishell, t_commands *node_cmd)
 {
 	t_uint			i;
 	int				redir_pos;
-	t_stdstreams	stdstrms;
-	t_bool			in2red;
 
 	i = 0;
 	redir_pos = -1;
-	in2red = 0;
-	minishell->exit_status = save_std_descriptors(&stdstrms);
-	while (*(cmd + i))
+	minishell->exit_status = save_std_descriptors(&minishell->stdstreams);
+	while (*(node_cmd->cmd + i))
 	{
-		if (isredir(**(cmd + i)))
+		if (isredir(**(node_cmd->cmd + i)))
 		{
 			if (redir_pos == -1)
 				redir_pos = i;
-			select_redirect(minishell, &in2red, cmd + i, &stdstrms);
+			select_redirect(minishell, node_cmd->cmd + i,
+				*(node_cmd->flags_quotes + i + 1));
 			if (minishell->exit_status)
 				break ;
 		}
 		i++;
 	}
 	if (!minishell->exit_status)
-		exec_cmd(minishell, cmd, redir_pos, in2red);
-	minishell->exit_status = revert_std_descriptors(&stdstrms);
+		exec_cmd(minishell, node_cmd->cmd, redir_pos);
+	minishell->exit_status = revert_std_descriptors(&minishell->stdstreams);
 }

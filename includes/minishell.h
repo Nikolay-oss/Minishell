@@ -15,6 +15,14 @@
 # define STDOUT	1
 # define STDER	2
 
+// region redirect
+typedef struct s_stdstreams
+{
+	int	std_in;
+	int	std_out;
+}		t_stdstreams;
+// end region
+
 typedef struct s_minishell
 {
 	t_list			*env;
@@ -22,6 +30,7 @@ typedef struct s_minishell
 	t_list			*all_commands;
 	t_list			*f_quotes;
 	t_commands		*commands;
+	t_stdstreams	stdstreams;
 	char			*home_path;
 	long long int	exit_status;
 }					t_minishell;
@@ -44,6 +53,7 @@ void	select_command(t_minishell *minishell, char **command);
 
 t_node	*getvar_node(t_list *vars, const char *var_name);
 char	*getvar_value(t_list *vars, const char *var_name);
+t_bool	file_exists(const char *filename);
 
 // region builtins
 void	ft_echo(char **command);
@@ -56,15 +66,9 @@ void	ft_exit(t_minishell *minishell, char **var);
 // end region
 
 // region redirect
-typedef struct s_stdstreams
-{
-	int	std_in;
-	int	std_out;
-}		t_stdstreams;
-
-void	redir_handler(t_minishell *minishaell, char **cmd);
+void	redir_handler(t_minishell *minishell, t_commands *node_cmd);
 int		ft_redir_in2(t_minishell *minishell, const char *stop_value,
-			t_stdstreams *stdstreams);
+	t_bool f_quotes);
 int		save_std_descriptors(t_stdstreams *stdstreams);
 int		revert_std_descriptors(t_stdstreams *stdstreams);
 // end region
