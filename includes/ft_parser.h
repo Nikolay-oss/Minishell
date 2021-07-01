@@ -15,6 +15,7 @@
 # include "minishell.h"
 
 void	ft_parser(t_minishell *minishell, char *buf);
+void	add_to_f_quotes(t_minishell *minishell, t_bool flag);
 
 // region commands_handler
 void	destroy_command_buf(char **command);

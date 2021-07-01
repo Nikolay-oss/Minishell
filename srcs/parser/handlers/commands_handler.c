@@ -41,26 +41,30 @@ static t_uint	get_command_size(t_node *node)
 	return (size);
 }
 
-static char	**create_command_buf(t_minishell *minishell, t_node **node)
+static char	**create_command_buf(t_minishell *minishell, t_node **cmd_node,
+	t_node **f_node, t_bool **flags)
 {
 	char	**cmd;
 	t_uint	cmd_size;
 	t_uint	i;
 
-	cmd_size = get_command_size(*node);
+	cmd_size = get_command_size(*cmd_node);
 	cmd = (char **)ft_calloc(cmd_size + 1, sizeof(char *));
-	if (!cmd)
+	*flags = (t_bool *)malloc(sizeof(t_bool) * cmd_size);
+	if (!cmd || !*flags)
 		return (NULL); // error
 	i = 0;
-	while (i < cmd_size && *node)
+	while (i < cmd_size)
 	{
-		*(cmd + i) = ft_strdup((*node)->content);
+		*(cmd + i) = ft_strdup((*cmd_node)->content);
+		*(*flags + i) = *(t_bool *)(*f_node)->content;
 		if (!*(cmd + i))
 		{
 			destroy_command_buf(cmd);
 			return (NULL); // error
 		}
-		*node = (*node)->next;
+		*cmd_node = (*cmd_node)->next;
+		*f_node = (*f_node)->next;
 		i++;
 	}
 	return (cmd);
@@ -68,21 +72,27 @@ static char	**create_command_buf(t_minishell *minishell, t_node **node)
 
 void	commands_handler(t_minishell *minishell)
 {
-	t_node	*node;
+	t_node	*cmd_node;
+	t_node	*flag_node;
 	char	**cmd;
+	t_bool	*flags;
 
-	node = minishell->all_commands->head;
-	while (node)
+	cmd_node = minishell->all_commands->head;
+	flag_node = minishell->f_quotes->head;
+	while (cmd_node && flag_node)
 	{
-		cmd = create_command_buf(minishell, &node);
+		cmd = create_command_buf(minishell, &cmd_node, &flag_node, &flags);
 		if (cmd)
 		{
-			add_to_command_list(&minishell->commands, cmd);
+			add_to_command_list(&minishell->commands, cmd, flags);
 			// select_command(minishell, cmd);
 			// destroy_command_buf(cmd);
 		}
-		if (node)
-			node = node->next;
+		if (cmd_node && flag_node)
+		{
+			cmd_node = cmd_node->next;
+			flag_node = flag_node->next;
+		}
 	}
 	/*
 		где-то тут должен быть обработчик пайпов

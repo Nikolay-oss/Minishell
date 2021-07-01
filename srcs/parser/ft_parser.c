@@ -12,7 +12,7 @@
 
 #include "ft_parser.h"
 
-// #define DEBUG
+#define DEBUG
 
 /*
 	Примерный алгоритм:
@@ -27,33 +27,55 @@
 	3. запись команды и ее аргументов в массив строк (массив строк должен заканчиваться NULL указателем)
 */
 
+void	add_to_f_quotes(t_minishell *minishell, t_bool flag)
+{
+	t_bool	*flag_copy;
+
+	flag_copy = (t_bool *)malloc(sizeof(t_bool));
+	if (!flag_copy)
+	{
+		minishell->exit_status = errno;
+		return ;
+	}
+	*flag_copy = flag;
+	ft_push_back(minishell->f_quotes, flag_copy);
+}
+
 void	ft_parser(t_minishell *minishell, char *buf)
 {
 	t_uint	i;
 
 	i = 0;
 	minishell->all_commands = ft_create_lst();
-	if (!minishell->all_commands)
+	minishell->f_quotes = ft_create_lst();
+	if (!minishell->all_commands || !minishell->f_quotes)
 	{
-		// error
+		minishell->exit_status = errno; // error
 		return ;
 	}
 	while (*(buf + i))
 		i += search_tokens(minishell, buf + i); // после все в списке
-	// if (i > 0)
-	// 	commands_handler(minishell);
+	if (i > 0)
+		commands_handler(minishell);
+	// printf("cmd_size -> %ld  flags_size -> %ld\n", minishell->all_commands->size,
+	// 	minishell->f_quotes->size);
 	#ifndef DEBUG
-		t_node	*cur = minishell->all_commands->head;
+		t_node	*cur_cmd = minishell->all_commands->head;
+		t_node	*f = minishell->f_quotes->head;
 		t_uint	j = 0;
 
-		while (j < minishell->all_commands->size && cur)
+		while (j < minishell->all_commands->size && cur_cmd && j < minishell->f_quotes->size)
 		{
-			if ((char *)cur->content)
-				printf("%s\n", (char *)cur->content);
+			if ((char *)cur_cmd->content)
+				printf("%s\t", (char *)cur_cmd->content);
+			if ((t_bool *)f->content)
+				printf("%d\n", *(t_bool *)f->content);
 			j++;
-			cur = cur->next;
+			cur_cmd = cur_cmd->next;
+			f = f->next;
 		}
 	#endif
 	destroy_command_list(&minishell->commands, &destroy_command_buf);
 	ft_lst_clear(minishell->all_commands, &free);
+	ft_lst_clear(minishell->f_quotes, &free);
 }
