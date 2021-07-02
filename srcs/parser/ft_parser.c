@@ -12,7 +12,7 @@
 
 #include "ft_parser.h"
 
-#define DEBUG
+// #define DEBUG
 
 /*
 	Примерный алгоритм:
@@ -27,11 +27,11 @@
 	3. запись команды и ее аргументов в массив строк (массив строк должен заканчиваться NULL указателем)
 */
 
-void	add_to_f_quotes(t_minishell *minishell, t_bool flag)
+void	add_to_f_quotes(t_minishell *minishell, int flag)
 {
-	t_bool	*flag_copy;
+	int	*flag_copy;
 
-	flag_copy = (t_bool *)malloc(sizeof(t_bool));
+	flag_copy = (int *)malloc(sizeof(int));
 	if (!flag_copy)
 	{
 		minishell->exit_status = errno;
@@ -68,8 +68,8 @@ void	ft_parser(t_minishell *minishell, char *buf)
 		{
 			if ((char *)cur_cmd->content)
 				printf("%s\t", (char *)cur_cmd->content);
-			if ((t_bool *)f->content)
-				printf("%d\n", *(t_bool *)f->content);
+			if ((int *)f->content)
+				printf("%d\n", *(int *)f->content);
 			j++;
 			cur_cmd = cur_cmd->next;
 			f = f->next;
