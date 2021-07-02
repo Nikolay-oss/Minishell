@@ -15,7 +15,7 @@
 # include "minishell.h"
 
 void	ft_parser(t_minishell *minishell, char *buf);
-void	add_to_f_quotes(t_minishell *minishell, t_bool flag);
+void	add_to_f_quotes(t_minishell *minishell, int flag);
 
 // region utils
 t_uint	skip_spaces(char *str);
@@ -38,6 +38,7 @@ void	arg_handler(t_minishell *minishell, char **arg, char *buf, t_uint len);
 char	*get_str_withvars(t_minishell *minishell, char *str);
 void	search_var_value(t_minishell *minishell, char **var, t_node *node);
 char	*tilda_handler(t_minishell *minishell, char *str);
+void	change_hide_var_flag(char *buf, int *flag);
 // end region
 
 // region check_tokens

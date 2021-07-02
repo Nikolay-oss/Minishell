@@ -32,7 +32,7 @@ static t_uint	search_arg(t_minishell *minishell, char *buf, char **arg)
 {
 	t_uint	len;
 	char	chr_old;
-	t_bool	isquotes;
+	int		isquotes;
 
 	len = 0;
 	isquotes = 0;
@@ -49,6 +49,7 @@ static t_uint	search_arg(t_minishell *minishell, char *buf, char **arg)
 	}
 	chr_old = *(buf + len);
 	*(buf + len) = 0;
+	change_hide_var_flag(buf, &isquotes);
 	add_to_f_quotes(minishell, isquotes);
 	arg_handler(minishell, arg, buf, len);
 	add_arg(minishell, arg, buf);
@@ -86,7 +87,7 @@ t_uint	search_tokens(t_minishell *minishell, char *buf)
 	}
 	else if (*(buf + i) == '|')
 	{
-		add_command_to_allcommands(minishell, buf + i, i + 1 - i);
+		add_command_to_allcommands(minishell, buf + i, 1);
 		add_to_f_quotes(minishell, 0);
 		i++;
 	}

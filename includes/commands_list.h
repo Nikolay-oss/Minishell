@@ -18,10 +18,10 @@ typedef struct s_commands
 {
 	struct s_commands	*next;
 	char				**cmd;
-	t_bool				*flags_quotes;
+	int					*flags_quotes;
 }						t_commands;
 
-void	add_to_command_list(t_commands **head, char **cmd, t_bool *flags);
+void	add_to_command_list(t_commands **head, char **cmd, int *flags);
 void	destroy_command_list(t_commands **head, void (*del)(char **));
 
 #endif
