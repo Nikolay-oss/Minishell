@@ -30,17 +30,17 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 
 CFLAGS		= #-Wall -Wextra -Werror
 
-# LIBS		= -lreadline -Llibft -lft # ubuntu
+LIBS		= -lreadline -Llibft -lft # ubuntu
 #LIBS		= -L/Users/brice/.brew/opt/readline/lib -lreadline -Llibft -lft
-LIBS		= -L/Users/dkenchur/.brew/opt/readline/lib -lreadline -Llibft -lft
+# LIBS		= -L/Users/dkenchur/.brew/opt/readline/lib -lreadline -Llibft -lft
 
 #OBJS		= $(SRCS:.c=.o)
 OBJS		= $(patsubst $(SRCS_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS)) 
 
 $(OBJ_DIR)%.o:	$(SRCS_DIR)%.c
 	#$(CC) $(CFLAGS) -I $(INCLUDES) -I/Users/brice/.brew/opt/readline/include -c $< -o $@
-	# $(CC) -g $(CFLAGS) -I $(INCLUDES) -c $< -o $@
-	$(CC) -g $(CFLAGS) -I $(INCLUDES) -I/Users/dkenchur/.brew/opt/readline/include -c $< -o $@
+	$(CC) -g $(CFLAGS) -I $(INCLUDES) -c $< -o $@
+	# $(CC) -g $(CFLAGS) -I $(INCLUDES) -I/Users/dkenchur/.brew/opt/readline/include -c $< -o $@
 
 $(NAME):	$(OBJ_DIR) $(OBJS)
 	make -C libft/

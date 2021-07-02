@@ -18,6 +18,7 @@ typedef struct s_minishell
 	t_list			*all_commands;
 	t_list			*f_quotes;
 	t_commands		*commands;
+	t_uint			pipes_count;
 	char			*home_path;
 	long long int	exit_status;
 }					t_minishell;
