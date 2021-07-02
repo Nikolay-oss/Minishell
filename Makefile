@@ -22,6 +22,7 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 			  $(BUILTINS_DIR)ft_export.c			$(BUILTINS_DIR)ft_pwd.c \
 			  $(SRCS_DIR)redir.c					$(BUILTINS_DIR)ft_unset.c\
 			  $(SRCS_DIR)ft_exec.c					$(BUILTINS_DIR)ft_exit.c\
+			  $(SRCS_DIR)ft_pipes.c										     \
 			  $(PARSER_DIR)utils.c					$(PARSER_DIR)search_tokens.c \
 			  $(PARSER_DIR)check_tokens.c			$(HNDRS_DIR)vars_handler.c \
 			  $(HNDRS_DIR)vars_handler_utils.c		$(HNDRS_DIR)args_handler.c \
@@ -30,9 +31,9 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 
 CFLAGS		= #-Wall -Wextra -Werror
 
-# LIBS		= -lreadline -Llibft -lft # ubuntu
+ LIBS		= -lreadline -Llibft -lft # ubuntu
 #LIBS		= -L/Users/brice/.brew/opt/readline/lib -lreadline -Llibft -lft
-LIBS		= -L/Users/dkenchur/.brew/opt/readline/lib -lreadline -Llibft -lft
+#LIBS		= -L/Users/dkenchur/.brew/opt/readline/lib -lreadline -Llibft -lft
 
 #OBJS		= $(SRCS:.c=.o)
 OBJS		= $(patsubst $(SRCS_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS)) 

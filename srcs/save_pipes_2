@@ -1,0 +1,84 @@
+//#include <wait.h>
+#include <time.h>
+#include <sys/wait.h>
+#include "minishell.h"
+
+static void	ft_child_process(t_commands *node, t_minishell *minishell, int *fd, int *fd_old)
+{
+	if (dup2(*fd_old, STDIN_FILENO) == -1)
+	{
+		printf("bash: dup2: %s", strerror(errno));
+		exit(errno);
+	}
+	if ((node->next) != NULL)
+	{
+		if (dup2(fd[1], STDOUT_FILENO) == -1) // подмена дескриптора записи на стдаут
+		{
+			printf("bash: dup2: %s", strerror(errno));
+			exit(errno);
+		}
+	}
+	close(fd[0]);
+	select_command(minishell, node->cmd);
+	exit(0);
+}
+
+void	ft_pipes(t_minishell *minishell)
+{
+	int			fd[2]; //0 - read; 1 - write
+	int			fd_old;
+	int			status;
+	pid_t		pid;
+	t_commands	*node;
+
+	fd_old = 0;
+	node = minishell->commands;
+	while (node)
+	{
+		if (pipe(fd) == -1)
+		{
+			minishell->exit_status = errno;
+			printf("bash: pipe: %s", strerror(errno));
+			break ;
+		}
+		pid = fork();
+		if (pid < 0)
+		{
+			printf("bash: fork: %s", strerror(errno));
+			minishell->exit_status = errno;
+			break ;
+		}
+		if (pid == 0)
+		{
+			//// child process
+			ft_child_process(node, minishell, fd, &fd_old);
+//			if (dup2(fd_old, STDIN_FILENO) == -1)
+//			{
+//				printf("bash: dup2: %s", strerror(errno));
+//				exit(errno);
+//			}
+//			if ((node->next) != NULL)
+//			{
+//				if (dup2(fd[1], STDOUT_FILENO) == -1) // подмена дескриптора записи на стдаут
+//				{
+//					printf("bash: dup2: %s", strerror(errno));
+//					exit(errno);
+//				}
+//			}
+//			close(fd[0]);
+//			select_command(minishell, node->cmd);
+//			exit(0);
+		}
+		else
+		{
+			//// parent process
+			waitpid(pid, &status, 0);
+			close(fd[1]);
+			fd_old = fd[0];
+			node = node->next;
+			minishell->exit_status = status;
+		}
+	}
+	close(fd[0]);
+	close(fd[1]);
+}

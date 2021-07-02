@@ -19,6 +19,7 @@ typedef struct s_minishell
 	t_commands		*commands;
 	char			*home_path;
 	long long int	exit_status;
+	pid_t 			pid;
 }					t_minishell;
 
 //region global structure
@@ -57,6 +58,10 @@ void	ft_redir(char **command, char *str);
 
 // region execve
 void	ft_exec(t_list *env, char **arv);
+// end region
+
+// region pipes
+void	ft_pipes(t_minishell *minishell);
 // end region
 
 // region history

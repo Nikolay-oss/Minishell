@@ -87,4 +87,5 @@ void	commands_handler(t_minishell *minishell)
 	/*
 		где-то тут должен быть обработчик пайпов
 	*/
+	ft_pipes(minishell);
 }
