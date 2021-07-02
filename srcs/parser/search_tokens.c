@@ -90,6 +90,7 @@ t_uint	search_tokens(t_minishell *minishell, char *buf)
 		add_command_to_allcommands(minishell, buf + i, 1);
 		add_to_f_quotes(minishell, 0);
 		i++;
+		minishell->pipes_count++;
 	}
 	else
 		i += search_arg(minishell, buf + i, &arg);
