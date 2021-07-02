@@ -48,6 +48,7 @@ int	main(int ac, char **av, char **envp)
 	if (!minishell)
 		return (1);
 	init_env(&minishell->env, envp); // в инит лучше передавать указаьтель на минишелл
+	minishell->pipes_count = 0;
 	minishell->exit_status = (long long int)NULL; // 1
 	minishell->home_path = (char *)NULL; // 2
 	signals.sig_int = 0; // 3

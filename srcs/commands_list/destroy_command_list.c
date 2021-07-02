@@ -26,6 +26,7 @@ void	destroy_command_list(t_commands **head, void (*del)(char **))
 		next_cmd = cur_cmd->next;
 		if (del)
 			del(cur_cmd->cmd);
+		free(cur_cmd->flags_quotes);
 		free(cur_cmd);
 		cur_cmd = next_cmd;
 	}

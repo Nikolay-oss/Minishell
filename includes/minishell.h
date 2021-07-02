@@ -16,7 +16,9 @@ typedef struct s_minishell
 	t_list			*env;
 	t_list			*hide_vars; // for variables in bash
 	t_list			*all_commands;
+	t_list			*f_quotes;
 	t_commands		*commands;
+	t_uint			pipes_count;
 	char			*home_path;
 	long long int	exit_status;
 	pid_t 			pid;
