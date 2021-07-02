@@ -49,16 +49,10 @@ static t_uint	search_arg(t_minishell *minishell, char *buf, char **arg)
 	}
 	chr_old = *(buf + len);
 	*(buf + len) = 0;
-	// var_parser
-	// if !*arg -> call arg_handler
 	add_to_f_quotes(minishell, isquotes);
 	arg_handler(minishell, arg, buf, len);
 	add_arg(minishell, arg, buf);
 	*(buf + len) = chr_old;
-	// if (*arg && **arg)
-	// 	ft_push_back(minishell->all_commands, check_memory(arg));
-	// else if (*arg)
-	// 	free(*arg);
 	return (len);
 }
 
