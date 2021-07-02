@@ -37,8 +37,6 @@ void	init_env(t_list **env, char **envp);
 
 // region commands
 void	select_command(t_minishell *minishell, char **command);
-void	destroy_command_buf(char **command);
-void	commands_handler(t_minishell *minishell);
 // region end
 
 t_node	*getvar_node(t_list *vars, const char *var_name);

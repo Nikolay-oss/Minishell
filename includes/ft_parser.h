@@ -17,6 +17,11 @@
 void	ft_parser(t_minishell *minishell, char *buf);
 void	add_to_f_quotes(t_minishell *minishell, int flag);
 
+// region commands_handler
+void	destroy_command_buf(char **command);
+void	commands_handler(t_minishell *minishell);
+// end region
+
 // region utils
 t_uint	skip_spaces(char *str);
 void	add_command_to_allcommands(t_minishell *minishell, char *buf, t_uint idx);
