@@ -61,6 +61,7 @@ void	ft_pipes(t_minishell *minishell)
 			waitpid(minishell->pid, &status, 0);
 			close(fd[1]);
 			fd_old = fd[0];
+			WIFEXITED(status);
 			node = node->next;
 			minishell->exit_status = status;
 		}
