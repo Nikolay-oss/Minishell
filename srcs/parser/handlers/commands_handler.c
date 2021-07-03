@@ -97,6 +97,7 @@ void	commands_handler(t_minishell *minishell)
 			flag_node = flag_node->next;
 		}
 	}
+	select_command(minishell, minishell->commands->cmd);
 	/*
 		где-то тут должен быть обработчик пайпов
 	*/

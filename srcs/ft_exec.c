@@ -1,46 +1,15 @@
-#include "ft_parser.h"
+#include "minishell.h"
+#include <sys/wait.h>
 
-
-void	ft_exec(t_list *env, char **arv)
+int	ft_exec(t_list *env, char **cmd)
 {
-	int		result;
-	int		status;
-	int		i;
-	char	**path_arr;
-	char	*str_concat;
-	char	*str_free;
-	t_node	*node;
-	pid_t	pid;
+	int	exit_code;
 
-	result = -1;
-	pid = fork();
-	if (pid == 0)
+	if (fork() == 0)
 	{
-		node = getvar_node(env, "PATH");
-		i = ft_get_index_symbol(node->content, '=');
-		path_arr = ft_split(&(node->content)[++i], ':');
-		i = 0;
-		while (path_arr[i] && result < 0)
-		{
-			str_concat = ft_strjoin(path_arr[i++], "/");
-			str_free = str_concat;
-			str_concat = ft_strjoin(str_concat, arv[0]);
-			result = execve(str_concat, arv, NULL);
-//			printf("|%d|\n", result);
-			free(str_concat);
-			free(str_free);
-			printf("result $?:%d\n", result);
-		}
-		if (result == -1)
-			printf("%s: command not found\n", *arv);
-			printf("result $?234234234:%d\n", 123);
-//		printf("result $?:%d\n", result);
-		destroy_command_buf(path_arr);
-		exit(0);
+		exit_code = execve("/bin/ls", cmd, NULL);
 	}
 	else
-	{
-		wait(&status);
-	}
-//	wait(&status);
+		wait(&exit_code);
+	return (WEXITSTATUS(exit_code));
 }

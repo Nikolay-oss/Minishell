@@ -37,6 +37,7 @@ void	select_command(t_minishell *minishell, char **command)
 	{
 //		char* argv[] = { "cat", "Makefile",   NULL };
 		ft_exec(minishell->env, command);
+		// printf("%d\n", exit_code);
 //		printf("%s: command not found\n", *command);
 	}
 }

@@ -57,7 +57,7 @@ void	ft_redir(char **command, char *str);
 // end region
 
 // region execve
-void	ft_exec(t_list *env, char **arv);
+int		ft_exec(t_list *env, char **cmd);
 // end region
 
 // region history
