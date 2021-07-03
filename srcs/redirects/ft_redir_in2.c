@@ -37,8 +37,8 @@ static void	read_values(t_minishell *minishell, t_list **strs,
 		line = readline("> ");
 		if (!line)
 		{
-			printf("minishell: warning: here-document at line 148 delimited by"
-				" end-of-file (wanted '%s')\n", stop_value);
+			printf("minishell: warning: here-document at line %ld delimited by"
+				" end-of-file (wanted '%s')\n", (*strs)->size + 1, stop_value);
 			break ;
 		}
 		if (!ft_strcmp(line, stop_value))
@@ -78,7 +78,8 @@ int	ft_redir_in2(t_minishell *minishell, const char *stop_value,
 		ft_lst_clear(strs, &free);
 		return (errno);
 	}
-	fd = open(".redir_buf", O_CREAT | O_WRONLY, __S_IREAD | __S_IWRITE);
+	fd = open(minishell->here_document, O_CREAT | O_WRONLY,
+		__S_IREAD | __S_IWRITE);
 	if (fd < 0)
 	{
 		ft_lst_clear(strs, &free);

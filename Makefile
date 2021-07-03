@@ -14,6 +14,8 @@ HNDRS_DIR	= $(PARSER_DIR)handlers/
 
 REDIR_DIR	= $(SRCS_DIR)redirects/
 
+ERROR_DIR	= $(SRCS_DIR)errors_handler/
+
 OBJ_DIR		= objs/
 
 INCLUDES	= includes/
@@ -29,13 +31,14 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 			  $(HNDRS_DIR)vars_handler_utils.c		$(HNDRS_DIR)args_handler.c \
 			  $(HNDRS_DIR)commands_handler.c		$(CMDLST_DIR)add_to_command_list.c \
 			  $(CMDLST_DIR)destroy_command_list.c	$(REDIR_DIR)stdstreams_handler.c \
-			  $(REDIR_DIR)ft_redir_in2.c			
+			  $(REDIR_DIR)ft_redir_in2.c			$(SRCS_DIR)file_exists.c \
+			  $(ERROR_DIR)errors_handler.c
 
 CFLAGS		= #-Wall -Wextra -Werror
 
-# LIBS		= -lreadline -Llibft -lft # ubuntu
+LIBS		= -lreadline -Llibft -lft # ubuntu
 #LIBS		= -L/Users/brice/.brew/opt/readline/lib -lreadline -Llibft -lft
-LIBS		= -L/Users/dkenchur/.brew/opt/readline/lib -lreadline -Llibft -lft
+# LIBS		= -L/Users/dkenchur/.brew/opt/readline/lib -lreadline -Llibft -lft
 
 #OBJS		= $(SRCS:.c=.o)
 OBJS		= $(patsubst $(SRCS_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS)) 
@@ -58,6 +61,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)commands_list
 	@mkdir -p $(OBJ_DIR)parser/handlers
 	@mkdir -p $(OBJ_DIR)redirects
+	@mkdir -p $(OBJ_DIR)errors_handler
 
 clean:
 	rm -rf $(OBJS)

@@ -53,6 +53,7 @@ int	main(int ac, char **av, char **envp)
 	signals.sig_int = 0; // 3
 	signals.sig_quit = 0; // 4
 	minishell->home_path = getvar_value(minishell->env, "HOME");
+	minishell->here_document = ft_strdup(".here-document");
 	while (1)
 	{
 		signal(SIGINT, &ft_handler);

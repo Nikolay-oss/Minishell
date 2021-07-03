@@ -32,6 +32,7 @@ typedef struct s_minishell
 	t_commands		*commands;
 	t_stdstreams	stdstreams;
 	char			*home_path;
+	char			*here_document;
 	long long int	exit_status;
 }					t_minishell;
 
@@ -42,6 +43,14 @@ typedef struct	s_signal
 	t_bool	sig_quit;
 }				t_signal;
 //end region
+
+// region file_exists
+t_bool	file_exists(const char *filename);
+// end region
+
+// region errors_handler
+void	print_error(int errorcode);
+// end region
 
 // region init
 void	init_env(t_list **env, char **envp);
