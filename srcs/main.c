@@ -70,6 +70,7 @@ int	main(int ac, char **av, char **envp)
 	// free(buf);
 	ft_lst_clear(minishell->env, &free);
 	free(minishell->home_path);
+	free(minishell->here_document);
 	free(minishell);
 	write(1, "exit\n", 5);
 	return (0);

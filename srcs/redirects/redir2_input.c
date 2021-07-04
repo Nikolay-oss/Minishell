@@ -68,25 +68,35 @@ static void	data_output(t_list *strs, int fd)
 int	ft_redir_in2(t_minishell *minishell, const char *stop_value,
 	t_bool f_quotes)
 {
-	t_list	*strs;
-	int		fd;
+	int				fd;
+	t_uint			strs_count;
+	t_stdstreams	fd_cur;
+	char			*line;
 
-	strs = ft_create_lst();
-	read_values(minishell, &strs, stop_value, f_quotes);
-	if (minishell->exit_status)
-	{
-		ft_lst_clear(strs, &free);
-		return (errno);
-	}
 	fd = open(minishell->here_document, O_CREAT | O_WRONLY,
 		__S_IREAD | __S_IWRITE);
 	if (fd < 0)
-	{
-		ft_lst_clear(strs, &free);
 		return (errno);
+	strs_count = 0;
+	line = "";
+	swap_fd(&fd_cur, &minishell->stdstreams);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			printf("minishell: warning: here-document at line %u delimited by"
+				" end-of-file (wanted '%s')\n", strs_count + 1, stop_value);
+			break ;
+		}
+		if (!ft_strcmp(line, stop_value))
+			break ;
+		if (!f_quotes)
+			substitute_vars(minishell, &line);
+		ft_putendl_fd(line, fd);
+		strs_count++;
 	}
-	data_output(strs, fd);
+	swap_fd(&minishell->stdstreams, &fd_cur);
 	close(fd);
-	ft_lst_clear(strs, &free);
 	return (0);
 }

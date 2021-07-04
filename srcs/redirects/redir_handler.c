@@ -35,30 +35,18 @@ static int	ft_redir(const char *filename, int o_flags, int s_flags,
 static void	select_redirect(t_minishell *minishell, char **cmd,
 	t_bool f_quotes)
 {
-	if (!ft_strcmp(">", *cmd))
+}
+
+static void	redir_dual_input(t_minishell *minishell, t_commands *node_cmd)
+{
+	t_uint	i;
+
+	i = 0;
+	while (*(node_cmd->cmd + i))
 	{
-		minishell->exit_status = ft_redir((const char *)(*(cmd + 1)),
-			O_CREAT | O_WRONLY | O_TRUNC, __S_IWRITE | __S_IREAD, 1);
-	}
-	else if (!ft_strcmp("<", *cmd))
-	{
-		minishell->exit_status = ft_redir((const char *)(*(cmd + 1)),
-			O_RDONLY, 0, 0);
-	}
-	else if (!ft_strcmp(">>", *cmd))
-	{
-		minishell->exit_status = ft_redir((const char *)(*(cmd + 1)),
-			O_CREAT | O_WRONLY | O_APPEND, __S_IWRITE | __S_IREAD, 1);
-	}
-	else if (!ft_strcmp("<<", *cmd))
-	{
-		minishell->exit_status = ft_redir_in2(minishell,
-			(const char *)(*(cmd + 1)), f_quotes);
-		if (!minishell->exit_status)
-			minishell->exit_status = ft_redir(minishell->here_document,
-				O_RDONLY, 0, 0);
-		if (file_exists(minishell->here_document))
-			minishell->exit_status = unlink(minishell->here_document);
+		if (!ft_strcmp("<<", *(node_cmd->cmd + i)))
+			ft_redir_in2(minishell, *(node_cmd->cmd + i + 1), node_cmd->flags_quotes + i);
+		i++;
 	}
 }
 
@@ -80,22 +68,4 @@ void	redir_handler(t_minishell *minishell, t_commands *node_cmd)
 	i = 0;
 	redir_pos = -1;
 	minishell->exit_status = save_std_descriptors(&minishell->stdstreams);
-	while (*(node_cmd->cmd + i))
-	{
-		if (isredir(**(node_cmd->cmd + i)))
-		{
-			if (redir_pos == -1)
-				redir_pos = i;
-			select_redirect(minishell, node_cmd->cmd + i,
-				*(node_cmd->flags_quotes + i + 1));
-			if (minishell->exit_status)
-			{
-				print_error(minishell->exit_status);
-				return ;
-			}
-		}
-		i++;
-	}
-	exec_cmd(minishell, node_cmd->cmd, redir_pos);
-	minishell->exit_status = revert_std_descriptors(&minishell->stdstreams);
 }
