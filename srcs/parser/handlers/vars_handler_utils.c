@@ -32,3 +32,19 @@ char	*tilda_handler(t_minishell *minishell, char *str)
 	}
 	return (home_path);
 }
+
+void	change_hide_var_flag(char *buf, int *flag)
+{
+	t_uint	i;
+
+	i = 0;
+	while (ft_isalpha(*(buf + i)))
+	{
+		if (*(buf + i) == '=')
+		{
+			*flag = 2;
+			break ;
+		}
+		i++;
+	}
+}

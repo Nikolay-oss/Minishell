@@ -31,6 +31,7 @@ typedef struct s_minishell
 	t_list			*f_quotes;
 	t_commands		*commands;
 	t_stdstreams	stdstreams;
+	t_uint			pipes_count;
 	char			*home_path;
 	char			*here_document;
 	long long int	exit_status;
@@ -76,8 +77,8 @@ void	ft_exit(t_minishell *minishell, char **var);
 
 // region redirect
 void	redir_handler(t_minishell *minishell, t_commands *node_cmd);
-int		ft_redir_in2(t_minishell *minishell, const char *stop_value,
-	t_bool f_quotes);
+int		redir2_input(t_minishell *minishell, const char *stop_value,
+	int f_quotes);
 int		save_std_descriptors(t_stdstreams *stdstreams);
 int		revert_std_descriptors(t_stdstreams *stdstreams);
 // end region

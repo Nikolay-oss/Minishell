@@ -22,71 +22,22 @@ static void	substitute_vars(t_minishell *minishell, char **line)
 	free(tmp);
 }
 
-static void	read_values(t_minishell *minishell, t_list **strs,
-	const char *stop_value, t_bool f_quotes)
+static int	save_to_heredoc(t_minishell *minishell, const char *stop_value,
+	int f_quotes, int fd)
 {
-	char			*line;
-	t_stdstreams	fd_cur;
+	t_stdstreams			fd_cur;
+	char					*line;
+	static t_uint			strs_count = 0;
 
-	minishell->exit_status = swap_fd(&fd_cur, &minishell->stdstreams);
-	if (minishell->exit_status)
-		return ;
-	line = NULL;
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-		{
-			printf("minishell: warning: here-document at line %ld delimited by"
-				" end-of-file (wanted '%s')\n", (*strs)->size + 1, stop_value);
-			break ;
-		}
-		if (!ft_strcmp(line, stop_value))
-			break ;
-		if (!f_quotes)
-			substitute_vars(minishell, &line);
-		ft_push_back(*strs, check_memory(&line));
-	}
-	minishell->exit_status = swap_fd(&minishell->stdstreams, &fd_cur);
-}
-
-static void	data_output(t_list *strs, int fd)
-{
-	char	*str;
-	t_node	*str_node;
-
-	str_node = strs->head;
-	while (str_node)
-	{
-		str = (char *)str_node->content;
-		write(fd, str, ft_strlen(str));
-		write(fd, "\n", 1);
-		str_node = str_node->next;
-	}
-}
-
-int	ft_redir_in2(t_minishell *minishell, const char *stop_value,
-	t_bool f_quotes)
-{
-	int				fd;
-	t_uint			strs_count;
-	t_stdstreams	fd_cur;
-	char			*line;
-
-	fd = open(minishell->here_document, O_CREAT | O_WRONLY,
-		__S_IREAD | __S_IWRITE);
-	if (fd < 0)
+	if (swap_fd(&fd_cur, &minishell->stdstreams))
 		return (errno);
-	strs_count = 0;
-	line = "";
-	swap_fd(&fd_cur, &minishell->stdstreams);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 		{
 			printf("minishell: warning: here-document at line %u delimited by"
-				" end-of-file (wanted '%s')\n", strs_count + 1, stop_value);
+				" end-of-file (wanted '%s')\n", strs_count, stop_value);
 			break ;
 		}
 		if (!ft_strcmp(line, stop_value))
@@ -96,7 +47,21 @@ int	ft_redir_in2(t_minishell *minishell, const char *stop_value,
 		ft_putendl_fd(line, fd);
 		strs_count++;
 	}
-	swap_fd(&minishell->stdstreams, &fd_cur);
+	return (swap_fd(&minishell->stdstreams, &fd_cur));
+}
+
+int	redir2_input(t_minishell *minishell, const char *stop_value,
+	int f_quotes)
+{
+	int	fd;
+	int	ret;
+
+	ret = 0;
+	fd = open(minishell->here_document, O_CREAT | O_WRONLY | O_TRUNC,
+		__S_IREAD | __S_IWRITE);
+	if (fd < 0)
+		return (1);
+	ret = save_to_heredoc(minishell, stop_value, f_quotes, fd);
 	close(fd);
-	return (0);
+	return (ret);
 }

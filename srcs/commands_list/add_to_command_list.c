@@ -13,7 +13,7 @@
 #include "commands_list.h"
 #include <stdlib.h>
 
-void	add_to_command_list(t_commands **head, char **cmd, t_bool *flags)
+void	add_to_command_list(t_commands **head, char **cmd, int *flags)
 {
 	t_commands	*new_cmd;
 	t_commands	*cur_cmd;
