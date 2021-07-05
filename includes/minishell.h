@@ -57,7 +57,7 @@ void	ft_redir(char **command, char *str);
 // end region
 
 // region execve
-int		ft_exec(t_list *env, char **cmd);
+int	ft_exec(t_list *env, char **cmd, t_bool create_proc);
 // end region
 
 // region history
