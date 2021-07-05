@@ -50,7 +50,8 @@ t_bool	file_exists(const char *filename);
 // end region
 
 // region errors_handler
-void	print_error(int errorcode);
+void	print_error(char *str, int errorcode);
+void	command_not_found(char *str, int errorcode);
 // end region
 
 // region init
@@ -59,6 +60,7 @@ void	init_env(t_list **env, char **envp);
 
 // region commands
 void	select_command(t_minishell *minishell, char **command);
+void	destroy_command_buf(char **command);
 // region end
 
 t_node	*getvar_node(t_list *vars, const char *var_name);
@@ -78,13 +80,16 @@ void	ft_exit(t_minishell *minishell, char **var);
 // region redirect
 void	redir_handler(t_minishell *minishell, t_commands *node_cmd);
 int		redir2_input(t_minishell *minishell, const char *stop_value,
-	int f_quotes);
+					int f_quotes);
 int		save_std_descriptors(t_stdstreams *stdstreams);
 int		revert_std_descriptors(t_stdstreams *stdstreams);
 // end region
 
-// region execve
-int	ft_exec(t_list *env, char **cmd, t_bool create_proc);
+// region execute
+void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc);
+void	save_path_to_bin(t_minishell *minishell, char *cmd_bin,
+					char **cmd_bin_out);
+void	make_path_to_bin(char *path, char *cmd_bin, char **cmd_bin_out);
 // end region
 
 // region history

@@ -98,7 +98,7 @@ void	commands_handler(t_minishell *minishell)
 		}
 	}
 	select_command(minishell, minishell->commands->cmd);
-	redir_handler(minishell, minishell->commands);
+	// redir_handler(minishell, minishell->commands);
 	/*
 		где-то тут должен быть обработчик пайпов
 	*/

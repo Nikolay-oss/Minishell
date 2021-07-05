@@ -24,8 +24,8 @@ static void	add_arg(t_minishell *minishell, char **arg, char *buf)
 		*arg = ft_strdup("");
 	if (*arg)
 		ft_push_back(minishell->all_commands, *arg);
-	else
-		minishell->exit_status = errno;
+	// else
+	// 	minishell->exit_status = errno;
 }
 
 static t_uint	search_arg(t_minishell *minishell, char *buf, char **arg)
