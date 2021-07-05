@@ -76,10 +76,17 @@ static void	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos)
 {
 	char	*tmp;
 
-	tmp = *(cmd + redir_pos);
-	*(cmd + redir_pos) = NULL;
-	select_command(minishell, cmd);
-	*(cmd + redir_pos) = tmp;
+	if (isredir(**cmd))
+		return ;
+	if (redir_pos > 0)
+	{
+		tmp = *(cmd + redir_pos);
+		*(cmd + redir_pos) = NULL;
+		select_command(minishell, cmd);
+		*(cmd + redir_pos) = tmp;
+	}
+	else
+		select_command(minishell, cmd);
 	if (file_exists(minishell->here_document))
 		unlink(minishell->here_document);
 }
