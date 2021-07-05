@@ -86,8 +86,8 @@ static void	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos)
 
 void	redir_handler(t_minishell *minishell, t_commands *node_cmd)
 {
-	t_uint			i;
-	int				redir_pos;
+	t_uint	i;
+	int		redir_pos;
 
 	i = 0;
 	redir_pos = -1;
