@@ -42,12 +42,12 @@ static void	select_redirect(t_minishell *minishell, char *redir,
 	else if (!ft_strcmp(">", redir))
 	{
 		minishell->exit_status = ft_redir(filename, O_CREAT | O_WRONLY
-			| O_TRUNC, __S_IWRITE | __S_IREAD, 1);
+			| O_TRUNC, 0666, 1);
 	}
 	else if (!ft_strcmp(">>", redir))
 	{
 		minishell->exit_status = ft_redir(filename, O_CREAT | O_WRONLY
-			| O_APPEND, __S_IWRITE | __S_IREAD, 1);
+			| O_APPEND, 0666, 1);
 	}
 }
 
