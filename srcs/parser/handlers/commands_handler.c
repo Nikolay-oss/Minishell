@@ -45,7 +45,7 @@ static t_uint	get_command_size(t_node *cmd_node, t_node *f_node)
 }
 
 static char	**create_command_buf(t_minishell *minishell, t_node **cmd_node,
-	t_node **f_node, t_bool **flags)
+	t_node **f_node, int **flags)
 {
 	char	**cmd;
 	t_uint	cmd_size;
@@ -53,14 +53,14 @@ static char	**create_command_buf(t_minishell *minishell, t_node **cmd_node,
 
 	cmd_size = get_command_size(*cmd_node, *f_node);
 	cmd = (char **)ft_calloc(cmd_size + 1, sizeof(char *));
-	*flags = (t_bool *)malloc(sizeof(t_bool) * cmd_size);
+	*flags = (int *)malloc(sizeof(int) * cmd_size);
 	if (!cmd || !*flags)
 		return (NULL); // error
 	i = 0;
 	while (i < cmd_size)
 	{
 		*(cmd + i) = ft_strdup((*cmd_node)->content);
-		*(*flags + i) = *(t_bool *)(*f_node)->content;
+		*(*flags + i) = *(int *)(*f_node)->content;
 		if (!*(cmd + i))
 		{
 			destroy_command_buf(cmd);
@@ -78,7 +78,7 @@ void	commands_handler(t_minishell *minishell)
 	t_node	*cmd_node;
 	t_node	*flag_node;
 	char	**cmd;
-	t_bool	*flags;
+	int		*flags;
 
 	cmd_node = minishell->all_commands->head;
 	flag_node = minishell->f_quotes->head;
@@ -98,6 +98,7 @@ void	commands_handler(t_minishell *minishell)
 		}
 	}
 	select_command(minishell, minishell->commands->cmd);
+	redir_handler(minishell, minishell->commands);
 	/*
 		где-то тут должен быть обработчик пайпов
 	*/
