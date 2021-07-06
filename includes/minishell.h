@@ -52,6 +52,7 @@ t_bool	file_exists(const char *filename);
 // region errors_handler
 void	print_error(char *str, int errorcode);
 void	command_not_found(char *str, int errorcode);
+void	syntax_error(char *token);
 // end region
 
 // region init

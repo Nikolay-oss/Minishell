@@ -56,7 +56,10 @@ void	ft_parser(t_minishell *minishell, char *buf)
 	while (*(buf + i))
 		i += search_tokens(minishell, buf + i); // после все в списке
 	if (i > 0)
-		commands_handler(minishell);
+	{
+		if (!analyzer(minishell))
+			commands_handler(minishell);
+	}
 	// printf("cmd_size -> %ld  flags_size -> %ld\n", minishell->all_commands->size,
 	// 	minishell->f_quotes->size);
 	#ifndef DEBUG

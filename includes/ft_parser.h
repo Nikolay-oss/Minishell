@@ -21,6 +21,10 @@ void	add_to_f_quotes(t_minishell *minishell, int flag);
 void	commands_handler(t_minishell *minishell);
 // end region
 
+// region analyzer
+t_bool	analyzer(t_minishell *minishell);
+// end region
+
 // region utils
 t_uint	skip_spaces(char *str);
 void	add_command_to_allcommands(t_minishell *minishell, char *buf, t_uint idx);

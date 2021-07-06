@@ -18,6 +18,8 @@ REDIR_DIR	= $(SRCS_DIR)redirects/
 
 ERROR_DIR	= $(SRCS_DIR)errors_handler/
 
+ANALYZ_DIR	= $(PARSER_DIR)analyzer/
+
 OBJ_DIR		= objs/
 
 INCLUDES	= includes/
@@ -34,7 +36,8 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 			  $(HNDRS_DIR)commands_handler.c		$(CMDLST_DIR)add_to_command_list.c \
 			  $(CMDLST_DIR)destroy_command_list.c	$(REDIR_DIR)stdstreams_handler.c \
 			  $(REDIR_DIR)redir2_input.c			$(SRCS_DIR)file_exists.c \
-			  $(ERROR_DIR)errors_handler.c			$(EXEC_DIR)save_path_to_bin.c
+			  $(ERROR_DIR)errors_handler.c			$(EXEC_DIR)save_path_to_bin.c \
+			  $(ANALYZ_DIR)syn_analyzer.c
 
 CFLAGS		= #-Wall -Wextra -Werror
 
@@ -65,6 +68,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)redirects
 	@mkdir -p $(OBJ_DIR)errors_handler
 	@mkdir -p $(OBJ_DIR)execute/
+	@mkdir -p $(OBJ_DIR)parser/analyzer/
 
 clean:
 	rm -rf $(OBJS)
