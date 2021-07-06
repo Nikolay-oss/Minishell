@@ -53,6 +53,7 @@ t_bool	file_exists(const char *filename);
 void	print_error(char *str, int errorcode);
 void	command_not_found(char *str, int errorcode);
 void	syntax_error(char *token);
+void	isdir_error(char *str);
 // end region
 
 // region init
@@ -66,7 +67,6 @@ void	destroy_command_buf(char **command);
 
 t_node	*getvar_node(t_list *vars, const char *var_name);
 char	*getvar_value(t_list *vars, const char *var_name);
-t_bool	file_exists(const char *filename);
 
 // region builtins
 void	ft_echo(char **command);

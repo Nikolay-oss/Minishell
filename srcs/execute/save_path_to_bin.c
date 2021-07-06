@@ -1,13 +1,23 @@
 #include "minishell.h"
 #include <dirent.h>
+#include <sys/stat.h>
 
 static void	check_file(t_minishell *minishell, char *cmd_bin,
 	char **cmd_bin_out)
 {
-	if (!file_exists((const char *)cmd_bin))
+	struct stat	buf;
+	int			isexists;
+
+	isexists = stat((const char *)cmd_bin, &buf);
+	if (isexists < 0)
 	{
 		minishell->exit_status = 127;
 		print_error(cmd_bin, errno);
+	}
+	else if (S_ISDIR(buf.st_mode))
+	{
+		minishell->exit_status = 126;
+		isdir_error(cmd_bin);
 	}
 	else
 	{
