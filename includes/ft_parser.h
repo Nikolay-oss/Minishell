@@ -46,7 +46,7 @@ void	arg_handler(t_minishell *minishell, char **arg, char *buf, t_uint len);
 char	*get_str_withvars(t_minishell *minishell, char *str);
 void	search_var_value(t_minishell *minishell, char **var, t_node *node);
 char	*tilda_handler(t_minishell *minishell, char *str);
-void	change_hide_var_flag(char *buf, int *flag);
+void	change_hide_var_flag(t_minishell *minishell, char *buf, int *flag);
 // end region
 
 // region check_tokens

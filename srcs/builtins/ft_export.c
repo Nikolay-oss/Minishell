@@ -1,13 +1,15 @@
 #include "minishell.h"
 
-static t_uint	var_parser(char *var, int *errorcode)
+static t_uint	check_var(char *var, int *errorcode)
 {
 	t_uint	var_type;
 
 	var_type = 0;
-	if (!ft_isalpha(*var))
+	if (!var_parser(var))
 	{
-		printf("minishell: export: '%s': not a valid identifier\n", var);
+		ft_putstr_fd("minishell: export: '", 2);
+		ft_putstr_fd(var, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
 		*errorcode = 1;
 	}
 	else if (ft_strchr(var, '='))
@@ -17,20 +19,20 @@ static t_uint	var_parser(char *var, int *errorcode)
 	return (var_type);
 }
 
-static int	add_to_env(t_list *env, t_node **envvar_node, char *var)
+static int	add_to_vars(t_list *vars, t_node **var_node, char *var)
 {
 	char	*new_var;
 
 	new_var = ft_strdup(var);
 	if (!new_var)
 		return (1);
-	if (*envvar_node)
+	if (var_node && *var_node)
 	{
-		free((*envvar_node)->content);
-		(*envvar_node)->content = (void *)new_var;
+		free((*var_node)->content);
+		(*var_node)->content = (void *)new_var;
 	}
 	else
-		ft_push_back(env, new_var);
+		ft_push_back(vars, new_var);
 	return (0);
 }
 
@@ -52,7 +54,7 @@ static char	*getvar_name(char *var, t_uint var_type)
 	return (var_name);
 }
 
-static int	add_var(t_list *env, t_list *hide_vars, char *var, t_uint var_type)
+static int	add_var(t_minishell *minishell, char *var, t_uint var_type)
 {
 	t_node	*hidevar_node;
 	t_node	*envvar_node;
@@ -63,15 +65,18 @@ static int	add_var(t_list *env, t_list *hide_vars, char *var, t_uint var_type)
 	var_name = getvar_name(var, var_type);
 	if (!var_name)
 		return (1);
-	hidevar_node = getvar_node(hide_vars, var_name);
-	envvar_node = getvar_node(env, var_name);
+	hidevar_node = getvar_node(minishell->hide_vars, var_name);
+	envvar_node = getvar_node(minishell->env, var_name);
 	if (var_type == 1)
-		errorcode = add_to_env(env, &envvar_node, var);
+		errorcode = add_to_vars(minishell->env, &envvar_node, var);
 	else if (hidevar_node && var_type == 2)
 	{
-		errorcode = add_to_env(env, &envvar_node, hidevar_node->content);
-		ft_del_node(hide_vars, &free, hidevar_node);
+		errorcode = add_to_vars(minishell->env, &envvar_node,
+			hidevar_node->content);
+		ft_del_node(minishell->hide_vars, &free, hidevar_node);
 	}
+	else if (var_type == 2)
+		errorcode = add_to_vars(minishell->env_secret, NULL, var);
 	return (errorcode);
 }
 
@@ -83,16 +88,15 @@ int	ft_export(t_minishell *minishell, char **vars)
 
 	i = 0;
 	errorcode = 0;
+	if (!*vars)
+		errorcode = print_declare_env(minishell);
 	while (*(vars + i))
 	{
-		var_type = var_parser(*(vars + i), &errorcode);
+		var_type = check_var(*(vars + i), &errorcode);
 		if (var_type)
 		{
-			if (add_var(minishell->env, minishell->hide_vars, *(vars + i),
-				var_type) == 1)
-			{
+			if (add_var(minishell, *(vars + i), var_type) == 1)
 				errorcode = 1;
-			}
 		}
 		i++;
 	}

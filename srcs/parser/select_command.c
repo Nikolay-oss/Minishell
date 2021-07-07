@@ -19,7 +19,7 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else if (!ft_strcmp(*command, "export"))
 	{
-		minishell->exit_status = ft_export(minishell, command);
+		minishell->exit_status = ft_export(minishell, command + 1);
 	}
 	else if (!ft_strcmp(*command, "unset"))
 	{

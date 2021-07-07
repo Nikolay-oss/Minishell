@@ -79,26 +79,31 @@ void	commands_handler(t_minishell *minishell)
 	t_node	*flag_node;
 	char	**cmd;
 	int		*flags;
+	t_uint	idx;
 
 	cmd_node = minishell->all_commands->head;
 	flag_node = minishell->f_quotes->head;
+	idx = 0;
 	while (cmd_node && flag_node)
 	{
 		cmd = create_command_buf(minishell, &cmd_node, &flag_node, &flags);
 		if (cmd)
-		{
 			add_to_command_list(&minishell->commands, cmd, flags);
-			// select_command(minishell, cmd);
-			// destroy_command_buf(cmd);
-		}
 		if (cmd_node && flag_node)
 		{
 			cmd_node = cmd_node->next;
 			flag_node = flag_node->next;
 		}
 	}
-	// select_command(minishell, minishell->commands->cmd);
-	redir_handler(minishell, minishell->commands);
+	if (minishell->pipes_count == 0 && minishell->hide_vars_count > 0)
+	{
+		idx = add_to_hide_vars(minishell, minishell->commands, 2);
+		if (idx == 0)
+			return ;
+	}
+	// if (minishell->exit_status)
+	// 	ft_putendl_fd(strerror(errno), 2);
+	redir_handler(minishell, minishell->commands, idx);
 	/*
 		где-то тут должен быть обработчик пайпов
 	*/

@@ -49,13 +49,14 @@ int	main(int ac, char **av, char **envp)
 	if (!minishell)
 		return (1);
 	init_env(&minishell->env, envp); // в инит лучше передавать указаьтель на минишелл
-	minishell->pipes_count = 0;
 	minishell->exit_status = (long long int)NULL; // 1
 	minishell->home_path = (char *)NULL; // 2
 	signals.sig_int = 0; // 3
 	signals.sig_quit = 0; // 4
 	minishell->home_path = getvar_value(minishell->env, "HOME");
 	minishell->here_document = ft_strdup(".here-document");
+	minishell->env_secret = ft_create_lst();
+	minishell->hide_vars = ft_create_lst();
 	while (1)
 	{
 		signal(SIGINT, &ft_handler);
@@ -71,7 +72,9 @@ int	main(int ac, char **av, char **envp)
 	}
 	// free(buf);
 	status = minishell->exit_status;
+	ft_lst_clear(minishell->hide_vars, &free);
 	ft_lst_clear(minishell->env, &free);
+	ft_lst_clear(minishell->env_secret, &free);
 	free(minishell->home_path);
 	free(minishell->here_document);
 	free(minishell);
