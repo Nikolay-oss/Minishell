@@ -62,7 +62,7 @@ void	init_env(t_list **env, char **envp)
 	}
 }
 
-void	ft_env(t_list *env)
+int	ft_env(t_list *env)
 {
 	t_node	*current;
 
@@ -72,4 +72,5 @@ void	ft_env(t_list *env)
 		ft_putendl_fd(current->content, 1);
 		current = current->next;
 	}
+	return (0);
 }

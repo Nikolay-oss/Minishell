@@ -1,37 +1,6 @@
 #include "ft_parser.h"
 #include <fcntl.h>
 
-/*
-	Разобраться какие коды ошибок возвращает баш, если dup или open не срабатывает
-	bash: warning: here-document at line 148 delimited by end-of-file (wanted `end')
-	148????
-	Узнать что делать, если unlink не удалил файл
-
-	sort << "arg" - не искать переменные
-	sort << arg - искать переменные
-*/
-
-static int	ft_redir(const char *filename, int o_flags, int s_flags,
-	t_bool dir_type)
-{
-	int	fd;
-	int	fd2;
-	int	ret;
-
-	ret = 0;
-	fd = open(filename, o_flags, s_flags);
-	if (fd < 0)
-		return (1);
-	if (dir_type)
-		fd2 = STDOUT;
-	else
-		fd2 = STDIN;
-	if (dup2(fd, fd2) < 0)
-		ret = errno;
-	close(fd);
-	return (ret);
-}
-
 static void	select_redirect(t_minishell *minishell, char *redir,
 	const char *filename)
 {
@@ -51,39 +20,35 @@ static void	select_redirect(t_minishell *minishell, char *redir,
 	}
 }
 
-static void	redir_dual_input(t_minishell *minishell, t_commands *node_cmd)
+static void	redir_dual_input(t_minishell *minishell, t_commands *node_cmd,
+	t_bool *dual_redir)
 {
 	t_uint	i;
-	t_bool	tmp_flag;
 
 	i = 0;
-	tmp_flag = 0;
 	while (*(node_cmd->cmd + i))
 	{
 		if (!ft_strcmp("<<", *(node_cmd->cmd + i)))
 		{
-			tmp_flag = 1;
+			*dual_redir = 1;
 			minishell->exit_status = redir2_input(minishell,
 				*(node_cmd->cmd + i + 1), *(node_cmd->flags_quotes + i + 1));
 		}
 		i++;
 	}
-	if (tmp_flag)
-		minishell->exit_status = ft_redir(minishell->here_document, O_RDONLY, 0, 0);
 }
 
 static void	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos)
 {
-	char	*tmp;
+	char	**cmd_new;
 
-	if (isredir(**cmd))
+	if (isredir(**cmd) || minishell->exit_status)
 		return ;
 	if (redir_pos > 0)
 	{
-		tmp = *(cmd + redir_pos);
-		*(cmd + redir_pos) = NULL;
-		select_command(minishell, cmd);
-		*(cmd + redir_pos) = tmp;
+		cmd_new = update_cmd_buf(cmd, redir_pos);
+		select_command(minishell, cmd_new);
+		destroy_command_buf(cmd_new);
 	}
 	else
 		select_command(minishell, cmd);
@@ -91,35 +56,43 @@ static void	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos)
 		unlink(minishell->here_document);
 }
 
+static t_bool	redir_handler_utils(t_minishell *minishell, char **cmd,
+	t_uint i, int *redir_pos)
+{
+	if (isredir(**(cmd + i)))
+	{
+		if (*redir_pos == -1)
+			*redir_pos = i;
+		select_redirect(minishell, *(cmd + i),
+			(const char *)*(cmd + i + 1));
+		if (minishell->exit_status)
+		{
+			print_error(*(cmd + i + 1), errno);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 void	redir_handler(t_minishell *minishell, t_commands *node_cmd)
 {
 	t_uint	i;
 	int		redir_pos;
+	t_bool	dual_redir;
 
 	i = 0;
 	redir_pos = -1;
 	minishell->exit_status = save_std_descriptors(&minishell->stdstreams);
-	redir_dual_input(minishell, node_cmd);
+	dual_redir = 0;
+	redir_dual_input(minishell, node_cmd, &dual_redir);
 	while (*(node_cmd->cmd + i))
 	{
-		if (isredir(**(node_cmd->cmd + i)))
-		{
-			if (redir_pos == -1)
-				redir_pos = i;
-			select_redirect(minishell, *(node_cmd->cmd + i),
-				(const char *)*(node_cmd->cmd + i + 1));
-			if (minishell->exit_status)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(*(node_cmd->cmd + i + 1), 2);
-				write(2, ": ", 2);
-				ft_putendl_fd(strerror(errno), 2);
-				break ;
-			}
-		}
+		if (redir_handler_utils(minishell, node_cmd->cmd, i, &redir_pos))
+			break ;
 		i++;
 	}
-	if (!minishell->exit_status)
-		exec_cmd(minishell, node_cmd->cmd, redir_pos);
+	if (dual_redir)
+		minishell->exit_status = ft_redir(minishell->here_document, O_RDONLY, 0, 0);
+	exec_cmd(minishell, node_cmd->cmd, redir_pos);
 	revert_std_descriptors(&minishell->stdstreams);
 }

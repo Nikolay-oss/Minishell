@@ -17,7 +17,7 @@ static void	check_file(t_minishell *minishell, char *cmd_bin,
 	else if (S_ISDIR(buf.st_mode))
 	{
 		minishell->exit_status = 126;
-		isdir_error(cmd_bin);
+		print_error(cmd_bin, 21);
 	}
 	else
 	{
@@ -94,7 +94,7 @@ void	save_path_to_bin(t_minishell *minishell, char *cmd_bin,
 	char	*p_slesh;
 	char	*paths;
 
-	p_slesh = ft_strrchr(cmd_bin, '/');
+	p_slesh = ft_strchr(cmd_bin, '/');
 	*cmd_bin_out = NULL;
 	if (p_slesh)
 		check_file(minishell, cmd_bin, cmd_bin_out);

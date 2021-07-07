@@ -7,7 +7,7 @@ void	select_command(t_minishell *minishell, char **command)
 		return ;
 	if (!ft_strcmp(*command, "echo"))
 	{
-		ft_echo(command + 1);
+		minishell->exit_status = ft_echo(command + 1);
 	}
 	else if (!ft_strcmp(*command, "cd"))
 	{
@@ -27,7 +27,7 @@ void	select_command(t_minishell *minishell, char **command)
 	}
 	else if (!ft_strcmp(*command, "env"))
 	{
-		ft_env(minishell->env);
+		minishell->exit_status = ft_env(minishell->env);
 	}
 	else if (!ft_strcmp(*command, "exit"))
 	{

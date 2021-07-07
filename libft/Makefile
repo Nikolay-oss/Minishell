@@ -62,7 +62,8 @@ SRCS		= 	ft_memset.c \
 				ft_count_args.c\
 				ft_del_substr.c \
 				ft_insert_substr.c \
-				ft_lst_to_str.c 
+				ft_lst_to_str.c \
+				ft_lst_to_strs.c
 
 CFLAGS		= -Wall -Wextra -Werror
 

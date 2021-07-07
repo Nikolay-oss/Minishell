@@ -37,8 +37,9 @@ void	ft_handler(int sig)
 
 int	main(int ac, char **av, char **envp)
 {
-	char			*buf;
-	t_minishell		*minishell;
+	char		*buf;
+	t_minishell	*minishell;
+	int			status;
 	// struct termios	term;
 
 	(void)ac;
@@ -69,12 +70,13 @@ int	main(int ac, char **av, char **envp)
 		free(buf);
 	}
 	// free(buf);
+	status = minishell->exit_status;
 	ft_lst_clear(minishell->env, &free);
 	free(minishell->home_path);
 	free(minishell->here_document);
 	free(minishell);
 	write(1, "exit\n", 5);
-	return (0);
+	return (status);
 }
 
 

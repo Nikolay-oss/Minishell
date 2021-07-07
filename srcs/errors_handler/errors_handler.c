@@ -26,10 +26,3 @@ void	syntax_error(char *token)
 	ft_putstr_fd(token, 2);
 	ft_putendl_fd("'", 2);
 }
-
-void	isdir_error(char *str)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(str, 2);
-	ft_putendl_fd(": Is a directory", 2);;
-}

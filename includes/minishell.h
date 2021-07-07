@@ -53,7 +53,6 @@ t_bool	file_exists(const char *filename);
 void	print_error(char *str, int errorcode);
 void	command_not_found(char *str, int errorcode);
 void	syntax_error(char *token);
-void	isdir_error(char *str);
 // end region
 
 // region init
@@ -69,8 +68,8 @@ t_node	*getvar_node(t_list *vars, const char *var_name);
 char	*getvar_value(t_list *vars, const char *var_name);
 
 // region builtins
-void	ft_echo(char **command);
-void	ft_env(t_list *env);
+int		ft_echo(char **command);
+int		ft_env(t_list *env);
 void	ft_cd(t_minishell *minishell, char *path);
 void	ft_unset(t_list *env, char **var);
 int		ft_export(t_minishell *minishell, char **vars);
@@ -84,6 +83,8 @@ int		redir2_input(t_minishell *minishell, const char *stop_value,
 					int f_quotes);
 int		save_std_descriptors(t_stdstreams *stdstreams);
 int		revert_std_descriptors(t_stdstreams *stdstreams);
+char	**update_cmd_buf(char **cmd, int redir_pos);
+int		ft_redir(const char *filename, int o_flags, int s_flags, t_bool dir_type);
 // end region
 
 // region execute

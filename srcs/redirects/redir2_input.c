@@ -57,11 +57,33 @@ int	redir2_input(t_minishell *minishell, const char *stop_value,
 	int	ret;
 
 	ret = 0;
-	fd = open(minishell->here_document, O_CREAT | O_WRONLY | O_TRUNC,
-		__S_IREAD | __S_IWRITE);
+	fd = open(minishell->here_document, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd < 0)
 		return (1);
 	ret = save_to_heredoc(minishell, stop_value, f_quotes, fd);
 	close(fd);
 	return (ret);
+}
+
+char	**update_cmd_buf(char **cmd, int redir_pos)
+{
+	t_list	*cmd_buf;
+	char	**cmd_new;
+	t_uint	i;
+
+	cmd_buf = ft_create_lst();
+	i = 0;
+	while (i < redir_pos)
+		ft_push_back(cmd_buf, *(cmd + i++));
+	while (*(cmd + i))
+	{
+		if (isredir(**(cmd + i)))
+			i++;
+		else
+			ft_push_back(cmd_buf, *(cmd + i));
+		i++;
+	}
+	cmd_new = ft_lst_to_strs(cmd_buf);
+	ft_lst_clear(cmd_buf, NULL);
+	return (cmd_new);
 }

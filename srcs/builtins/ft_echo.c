@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ft_echo(char **command)
+int	ft_echo(char **command)
 {
 	t_uint	args_count;
 	t_bool	is_n_opt;
@@ -23,4 +23,5 @@ void	ft_echo(char **command)
 	}
 	if (!is_n_opt)
 		write(1, "\n", 1);
+	return (0);
 }
