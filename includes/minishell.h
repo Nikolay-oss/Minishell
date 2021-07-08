@@ -27,13 +27,11 @@ typedef struct s_minishell
 {
 	t_list			*env;
 	t_list			*env_secret;
-	t_list			*hide_vars; // for variables in bash
 	t_list			*all_commands;
 	t_list			*f_quotes;
 	t_commands		*commands;
 	t_stdstreams	stdstreams;
 	t_uint			pipes_count;
-	t_uint			hide_vars_count;
 	char			*home_path;
 	char			*here_document;
 	long long int	exit_status;
@@ -64,7 +62,6 @@ void	init_env(t_list **env, char **envp);
 // region commands
 void	select_command(t_minishell *minishell, char **command);
 void	destroy_command_buf(char **command);
-t_uint	add_to_hide_vars(t_minishell *minishell, t_commands *cmd, int var_type);
 // region end
 
 t_node	*getvar_node(t_list *vars, const char *var_name);
@@ -75,15 +72,17 @@ int		ft_echo(char **command);
 int		ft_env(t_list *env);
 void	ft_cd(t_minishell *minishell, char *path);
 void	ft_unset(t_list *env, char **var);
+// subregion export
 int		ft_export(t_minishell *minishell, char **vars);
 int		print_declare_env(t_minishell *minishell);
 t_bool	var_parser(char *str);
+// end subregion
 int		ft_pwd();
 void	ft_exit(t_minishell *minishell, char **var);
 // end region
 
 // region redirect
-void	redir_handler(t_minishell *minishell, t_commands *node_cmd, t_uint idx);
+void	redir_handler(t_minishell *minishell, t_commands *node_cmd);
 int		redir2_input(t_minishell *minishell, const char *stop_value,
 					int f_quotes);
 int		save_std_descriptors(t_stdstreams *stdstreams);

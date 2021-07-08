@@ -49,7 +49,6 @@ static t_uint	search_arg(t_minishell *minishell, char *buf, char **arg)
 	}
 	chr_old = *(buf + len);
 	*(buf + len) = 0;
-	change_hide_var_flag(minishell, buf, &isquotes);
 	add_to_f_quotes(minishell, isquotes);
 	arg_handler(minishell, arg, buf, len);
 	add_arg(minishell, arg, buf);

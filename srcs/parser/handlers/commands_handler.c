@@ -95,15 +95,7 @@ void	commands_handler(t_minishell *minishell)
 			flag_node = flag_node->next;
 		}
 	}
-	if (minishell->pipes_count == 0 && minishell->hide_vars_count > 0)
-	{
-		idx = add_to_hide_vars(minishell, minishell->commands, 2);
-		if (idx == 0)
-			return ;
-	}
-	// if (minishell->exit_status)
-	// 	ft_putendl_fd(strerror(errno), 2);
-	redir_handler(minishell, minishell->commands, idx);
+	redir_handler(minishell, minishell->commands);
 	/*
 		где-то тут должен быть обработчик пайпов
 	*/

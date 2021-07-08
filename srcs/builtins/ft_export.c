@@ -56,7 +56,6 @@ static char	*getvar_name(char *var, t_uint var_type)
 
 static int	add_var(t_minishell *minishell, char *var, t_uint var_type)
 {
-	t_node	*hidevar_node;
 	t_node	*envvar_node;
 	char	*var_name;
 	int		errorcode;
@@ -65,16 +64,9 @@ static int	add_var(t_minishell *minishell, char *var, t_uint var_type)
 	var_name = getvar_name(var, var_type);
 	if (!var_name)
 		return (1);
-	hidevar_node = getvar_node(minishell->hide_vars, var_name);
 	envvar_node = getvar_node(minishell->env, var_name);
 	if (var_type == 1)
 		errorcode = add_to_vars(minishell->env, &envvar_node, var);
-	else if (hidevar_node && var_type == 2)
-	{
-		errorcode = add_to_vars(minishell->env, &envvar_node,
-			hidevar_node->content);
-		ft_del_node(minishell->hide_vars, &free, hidevar_node);
-	}
 	else if (var_type == 2)
 		errorcode = add_to_vars(minishell->env_secret, NULL, var);
 	return (errorcode);

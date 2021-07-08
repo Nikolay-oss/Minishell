@@ -49,7 +49,6 @@ void	ft_parser(t_minishell *minishell, char *buf)
 	minishell->all_commands = ft_create_lst();
 	minishell->f_quotes = ft_create_lst();
 	minishell->pipes_count = 0;
-	minishell->hide_vars_count = 0;
 	if (!minishell->all_commands || !minishell->f_quotes)
 	{
 		minishell->exit_status = errno; // error

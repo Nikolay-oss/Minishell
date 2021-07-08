@@ -74,13 +74,13 @@ static t_bool	redir_handler_utils(t_minishell *minishell, char **cmd,
 	return (0);
 }
 
-void	redir_handler(t_minishell *minishell, t_commands *node_cmd, t_uint idx)
+void	redir_handler(t_minishell *minishell, t_commands *node_cmd)
 {
 	t_uint	i;
 	int		redir_pos;
 	t_bool	dual_redir;
 
-	i = idx;
+	i = 0;
 	redir_pos = -1;
 	minishell->exit_status = save_std_descriptors(&minishell->stdstreams);
 	dual_redir = 0;
@@ -93,6 +93,6 @@ void	redir_handler(t_minishell *minishell, t_commands *node_cmd, t_uint idx)
 	}
 	if (dual_redir)
 		minishell->exit_status = ft_redir(minishell->here_document, O_RDONLY, 0, 0);
-	exec_cmd(minishell, node_cmd->cmd + idx, redir_pos);
+	exec_cmd(minishell, node_cmd->cmd, redir_pos);
 	revert_std_descriptors(&minishell->stdstreams);
 }
