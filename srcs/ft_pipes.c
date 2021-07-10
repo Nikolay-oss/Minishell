@@ -1,6 +1,10 @@
-#include <time.h>
-#include <sys/wait.h>
 #include "minishell.h"
+
+void	ft_delay(int count)
+{
+	while (count > 0)
+		count--;
+}
 
 void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 {
@@ -23,6 +27,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 		return ;
 	}
 	pid = fork();
+	ft_delay(1000000);
 	if (pid < 0)
 	{
 		printf("bash: fork: %s\n", strerror(errno));
