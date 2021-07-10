@@ -10,9 +10,9 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 
 	if (!node)
 	{
-		close(fd[0]);
-		close(fd[1]);
-		close(fd_old);
+//		close(fd[0]);
+//		close(fd[1]);
+//		close(fd_old);
 //			exit(0);
 		return;
 	}
@@ -71,7 +71,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 //		}
 //		if (node && pid != 0)
 			ft_pipes(minishell, node, fd_old);
-//		close(fd[0]);
+		close(fd[0]);
 		close(fd[1]);
 //		close(fd_old);
 		waitpid(pid, &status, 0);
