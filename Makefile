@@ -39,13 +39,13 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 			  $(ERROR_DIR)error_msgs.c				$(EXEC_DIR)save_path_to_bin.c \
 			  $(ANALYZ_DIR)syn_analyzer.c			$(BUILTINS_DIR)ft_export_utils.c \
 			  $(PARSER_DIR)var_parser.c				$(ERROR_DIR)errors_handlers.c \
-			  $(SRCS_DIR)shell_handler.c
+			  $(SRCS_DIR)shell_handler.c			$(SRCS_DIR)ft_pipes.c \
 
 CFLAGS		= #-Wall -Wextra -Werror
 
-LIBS		= -lreadline -Llibft -lft # ubuntu
+ LIBS		= -lreadline -Llibft -lft # ubuntu
 #LIBS		= -L/Users/brice/.brew/opt/readline/lib -lreadline -Llibft -lft
-# LIBS		= -L/Users/dkenchur/.brew/opt/readline/lib -lreadline -Llibft -lft
+#LIBS		= -L/Users/dkenchur/.brew/opt/readline/lib -lreadline -Llibft -lft
 
 #OBJS		= $(SRCS:.c=.o)
 OBJS		= $(patsubst $(SRCS_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS)) 

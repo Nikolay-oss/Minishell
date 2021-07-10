@@ -1,0 +1,73 @@
+//#include <wait.h>
+#include <time.h>
+#include "minishell.h"
+
+void	ft_pipes(t_minishell *minishell)
+{
+	char		**cmd;
+	int 		i;
+	int 		p1[2]; // child from parent //0 - read; 1 - write
+	int			p2[2]; // parent from child
+	pid_t 		pid;
+	t_commands	*head;
+
+	i = 0;
+	head = minishell->commands;
+
+	if (pipe(p1) == -1)
+		return ;  // error
+	if (pipe(p2) == -1)
+		return ;  // error
+	pid = fork();
+	if (pid == -1)
+		return ; // error
+	if (pid == 0)
+	{
+		//// child process
+		printf("child process\n");
+		close(p1[0]);
+		close(p2[1]);
+		int x;
+		if (read(p2[0], &x, sizeof(x)) == -1)
+			exit(1) ; // error
+		printf("recived: |%d|\n", x);
+		x *= 4;
+		printf("child process 2\n");
+		if (write(p1[1], &x, sizeof(x)) == -1)
+			exit(2) ; // error
+		printf("wrote: |%d|\n", x);
+		close(p1[1]);
+		close(p2[0]);
+	}
+	else
+	{
+		//// parent process
+		close(p1[1]);
+		close(p2[0]);
+		int y;
+		srand(time(NULL));
+		y = rand() % 10;
+		printf("parent y=%d", y);
+		if (write(p2[1], &y, sizeof(y)) == -1)
+			exit(3) ; //error
+		printf("parent wrote: |%d|\n", y);
+		if (read(p1[0], &y, sizeof(y)) == -1)
+			exit(4) ; // error
+		printf("parent result: |%d|\n", y);
+		close(p1[0]);
+		close(p2[1]);
+		wait(NULL);
+	}
+	close(p1[0]);
+	close(p1[1]);
+//	while (head)
+//	{
+//		cmd = head->cmd;
+//		while (cmd[i])
+//			printf("command: |%s|\n", cmd[i++]);
+//		i = 0;
+//		printf("pipe\n");
+//		head = head->next;
+//	}
+
+}

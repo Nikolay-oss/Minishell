@@ -40,6 +40,8 @@ typedef struct s_minishell
 	char			*home_path;
 	char			*here_document;
 	long long int	exit_status;
+	pid_t 			pid;
+	int				flag;
 }					t_minishell;
 
 //region global structure
@@ -104,6 +106,11 @@ char	**update_cmd_buf(char **cmd, int redir_pos);
 int		ft_redir(const char *filename, int o_flags, int s_flags, t_bool dir_type);
 void	redir_dual_input(t_minishell *minishell, t_commands *node_cmd,
 					t_bool *dual_redir);
+// end region
+
+// region pipes
+void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old);
+void exec_pipeline(t_minishell *minishell, t_commands *cmds, int pos, int in_fd);
 // end region
 
 // region execute
