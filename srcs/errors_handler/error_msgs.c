@@ -26,3 +26,10 @@ void	syntax_error(char *token)
 	ft_putstr_fd(token, 2);
 	ft_putendl_fd("'", 2);
 }
+
+void	ft_malloc_error(t_minishell *minishell)
+{
+	ft_putendl_fd(strerror(errno), 2);
+	minishell->exit_status = errno;
+	minishell->ismem_error = 1;
+}

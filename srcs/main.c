@@ -47,7 +47,7 @@ int	main(int ac, char **av, char **envp)
 	buf = NULL;
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	if (!minishell)
-		return (1);
+		return (errno);
 	init_env(&minishell->env, envp); // в инит лучше передавать указаьтель на минишелл
 	minishell->exit_status = (long long int)NULL; // 1
 	minishell->home_path = (char *)NULL; // 2
@@ -56,20 +56,17 @@ int	main(int ac, char **av, char **envp)
 	minishell->home_path = getvar_value(minishell->env, "HOME");
 	minishell->here_document = ft_strdup(".here-document");
 	minishell->env_secret = ft_create_lst();
+	signal(SIGINT, &ft_handler);
 	while (1)
 	{
-		signal(SIGINT, &ft_handler);
+		minishell->ismem_error = 0;
 		buf = readline("\033[0;32mprompt> \033[0m");
 		if (!buf)
 			break ;
-		// printf("%s\n", buf);
-//		if (buf && !strcmp(buf, "exit"))
-//			break ;
 		add_history(buf);
 		ft_parser(minishell, buf);
 		free(buf);
 	}
-	// free(buf);
 	status = minishell->exit_status;
 	ft_lst_clear(minishell->env, &free);
 	ft_lst_clear(minishell->env_secret, &free);

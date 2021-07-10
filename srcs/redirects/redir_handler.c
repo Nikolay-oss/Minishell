@@ -11,12 +11,12 @@ static void	select_redirect(t_minishell *minishell, char *redir,
 	else if (!ft_strcmp(">", redir))
 	{
 		minishell->exit_status = ft_redir(filename, O_CREAT | O_WRONLY
-			| O_TRUNC, 0666, 1);
+			| O_TRUNC, FPERMISSIONS, 1);
 	}
 	else if (!ft_strcmp(">>", redir))
 	{
 		minishell->exit_status = ft_redir(filename, O_CREAT | O_WRONLY
-			| O_APPEND, 0666, 1);
+			| O_APPEND, FPERMISSIONS, 1);
 	}
 }
 
@@ -42,7 +42,7 @@ static void	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos)
 {
 	char	**cmd_new;
 
-	if (isredir(**cmd) || minishell->exit_status)
+	if (isredir(**cmd))// || minishell->exit_status)
 		return ;
 	if (redir_pos > 0)
 	{
@@ -82,7 +82,11 @@ void	redir_handler(t_minishell *minishell, t_commands *node_cmd)
 
 	i = 0;
 	redir_pos = -1;
-	minishell->exit_status = save_std_descriptors(&minishell->stdstreams);
+	if (save_std_descriptors(&minishell->stdstreams))
+	{
+		dup_ehandler(minishell);
+		return ;
+	}
 	dual_redir = 0;
 	redir_dual_input(minishell, node_cmd, &dual_redir);
 	while (*(node_cmd->cmd + i))
@@ -94,5 +98,6 @@ void	redir_handler(t_minishell *minishell, t_commands *node_cmd)
 	if (dual_redir)
 		minishell->exit_status = ft_redir(minishell->here_document, O_RDONLY, 0, 0);
 	exec_cmd(minishell, node_cmd->cmd, redir_pos);
-	revert_std_descriptors(&minishell->stdstreams);
+	if (revert_std_descriptors(&minishell->stdstreams))
+		dup_ehandler(minishell);
 }

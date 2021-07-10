@@ -55,7 +55,7 @@ static char	**create_command_buf(t_minishell *minishell, t_node **cmd_node,
 	cmd = (char **)ft_calloc(cmd_size + 1, sizeof(char *));
 	*flags = (int *)malloc(sizeof(int) * cmd_size);
 	if (!cmd || !*flags)
-		return (NULL); // error
+		return (NULL);
 	i = 0;
 	while (i < cmd_size)
 	{
@@ -64,7 +64,7 @@ static char	**create_command_buf(t_minishell *minishell, t_node **cmd_node,
 		if (!*(cmd + i))
 		{
 			destroy_command_buf(cmd);
-			return (NULL); // error
+			return (NULL);
 		}
 		*cmd_node = (*cmd_node)->next;
 		*f_node = (*f_node)->next;
@@ -79,16 +79,19 @@ void	commands_handler(t_minishell *minishell)
 	t_node	*flag_node;
 	char	**cmd;
 	int		*flags;
-	t_uint	idx;
 
 	cmd_node = minishell->all_commands->head;
 	flag_node = minishell->f_quotes->head;
-	idx = 0;
 	while (cmd_node && flag_node)
 	{
 		cmd = create_command_buf(minishell, &cmd_node, &flag_node, &flags);
 		if (cmd)
 			add_to_command_list(&minishell->commands, cmd, flags);
+		else
+		{
+			ft_malloc_error(minishell);
+			return ;
+		}
 		if (cmd_node && flag_node)
 		{
 			cmd_node = cmd_node->next;

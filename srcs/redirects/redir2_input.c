@@ -4,9 +4,9 @@
 
 static int	swap_fd(t_stdstreams *streams1, t_stdstreams *streams2)
 {
-	if (save_std_descriptors(streams1) < 0)
+	if (save_std_descriptors(streams1) == 1)
 		return (errno);
-	if (revert_std_descriptors(streams2) < 0)
+	if (revert_std_descriptors(streams2) == 1)
 		return (errno);
 	return (0);
 }
@@ -27,7 +27,7 @@ static int	save_to_heredoc(t_minishell *minishell, const char *stop_value,
 {
 	t_stdstreams			fd_cur;
 	char					*line;
-	static t_uint			strs_count = 0;
+	// static t_uint			strs_count = 0;
 
 	if (swap_fd(&fd_cur, &minishell->stdstreams))
 		return (errno);
@@ -36,8 +36,8 @@ static int	save_to_heredoc(t_minishell *minishell, const char *stop_value,
 		line = readline("> ");
 		if (!line)
 		{
-			printf("minishell: warning: here-document at line %u delimited by"
-				" end-of-file (wanted '%s')\n", strs_count, stop_value);
+			// printf("minishell: warning: here-document at line %u delimited by"
+			// 	" end-of-file (wanted '%s')\n", strs_count, stop_value);
 			break ;
 		}
 		if (!ft_strcmp(line, stop_value))
@@ -45,7 +45,7 @@ static int	save_to_heredoc(t_minishell *minishell, const char *stop_value,
 		if (!f_quotes)
 			substitute_vars(minishell, &line);
 		ft_putendl_fd(line, fd);
-		strs_count++;
+		// strs_count++;
 	}
 	return (swap_fd(&minishell->stdstreams, &fd_cur));
 }

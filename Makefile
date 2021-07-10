@@ -36,9 +36,9 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 			  $(HNDRS_DIR)commands_handler.c		$(CMDLST_DIR)add_to_command_list.c \
 			  $(CMDLST_DIR)destroy_command_list.c	$(REDIR_DIR)stdstreams_handler.c \
 			  $(REDIR_DIR)redir2_input.c			$(SRCS_DIR)file_exists.c \
-			  $(ERROR_DIR)errors_handler.c			$(EXEC_DIR)save_path_to_bin.c \
+			  $(ERROR_DIR)error_msgs.c				$(EXEC_DIR)save_path_to_bin.c \
 			  $(ANALYZ_DIR)syn_analyzer.c			$(BUILTINS_DIR)ft_export_utils.c \
-			  $(PARSER_DIR)var_parser.c
+			  $(PARSER_DIR)var_parser.c				$(ERROR_DIR)errors_handlers.c
 
 CFLAGS		= #-Wall -Wextra -Werror
 

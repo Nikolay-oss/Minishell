@@ -23,6 +23,8 @@ static void	check_file(t_minishell *minishell, char *cmd_bin,
 	{
 		minishell->exit_status = 0;
 		*cmd_bin_out = ft_strdup(cmd_bin);
+		if (!*cmd_bin_out)
+			ft_malloc_error(minishell);
 	}
 }
 
@@ -66,8 +68,9 @@ static void	check_filenames(t_minishell *minishell, char *cmd_bin,
 		i++;
 	}
 	if (minishell->exit_status == 0)
-		make_path_to_bin(*(paths + i), cmd_bin, cmd_bin_out);
-	command_not_found(cmd_bin, minishell->exit_status);
+		make_path_to_bin(minishell, *(paths + i), cmd_bin, cmd_bin_out);
+	else
+		command_not_found(cmd_bin, minishell->exit_status);
 }
 
 static void	search_bin_file(t_minishell *minishell, char *cmd_bin,
@@ -80,6 +83,12 @@ static void	search_bin_file(t_minishell *minishell, char *cmd_bin,
 	if (path_var)
 	{
 		paths = ft_split(path_var, ':');
+		if (!paths)
+		{
+			ft_malloc_error(minishell);
+			free(path_var);
+			return ;
+		}
 		check_filenames(minishell, cmd_bin, cmd_bin_out, paths);
 		destroy_command_buf(paths);
 		free(path_var);
@@ -95,7 +104,6 @@ void	save_path_to_bin(t_minishell *minishell, char *cmd_bin,
 	char	*paths;
 
 	p_slesh = ft_strchr(cmd_bin, '/');
-	*cmd_bin_out = NULL;
 	if (p_slesh)
 		check_file(minishell, cmd_bin, cmd_bin_out);
 	else

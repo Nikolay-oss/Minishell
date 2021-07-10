@@ -14,55 +14,48 @@
 
 #define DEBUG
 
-/*
-	Примерный алгоритм:
-	1. 4 функции поиска:
-		1.1 поиск команды
-		1.2 поиск аргументов:
-			1.2.1 поиск стандартных аргументов (пример: echo hello bird)
-			1.2.2 поиск аргументов в кавычках
-			1.2.3 интерпретация переменных (символ $)
-		1.3 поиск пайпов и редиректов
-	2. добавление в список
-	3. запись команды и ее аргументов в массив строк (массив строк должен заканчиваться NULL указателем)
-*/
-
-void	add_to_f_quotes(t_minishell *minishell, int flag)
+t_bool	add_to_f_quotes(t_minishell *minishell, int flag)
 {
 	int	*flag_copy;
 
 	flag_copy = (int *)malloc(sizeof(int));
 	if (!flag_copy)
 	{
-		minishell->exit_status = errno;
-		return ;
+		ft_malloc_error(minishell);
+		return (0);
 	}
 	*flag_copy = flag;
 	ft_push_back(minishell->f_quotes, flag_copy);
+	return (1);
 }
 
 void	ft_parser(t_minishell *minishell, char *buf)
 {
 	t_uint	i;
 
-	i = 0;
 	minishell->all_commands = ft_create_lst();
 	minishell->f_quotes = ft_create_lst();
 	minishell->pipes_count = 0;
 	if (!minishell->all_commands || !minishell->f_quotes)
 	{
-		minishell->exit_status = errno; // error
+		ft_malloc_error(minishell);
 		return ;
 	}
+	i = 0;
 	while (*(buf + i))
-		i += search_tokens(minishell, buf + i); // после все в списке
+	{
+		i += search_tokens(minishell, buf + i);
+		if (minishell->ismem_error)
+		{
+			i = 0;
+			break ;
+		}
+	}
 	if (i > 0)
 	{
 		if (!analyzer(minishell))
 			commands_handler(minishell);
 	}
-	// printf("cmd_size -> %ld  flags_size -> %ld\n", minishell->all_commands->size,
-	// 	minishell->f_quotes->size);
 	#ifndef DEBUG
 		t_node	*cur_cmd = minishell->all_commands->head;
 		t_node	*f = minishell->f_quotes->head;

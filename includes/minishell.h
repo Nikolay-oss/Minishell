@@ -15,6 +15,8 @@
 # define STDOUT	1
 # define STDER	2
 
+# define FPERMISSIONS 0666
+
 // region redirect
 typedef struct s_stdstreams
 {
@@ -32,6 +34,7 @@ typedef struct s_minishell
 	t_commands		*commands;
 	t_stdstreams	stdstreams;
 	t_uint			pipes_count;
+	t_bool			ismem_error;
 	char			*home_path;
 	char			*here_document;
 	long long int	exit_status;
@@ -53,6 +56,10 @@ t_bool	file_exists(const char *filename);
 void	print_error(char *str, int errorcode);
 void	command_not_found(char *str, int errorcode);
 void	syntax_error(char *token);
+void	ft_malloc_error(t_minishell *minishell);
+t_bool	search_arg_ehandler(t_minishell *minishell, int isquotes, char **arg,
+	char *buf);
+void	dup_ehandler(t_minishell *minishell);
 // end region
 
 // region init
@@ -95,7 +102,8 @@ int		ft_redir(const char *filename, int o_flags, int s_flags, t_bool dir_type);
 void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc);
 void	save_path_to_bin(t_minishell *minishell, char *cmd_bin,
 					char **cmd_bin_out);
-void	make_path_to_bin(char *path, char *cmd_bin, char **cmd_bin_out);
+void	make_path_to_bin(t_minishell *minishell, char *path, char *cmd_bin,
+	char **cmd_bin_out);
 // end region
 
 // region history

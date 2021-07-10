@@ -24,7 +24,10 @@ char	*tilda_handler(t_minishell *minishell, char *str)
 		else
 			home_path = ft_strdup(minishell->home_path);
 		if (!home_path)
-			return (NULL); // error
+		{
+			ft_malloc_error(minishell);
+			return (NULL);
+		}
 	}
 	return (home_path);
 }

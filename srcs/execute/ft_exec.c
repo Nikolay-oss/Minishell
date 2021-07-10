@@ -1,12 +1,18 @@
 #include "minishell.h"
 #include <sys/wait.h>
 
-void	make_path_to_bin(char *path, char *cmd_bin, char **cmd_bin_out)
+void	make_path_to_bin(t_minishell *minishell, char *path, char *cmd_bin,
+	char **cmd_bin_out)
 {
 	char	*tmp;
 
 	tmp = ft_strjoin(path, "/");
 	*cmd_bin_out = ft_strjoin(tmp, cmd_bin);
+	if (!*cmd_bin_out)
+	{
+		ft_malloc_error(minishell);
+		return ;
+	}
 	free(tmp);
 }
 
@@ -17,6 +23,7 @@ void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
 	int		status;
 	char	**envp;
 
+	path_to_bin = NULL;
 	save_path_to_bin(minishell, *cmd, &path_to_bin);
 	if (!path_to_bin)
 		return ;

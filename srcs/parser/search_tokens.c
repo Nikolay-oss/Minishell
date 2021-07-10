@@ -18,14 +18,15 @@ t_uint	get_endquote_idx(char *buf, char type)
 	return (i);
 }
 
-static void	add_arg(t_minishell *minishell, char **arg, char *buf)
+t_bool	add_arg(t_minishell *minishell, char **arg, char *buf)
 {
 	if (!*arg && (!ft_strcmp(buf, "\"\"") || !ft_strcmp(buf, "''")))
 		*arg = ft_strdup("");
 	if (*arg)
 		ft_push_back(minishell->all_commands, *arg);
-	// else
-	// 	minishell->exit_status = errno;
+	else
+		return (0);
+	return (1);
 }
 
 static t_uint	search_arg(t_minishell *minishell, char *buf, char **arg)
@@ -49,9 +50,9 @@ static t_uint	search_arg(t_minishell *minishell, char *buf, char **arg)
 	}
 	chr_old = *(buf + len);
 	*(buf + len) = 0;
-	add_to_f_quotes(minishell, isquotes);
 	arg_handler(minishell, arg, buf, len);
-	add_arg(minishell, arg, buf);
+	if (!search_arg_ehandler(minishell, isquotes, arg, buf))
+		ft_malloc_error(minishell);
 	*(buf + len) = chr_old;
 	return (len);
 }
@@ -63,8 +64,10 @@ static t_uint	search_redirects(t_minishell *minishell, char *buf, char type)
 	i = 0;
 	if (*(buf + i + 1) == type)
 		i++;
-	add_command_to_allcommands(minishell, buf, ++i);
-	add_to_f_quotes(minishell, 0);
+	if (!add_command_to_allcommands(minishell, buf, ++i))
+		return (0);
+	if (!add_to_f_quotes(minishell, 0))
+		return (0);
 	return (i);
 }
 
@@ -86,9 +89,8 @@ t_uint	search_tokens(t_minishell *minishell, char *buf)
 	}
 	else if (*(buf + i) == '|')
 	{
-		add_command_to_allcommands(minishell, buf + i, 1);
-		add_to_f_quotes(minishell, 0);
-		i++;
+		if (!add_pipe_ehandler(minishell, buf + i++))
+			ft_malloc_error(minishell);
 		minishell->pipes_count++;
 	}
 	else

@@ -22,7 +22,7 @@ t_uint	skip_spaces(char *str)
 	return (i);
 }
 
-void	add_command_to_allcommands(t_minishell *minishell, char *buf, t_uint idx)
+t_bool	add_command_to_allcommands(t_minishell *minishell, char *buf, t_uint idx)
 {
 	char	*str_cmd;
 	char	chr_endcmd;
@@ -30,10 +30,11 @@ void	add_command_to_allcommands(t_minishell *minishell, char *buf, t_uint idx)
 	chr_endcmd = *(buf + idx);
 	*(buf + idx) = 0;
 	str_cmd = ft_strdup(buf);
-	if (!str_cmd)
-		return ; // error
 	*(buf + idx) = chr_endcmd;
+	if (!str_cmd)
+		return (0);
 	ft_push_back(minishell->all_commands, str_cmd);
+	return (1);
 }
 
 void	change_flag(t_bool *flag)

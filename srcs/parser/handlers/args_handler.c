@@ -71,7 +71,7 @@ void	arg_handler(t_minishell *minishell, char **arg, char *buf, t_uint len)
 		arg_handler_tool(buf, &i_end, &quote_type);
 		if (i_end > i_start)
 		{
-			p_quote = (buf + i_end);
+			p_quote = buf + i_end;
 			*(buf + i_end) = 0;
 			simple_arg_handler(minishell, arg, buf + i_start);
 			i_end += quote_handler(minishell, arg, buf + i_end, quote_type);

@@ -19,13 +19,17 @@ static t_uint	check_var(char *var, int *errorcode)
 	return (var_type);
 }
 
-static int	add_to_vars(t_list *vars, t_node **var_node, char *var)
+static int	add_to_vars(t_minishell *minishell, t_list *vars,
+	t_node **var_node, char *var)
 {
 	char	*new_var;
 
 	new_var = ft_strdup(var);
 	if (!new_var)
-		return (1);
+	{
+		ft_malloc_error(minishell);
+		return (errno);
+	}
 	if (var_node && *var_node)
 	{
 		free((*var_node)->content);
@@ -49,7 +53,7 @@ static char	*getvar_name(char *var, t_uint var_type)
 		name_size = (t_uint)(ft_strchr(var, '=') - var);
 		var_name = ft_substr(var, 0, name_size);
 		if (!var_name)
-			return (NULL); // error
+			return (NULL);
 	}
 	return (var_name);
 }
@@ -63,12 +67,16 @@ static int	add_var(t_minishell *minishell, char *var, t_uint var_type)
 	errorcode = 0;
 	var_name = getvar_name(var, var_type);
 	if (!var_name)
-		return (1);
+	{
+		ft_malloc_error(minishell);
+		return (errno);
+	}
+	if (!var_name)
 	envvar_node = getvar_node(minishell->env, var_name);
 	if (var_type == 1)
-		errorcode = add_to_vars(minishell->env, &envvar_node, var);
+		errorcode = add_to_vars(minishell, minishell->env, &envvar_node, var);
 	else if (var_type == 2)
-		errorcode = add_to_vars(minishell->env_secret, NULL, var);
+		errorcode = add_to_vars(minishell, minishell->env_secret, NULL, var);
 	return (errorcode);
 }
 
@@ -89,6 +97,8 @@ int	ft_export(t_minishell *minishell, char **vars)
 		{
 			if (add_var(minishell, *(vars + i), var_type) == 1)
 				errorcode = 1;
+			else if (minishell->ismem_error)
+				return (errno);
 		}
 		i++;
 	}
