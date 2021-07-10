@@ -3,7 +3,7 @@
 
 void	select_command(t_minishell *minishell, char **command)
 {
-	if (!*command)
+	if (!command)// || !*command)
 		return ;
 	if (!ft_strcmp(*command, "echo"))
 	{

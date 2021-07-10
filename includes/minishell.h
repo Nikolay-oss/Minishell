@@ -11,9 +11,11 @@
 //# include <stdlib.h>
 # include <limits.h> // It is allowed? use define from limits
 
-# define STDIN	0
-# define STDOUT	1
-# define STDER	2
+// ------to delete------
+// # define STDIN	0
+// # define STDOUT	1
+// # define STDER	2
+// ----------
 
 # define FPERMISSIONS 0666
 
@@ -47,6 +49,10 @@ typedef struct	s_signal
 	t_bool	sig_quit;
 }				t_signal;
 //end region
+
+// region shell_handler
+void	shell_handler(t_minishell *minishell);
+// end region
 
 // region file_exists
 t_bool	file_exists(const char *filename);
@@ -96,6 +102,8 @@ int		save_std_descriptors(t_stdstreams *stdstreams);
 int		revert_std_descriptors(t_stdstreams *stdstreams);
 char	**update_cmd_buf(char **cmd, int redir_pos);
 int		ft_redir(const char *filename, int o_flags, int s_flags, t_bool dir_type);
+void	redir_dual_input(t_minishell *minishell, t_commands *node_cmd,
+					t_bool *dual_redir);
 // end region
 
 // region execute
@@ -104,14 +112,6 @@ void	save_path_to_bin(t_minishell *minishell, char *cmd_bin,
 					char **cmd_bin_out);
 void	make_path_to_bin(t_minishell *minishell, char *path, char *cmd_bin,
 	char **cmd_bin_out);
-// end region
-
-// region history
-// typedef struct s_history
-// {
-// 	t_list	*history;
-// 	t_uint	max;
-// }			t_history;
 // end region
 
 #endif

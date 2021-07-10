@@ -44,7 +44,9 @@ static void	swap_nametovalue(t_minishell *minishell, t_list **str_parts)
 static t_uint	skip_varname(char *str, t_uint end)
 {
 	if (*(str + end) == '?')
+	{
 		end++;
+	}
 	else
 	{
 		while (ft_isalpha(*(str + end)))
@@ -57,23 +59,23 @@ static void	split_str_into_vars(t_list **str_parts, char *str)
 {
 	t_uint	start;
 	t_uint	end;
-	char	*var;
+	char	*p_var;
 	char	*str_part;
 
-	start = 0;
-	end = 0;
-	var = ft_strchr(str, '$');
-	while (var)
+	init_range(&start, &end, 0, 0);
+	p_var = ft_strchr(str, '$');
+	while (p_var)
 	{
-		start = (t_uint)(end + (var - (str + end)));
+		start = (t_uint)(end + (p_var - (str + end)));
 		str_part = ft_substr(str, end, start - end);
 		ft_push_back(*str_parts, check_memory(&str_part));
 		end = ++start;
 		end = skip_varname(str, end);
 		str_part = ft_substr(str, start - 1, end - (start - 1));
 		ft_push_back(*str_parts, check_memory(&str_part));
-		var = ft_strchr(++var, '$');
+		p_var = ft_strchr(++p_var, '$');
 	}
+	// вынести данный блок в отдельную функцию
 	if (*(str + end) && !ft_strchr(str + end, '$'))
 	{
 		str_part = ft_substr(str, end, (size_t)(ft_strchr(str + end, 0) - end));

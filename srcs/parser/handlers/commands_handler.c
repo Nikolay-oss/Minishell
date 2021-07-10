@@ -17,6 +17,8 @@ void	destroy_command_buf(char **command)
 	t_uint	i;
 
 	i = 0;
+	if (!command)
+		return ;
 	while (*(command + i))
 		free(*(command + i++));
 	free(command);
@@ -98,7 +100,7 @@ void	commands_handler(t_minishell *minishell)
 			flag_node = flag_node->next;
 		}
 	}
-	redir_handler(minishell, minishell->commands);
+	shell_handler(minishell);
 	/*
 		где-то тут должен быть обработчик пайпов
 	*/
