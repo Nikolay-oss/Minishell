@@ -33,11 +33,11 @@ static void	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos)
 	if (redir_pos >= 0)
 	{
 		cmd_new = update_cmd_buf(cmd, redir_pos);
-		select_command(minishell, cmd_new);
+		select_command(minishell, cmd_new, 1);
 		destroy_command_buf(cmd_new);
 	}
 	else
-		select_command(minishell, cmd);
+		select_command(minishell, cmd, 1);
 	if (file_exists(minishell->here_document))
 		unlink(minishell->here_document);
 }

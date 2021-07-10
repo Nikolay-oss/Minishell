@@ -47,7 +47,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 		}
 		close(fd[0]);
 //		close(fd[1]);
-		select_command(minishell, node->cmd);
+		select_command(minishell, node->cmd, 0);
 		exit(0);
 		}
 		else {

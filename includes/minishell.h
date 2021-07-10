@@ -75,7 +75,7 @@ void	init_env(t_list **env, char **envp);
 // end region
 
 // region commands
-void	select_command(t_minishell *minishell, char **command);
+void	select_command(t_minishell *minishell, char **command, t_bool newproc);
 void	destroy_command_buf(char **command);
 // region end
 

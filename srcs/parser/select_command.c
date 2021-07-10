@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include <stdio.h>
 
-void	select_command(t_minishell *minishell, char **command)
+void	select_command(t_minishell *minishell, char **command, t_bool newproc)
 {
 	if (!command)// || !*command)
 		return ;
@@ -34,5 +34,5 @@ void	select_command(t_minishell *minishell, char **command)
 		ft_exit(minishell, command);
 	}
 	else
-		ft_exec(minishell, command, 1);
+		ft_exec(minishell, command, newproc);
 }
