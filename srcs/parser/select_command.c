@@ -1,10 +1,10 @@
 #include "minishell.h"
 #include <stdio.h>
 
-void	select_command(t_minishell *minishell, char **command)
+int 	select_command(t_minishell *minishell, char **command)
 {
 	if (!*command)
-		return ;
+		return (-2);
 	if (!ft_strcmp(*command, "echo"))
 	{
 		ft_echo(command + 1);
@@ -36,7 +36,8 @@ void	select_command(t_minishell *minishell, char **command)
 	else
 	{
 //		char* argv[] = { "cat", "Makefile",   NULL };
-		ft_exec(minishell->env, command);
+		 if (ft_exec(minishell->env, command) == -1)
+			 return (-1);
 //		printf("%s: command not found\n", *command);
 	}
 }

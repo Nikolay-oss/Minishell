@@ -1,7 +1,7 @@
 #include "ft_parser.h"
 
 
-void	ft_exec(t_list *env, char **arv)
+int	ft_exec(t_list *env, char **arv)
 {
 	int		result;
 	int		status;
@@ -34,9 +34,11 @@ void	ft_exec(t_list *env, char **arv)
 //			printf("result $?:%d\n", result);
 		}
 //	exit(0);
+//		if (result == -1)
+//			printf("%s: command not found\n", *arv);
 		if (result == -1)
-			printf("%s: command not found\n", *arv);
-//		printf("result $?234234234:%d\n", 123);
+			return (-1);
+		//		printf("result $?234234234:%d\n", 123);
 //		printf("result $?:%d\n", result);
 		destroy_command_buf(path_arr);
 		exit(0);

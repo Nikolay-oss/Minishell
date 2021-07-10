@@ -12,7 +12,7 @@
 
 #include "ft_parser.h"
 
-// #define DEBUG
+ #define DEBUG
 
 /*
 	Примерный алгоритм:
