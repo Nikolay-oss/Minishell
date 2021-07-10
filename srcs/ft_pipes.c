@@ -47,9 +47,10 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 		}
 		close(fd[0]);
 		select_command(minishell, node->cmd, 0);
-		exit(0);
+		exit((int)minishell->exit_status);
 		}
-		else {
+		else
+		{
 		//// parent process
 		close(fd[1]);
 		fd_old = fd[0];
