@@ -71,7 +71,7 @@ static t_bool	launch_redirs(t_minishell *minishell, t_commands *node_cmd,
 	i = 0;
 	while (*(node_cmd->cmd + i))
 	{
-		if (!redir_handler_utils(minishell, node_cmd->cmd, i, &redir_pos))
+		if (!redir_handler_utils(minishell, node_cmd->cmd, i, redir_pos))
 			return (0);
 		i++;
 	}

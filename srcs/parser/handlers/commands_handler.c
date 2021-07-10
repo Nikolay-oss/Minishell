@@ -105,6 +105,6 @@ void	commands_handler(t_minishell *minishell)
 		где-то тут должен быть обработчик пайпов
 	*/
 //	minishell->flag = 0;
-	ft_pipes(minishell, minishell->commands, 0);
+	
 //	exec_pipeline(minishell, minishell->commands, 0, STDIN_FILENO);
 }
