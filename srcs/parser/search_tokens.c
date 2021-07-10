@@ -21,11 +21,13 @@ t_uint	get_endquote_idx(char *buf, char type)
 t_bool	add_arg(t_minishell *minishell, char **arg, char *buf)
 {
 	if (!*arg && (!ft_strcmp(buf, "\"\"") || !ft_strcmp(buf, "''")))
+	{
 		*arg = ft_strdup("");
+		if (!*arg)
+			return (0);
+	}
 	if (*arg)
 		ft_push_back(minishell->all_commands, *arg);
-	else
-		return (0);
 	return (1);
 }
 
