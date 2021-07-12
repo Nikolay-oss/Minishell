@@ -18,7 +18,7 @@ t_uint	get_endquote_idx(char *buf, char type)
 	return (i);
 }
 
-t_bool	add_arg(t_minishell *minishell, char **arg, char *buf)
+int	add_arg(t_minishell *minishell, char **arg, char *buf)
 {
 	if (!*arg && (!ft_strcmp(buf, "\"\"") || !ft_strcmp(buf, "''")))
 	{
@@ -26,7 +26,13 @@ t_bool	add_arg(t_minishell *minishell, char **arg, char *buf)
 		if (!*arg)
 			return (0);
 	}
-	if (*arg)
+	if (*arg && !**arg)
+	{
+		if (!minishell->ismem_error)
+			minishell->exit_status = 0;
+		return (2);
+	}
+	else if (*arg)
 		ft_push_back(minishell->all_commands, *arg);
 	return (1);
 }

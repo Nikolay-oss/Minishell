@@ -56,7 +56,7 @@ void	ft_parser(t_minishell *minishell, char *buf)
 			break ;
 		}
 	}
-	if (i > 0)
+	if (i > 0 && minishell->all_commands->size > 0)
 	{
 		if (!analyzer(minishell))
 			commands_handler(minishell);

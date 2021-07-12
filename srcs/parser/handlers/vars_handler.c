@@ -40,14 +40,25 @@ static void	swap_nametovalue(t_minishell *minishell, t_list **str_parts)
 
 static t_uint	skip_varname(char *str, t_uint end)
 {
+	t_bool	num_flag;
+
 	if (*(str + end) == '?')
 	{
 		end++;
 	}
 	else
 	{
-		while (ft_isalpha(*(str + end)) || *(str + end) == '_')
+		num_flag = 0;
+		while (*(str + end))
+		{
+			if (ft_isalpha(*(str + end)) || *(str + end) == '_')
+				num_flag = 1;
+			else if (!num_flag && ft_isdigit(*(str + end)))
+				return (++end);
+			else if (!ft_isalnum(*(str + end)) && *(str + end) != '_')
+				return (end);
 			end++;
+		}
 	}
 	return (end);
 }

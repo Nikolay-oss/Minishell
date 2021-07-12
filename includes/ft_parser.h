@@ -16,7 +16,7 @@
 
 void	ft_parser(t_minishell *minishell, char *buf);
 t_bool	add_to_f_quotes(t_minishell *minishell, int flag);
-t_bool	add_arg(t_minishell *minishell, char **arg, char *buf);
+int		add_arg(t_minishell *minishell, char **arg, char *buf);
 t_bool	add_pipe_ehandler(t_minishell *minishell, char *buf);
 
 // region commands_handler

@@ -3,9 +3,14 @@
 t_bool	search_arg_ehandler(t_minishell *minishell, int isquotes, char **arg,
 	char *buf)
 {
-	if (!add_to_f_quotes(minishell, isquotes))
+	int	status;
+
+	status = add_arg(minishell, arg, buf);
+	if (status == 2)
+		return (1);
+	else if (!status)
 		return (0);
-	if (!add_arg(minishell, arg, buf))
+	if (!add_to_f_quotes(minishell, isquotes))
 		return (0);
 	return (1);
 }
