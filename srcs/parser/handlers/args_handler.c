@@ -1,6 +1,8 @@
 #include "ft_parser.h"
 
-static void	add_to_arg(char **arg, char *new_arg)
+#define MAXLEN 4096
+
+static void	add_to_arg(t_minishell *minishell, char **arg, char *new_arg)
 {
 	char	*tmp;
 
@@ -13,21 +15,32 @@ static void	add_to_arg(char **arg, char *new_arg)
 	else
 		*arg = ft_strdup(new_arg);
 	if (!*arg)
-		; // error
+		ft_malloc_error(minishell);
 }
 
 static void	simple_arg_handler(t_minishell *minishell, char **arg, char *buf)
 {
 	char	*new_arg;
 
-	new_arg = get_str_withvars(minishell, buf);
+	if (minishell->all_commands->tail
+		&& *(int *)minishell->f_quotes->tail->content == 0
+		&& !ft_strcmp("<<", (char *)minishell->all_commands->tail->content))
+	{
+		new_arg = NULL;
+	}
+	else
+	{
+		new_arg = get_str_withvars(minishell, buf);
+	}
+	if (minishell->ismem_error)
+		return ;
 	if (new_arg)
 	{
-		add_to_arg(arg, new_arg);
+		add_to_arg(minishell, arg, new_arg);
 		free(new_arg);
 	}
 	else
-		add_to_arg(arg, buf);
+		add_to_arg(minishell, arg, buf);
 }
 
 static t_uint	quote_handler(t_minishell *minishell, char **arg, char *buf, char type)
@@ -35,6 +48,8 @@ static t_uint	quote_handler(t_minishell *minishell, char **arg, char *buf, char 
 	t_uint	i;
 	char	chr_old;
 
+	if (minishell->ismem_error)
+		return (MAXLEN);
 	i = get_endquote_idx(buf, type);
 	if (i > 0)
 	{
@@ -43,11 +58,13 @@ static t_uint	quote_handler(t_minishell *minishell, char **arg, char *buf, char 
 		if (type == '\"')
 			simple_arg_handler(minishell, arg, buf);
 		else
-			add_to_arg(arg, buf);
+			add_to_arg(minishell, arg, buf);
 		*(buf + i) = chr_old;
 	}
 	if (*(buf + i) == type)
 		i++;
+	if (minishell->ismem_error)
+		return (MAXLEN);
 	return (i);
 }
 

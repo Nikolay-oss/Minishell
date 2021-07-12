@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <sys/wait.h>
 
 void	ft_delay(int count)
 {
@@ -80,6 +81,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 		close(fd[1]);
 //		close(fd_old);
 		waitpid(pid, &status, 0);
+		minishell->exit_status = WEXITSTATUS(status);
 //	exit(0);
 //		else if (node == NULL)
 //		{

@@ -69,8 +69,7 @@ static void	check_filenames(t_minishell *minishell, char *cmd_bin,
 	}
 	if (minishell->exit_status == 0)
 		make_path_to_bin(minishell, *(paths + i), cmd_bin, cmd_bin_out);
-	else
-		command_not_found(cmd_bin, minishell->exit_status);
+	command_not_found(cmd_bin, minishell->exit_status);
 }
 
 static void	search_bin_file(t_minishell *minishell, char *cmd_bin,
@@ -79,7 +78,9 @@ static void	search_bin_file(t_minishell *minishell, char *cmd_bin,
 	char	*path_var;
 	char	**paths;
 
-	path_var = getvar_value(minishell->env, "PATH");
+	path_var = getvar_value(minishell, minishell->env, "PATH");
+	if (minishell->ismem_error)
+		return ;
 	if (path_var)
 	{
 		paths = ft_split(path_var, ':');
@@ -90,7 +91,7 @@ static void	search_bin_file(t_minishell *minishell, char *cmd_bin,
 			return ;
 		}
 		check_filenames(minishell, cmd_bin, cmd_bin_out, paths);
-		destroy_command_buf(paths);
+		destroy_arr2d(paths);
 		free(path_var);
 	}
 	else

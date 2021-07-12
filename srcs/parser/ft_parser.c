@@ -12,8 +12,6 @@
 
 #include "ft_parser.h"
 
-#define DEBUG
-
 t_bool	add_to_f_quotes(t_minishell *minishell, int flag)
 {
 	int	*flag_copy;
@@ -29,18 +27,25 @@ t_bool	add_to_f_quotes(t_minishell *minishell, int flag)
 	return (1);
 }
 
-void	ft_parser(t_minishell *minishell, char *buf)
+static t_bool	init_parser_tools(t_minishell *minishell)
 {
-	t_uint	i;
-
 	minishell->all_commands = ft_create_lst();
 	minishell->f_quotes = ft_create_lst();
 	minishell->pipes_count = 0;
 	if (!minishell->all_commands || !minishell->f_quotes)
 	{
 		ft_malloc_error(minishell);
-		return ;
+		return (0);
 	}
+	return (1);
+}
+
+void	ft_parser(t_minishell *minishell, char *buf)
+{
+	t_uint	i;
+
+	if (!init_parser_tools(minishell))
+		return ;
 	i = 0;
 	while (*(buf + i))
 	{
@@ -56,23 +61,7 @@ void	ft_parser(t_minishell *minishell, char *buf)
 		if (!analyzer(minishell))
 			commands_handler(minishell);
 	}
-	#ifndef DEBUG
-		t_node	*cur_cmd = minishell->all_commands->head;
-		t_node	*f = minishell->f_quotes->head;
-		t_uint	j = 0;
-
-		while (j < minishell->all_commands->size && cur_cmd && j < minishell->f_quotes->size)
-		{
-			if ((char *)cur_cmd->content)
-				printf("%s\t", (char *)cur_cmd->content);
-			if ((int *)f->content)
-				printf("%d\n", *(int *)f->content);
-			j++;
-			cur_cmd = cur_cmd->next;
-			f = f->next;
-		}
-	#endif
-	destroy_command_list(&minishell->commands, &destroy_command_buf);
-	ft_lst_clear(minishell->all_commands, &free);
-	ft_lst_clear(minishell->f_quotes, &free);
+	destroy_command_list(&minishell->commands, &destroy_arr2d);
+	ft_lst_clear(&minishell->all_commands, &free);
+	ft_lst_clear(&minishell->f_quotes, &free);
 }

@@ -1,26 +1,26 @@
 #include "minishell.h"
 #include <fcntl.h>
 
-int	save_std_descriptors(t_stdstreams *stdstreams)
+t_bool	save_std_descriptors(t_stdstreams *stdstreams)
 {
 	stdstreams->std_in = dup(STDIN_FILENO);
 	if (stdstreams->std_in < 0)
-		return (1);
+		return (0);
 	stdstreams->std_out = dup(STDOUT_FILENO);
 	if (stdstreams->std_out < 0)
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 
-int	revert_std_descriptors(t_stdstreams *stdstreams)
+t_bool	revert_std_descriptors(t_stdstreams *stdstreams)
 {
 	if (dup2(stdstreams->std_in, STDIN_FILENO) < 0)
-		return (1);
+		return (0);
 	close(stdstreams->std_in);
 	if (dup2(stdstreams->std_out, STDOUT_FILENO) < 0)
-		return (1);
+		return (0);
 	close(stdstreams->std_out);
-	return (0);
+	return (1);
 }
 
 int	ft_redir(const char *filename, int o_flags, int s_flags, t_bool dir_type)

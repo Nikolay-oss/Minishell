@@ -2,31 +2,22 @@
 #include "readline/readline.h"
 #include <fcntl.h>
 
-// static int	swap_fd(t_stdstreams *streams1, t_stdstreams *streams2)
-// {
-// 	if (save_std_descriptors(streams1) == 1)
-// 		return (errno);
-// 	if (revert_std_descriptors(streams2) == 1)
-// 		return (errno);
-// 	return (0);
-// }
-
-static void	substitute_vars(t_minishell *minishell, char **line)
+static t_bool	substitute_vars(t_minishell *minishell, char **line)
 {
 	char	*tmp;
 
-	if (!**line)
-		return ;
 	tmp = *line;
 	*line = get_str_withvars(minishell, *line);
 	free(tmp);
+	if (minishell->ismem_error)
+		return (0);
+	return (1);
 }
 
-static int	save_to_heredoc(t_minishell *minishell, const char *stop_value,
+static t_bool	save_to_heredoc(t_minishell *minishell, const char *stop_value,
 	int f_quotes, int fd)
 {
-	t_stdstreams	fd_cur;
-	char			*line;
+	char	*line;
 
 	while (1)
 	{
@@ -34,55 +25,73 @@ static int	save_to_heredoc(t_minishell *minishell, const char *stop_value,
 		if (!line)
 			break ;
 		if (!ft_strcmp(line, stop_value))
+		{
+			free(line);
 			break ;
-		if (!f_quotes)
-			substitute_vars(minishell, &line);
+		}
+		if (!f_quotes && *line)
+		{
+			if (!substitute_vars(minishell, &line))
+				return (0);
+		}
 		ft_putendl_fd(line, fd);
+		free(line);
 	}
-	return (0);
+	return (1);
 }
 
-int	redir2_input(t_minishell *minishell, const char *stop_value,
-	int f_quotes)
+t_bool	redir2_input(t_minishell *minishell, const char *stop_value,
+	int f_quotes, const char *filename)
 {
-	int	fd;
-	int	ret;
+	int		fd;
+	t_bool	ret;
 
-	ret = 0;
-	fd = open(minishell->here_document, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	ret = 1;
+	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd < 0)
-		return (1);
+	{
+		minishell->exit_status = errno;
+		print_error((char *)filename, errno);
+		return (0);
+	}
 	ret = save_to_heredoc(minishell, stop_value, f_quotes, fd);
 	close(fd);
 	return (ret);
 }
 
-void	redir_dual_input(t_minishell *minishell, t_commands *node_cmd,
-	t_bool *dual_redir)
+t_bool	redir_dual_input(t_minishell *minishell, t_commands *node_cmd,
+	const char *filename)
 {
 	t_uint	i;
 	int		status;
 
 	i = 0;
+	status = 1;
+	if (!filename)
+		return (status);
 	while (*(node_cmd->cmd + i))
 	{
-		if (!ft_strcmp("<<", *(node_cmd->cmd + i)))
+		if (!ft_strcmp("<<", *(node_cmd->cmd + i))
+			&& !*(node_cmd->flags_quotes + i))
 		{
-			*dual_redir = 1;
-			minishell->exit_status = redir2_input(minishell,
-				*(node_cmd->cmd + i + 1), *(node_cmd->flags_quotes + i + 1));
+			status = redir2_input(minishell, *(node_cmd->cmd + i + 1),
+				*(node_cmd->flags_quotes + i + 1), filename);
+			if (!status)
+				return (0);
 		}
 		i++;
 	}
+	return (status);
 }
 
-char	**update_cmd_buf(char **cmd, int redir_pos)
+t_bool	update_cmd_buf(char **cmd, int redir_pos, char ***cmd_new)
 {
 	t_list	*cmd_buf;
-	char	**cmd_new;
 	t_uint	i;
 
 	cmd_buf = ft_create_lst();
+	if (!cmd_buf)
+		return (0);
 	i = 0;
 	while (i < redir_pos)
 		ft_push_back(cmd_buf, *(cmd + i++));
@@ -95,7 +104,9 @@ char	**update_cmd_buf(char **cmd, int redir_pos)
 		if (*(cmd + i))
 			i++;
 	}
-	cmd_new = ft_lst_to_strs(cmd_buf);
-	ft_lst_clear(cmd_buf, NULL);
-	return (cmd_new);
+	*cmd_new = ft_lst_to_strs(cmd_buf);
+	ft_lst_clear(&cmd_buf, NULL);
+	if (!*cmd_new && cmd_buf->size != 0)
+		return (0);
+	return (1);
 }
