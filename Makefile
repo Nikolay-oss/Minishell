@@ -39,7 +39,7 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 			  $(ERROR_DIR)error_msgs.c				$(EXEC_DIR)save_path_to_bin.c \
 			  $(ANALYZ_DIR)syn_analyzer.c			$(BUILTINS_DIR)ft_export_utils.c \
 			  $(PARSER_DIR)var_parser.c				$(ERROR_DIR)errors_handlers.c \
-			  $(SRCS_DIR)shell_handler.c			$(SHELL_DIR)ft_pipes.c \
+			  $(SHELL_DIR)shell_handler.c			$(SHELL_DIR)ft_pipes.c \
 			  $(REDIR_DIR)heredocs_handler.c		$(SHELL_DIR)init_shell.c \
 			  $(SHELL_DIR)destroy_shell.c
 
