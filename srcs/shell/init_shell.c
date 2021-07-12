@@ -31,7 +31,7 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 	signals.sig_int = 0; // 3
 	signals.sig_quit = 0; // 4
 	minishell->home_path = getvar_value(minishell, minishell->env, "HOME");
-	if (!check_memory(minishell, (void *)minishell->home_path))
+	if (minishell->ismem_error)
 		return (0);
 	minishell->env_secret = ft_create_lst();
 	if (!check_memory(minishell, (void *)minishell->env_secret))

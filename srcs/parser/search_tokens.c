@@ -82,13 +82,13 @@ t_uint	search_tokens(t_minishell *minishell, char *buf)
 	i = skip_spaces(buf);
 	if (*(buf + i) == '>' || *(buf + i) == '<')
 		i += search_redirects(minishell, buf + i, *(buf + i));
-	else if (*(buf + i) == '~')
-	{
-		arg = tilda_handler(minishell, buf + i);
-		if (arg)
-			i++;
-		i += search_arg(minishell, buf + i, &arg);
-	}
+	// else if (*(buf + i) == '~')
+	// {
+	// 	arg = tilda_handler(minishell, buf + i);
+	// 	if (arg)
+	// 		i++;
+	// 	i += search_arg(minishell, buf + i, &arg);
+	// }
 	else if (*(buf + i) == '|')
 	{
 		if (!add_pipe_ehandler(minishell, buf + i++))

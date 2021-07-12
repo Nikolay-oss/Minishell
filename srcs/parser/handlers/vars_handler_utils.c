@@ -21,6 +21,8 @@ char	*tilda_handler(t_minishell *minishell, char *str)
 	char	*home_path;
 	t_uint	i;
 
+	if (!minishell->home_path)
+		return (ft_strdup(""));
 	home_path = NULL;
 	i = 0;
 	if (*str == '=')
