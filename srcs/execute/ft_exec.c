@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:24 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 22:20:04 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/13 22:24:13 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static t_bool	check_envp(t_minishell *minishell, char **envp, char **path)
 void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
 {
 	char	*path_to_bin;
-	pid_t	pid;
 	int		status;
 	char	**envp;
 
@@ -60,11 +59,11 @@ void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
 		return ;
 	if (create_proc)
 	{
-		pid = fork();
-		if (pid == 0)
+		signals.pid = fork();
+		if (signals.pid == 0)
 			execve(path_to_bin, cmd, envp);
 		else
-			waitpid(pid, &status, 0);
+			waitpid(signals.pid, &status, 0);
 		minishell->exit_status = WEXITSTATUS(status);
 	}
 	else
