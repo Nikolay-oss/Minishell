@@ -16,7 +16,7 @@
 
 void	ft_parser(t_minishell *minishell, char *buf);
 t_bool	add_to_f_quotes(t_minishell *minishell, int flag);
-t_bool	add_arg(t_minishell *minishell, char **arg, char *buf);
+int		add_arg(t_minishell *minishell, char **arg, char *buf);
 t_bool	add_pipe_ehandler(t_minishell *minishell, char *buf);
 
 // region commands_handler
@@ -29,9 +29,10 @@ t_bool	analyzer(t_minishell *minishell);
 
 // region utils
 t_uint	skip_spaces(char *str);
-t_bool	add_command_to_allcommands(t_minishell *minishell, char *buf, t_uint idx);
+t_bool	add_command_to_allcommands(t_minishell *minishell, char *buf,
+					t_uint idx);
 void	change_flag(t_bool *flag);
-char	*check_memory(char **str);
+t_bool	check_memory(t_minishell *minishell, void *str);
 void	init_range(t_uint *start, t_uint *end, t_uint s_val, t_uint e_val);
 // end region
 
@@ -45,9 +46,12 @@ void	arg_handler(t_minishell *minishell, char **arg, char *buf, t_uint len);
 // end region
 
 // region vars_handler
+void	init_vars_in_split_into_vars(char **str, t_uint *start, t_uint *end);
 char	*get_str_withvars(t_minishell *minishell, char *str);
-void	search_var_value(t_minishell *minishell, char **var, t_node *node);
+t_bool	search_var_value(t_minishell *minishell, char **var, t_node *node);
 char	*tilda_handler(t_minishell *minishell, char *str);
+void	check_last_var(t_minishell *minishell, t_list **str_parts, char *str,
+					t_uint end);
 // end region
 
 // region check_tokens

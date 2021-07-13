@@ -6,6 +6,11 @@ void	make_path_to_bin(t_minishell *minishell, char *path, char *cmd_bin,
 {
 	char	*tmp;
 
+	if (!path)
+	{
+		minishell->exit_status = 127;
+		return ;
+	}
 	tmp = ft_strjoin(path, "/");
 	*cmd_bin_out = ft_strjoin(tmp, cmd_bin);
 	if (!*cmd_bin_out)
@@ -14,6 +19,17 @@ void	make_path_to_bin(t_minishell *minishell, char *path, char *cmd_bin,
 		return ;
 	}
 	free(tmp);
+}
+
+static t_bool	check_envp(t_minishell *minishell, char **envp, char **path)
+{
+	if (!envp)
+	{
+		free(*path);
+		ft_malloc_error(minishell);
+		return (0);
+	}
+	return (1);
 }
 
 void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
@@ -28,6 +44,8 @@ void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
 	if (!path_to_bin)
 		return ;
 	envp = ft_lst_to_strs(minishell->env);
+	if (!check_envp(minishell, envp, &path_to_bin))
+		return ;
 	if (create_proc)
 	{
 		pid = fork();
@@ -39,5 +57,6 @@ void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
 	}
 	else
 		execve(path_to_bin, cmd, envp);
+	destroy_arr2d(envp);
 	free(path_to_bin);
 }

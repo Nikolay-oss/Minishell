@@ -26,20 +26,22 @@ static int	select_redirect(t_minishell *minishell, char *redir,
 	return (status);
 }
 
-static void	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos)
+static t_bool	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos,
+	t_bool newproc)
 {
 	char	**cmd_new;
 
+	cmd_new = NULL;
 	if (redir_pos >= 0)
 	{
-		cmd_new = update_cmd_buf(cmd, redir_pos);
-		select_command(minishell, cmd_new, 1);
-		destroy_command_buf(cmd_new);
+		if (!update_cmd_buf(cmd, redir_pos, &cmd_new))
+			return (0);
+		select_command(minishell, cmd_new, newproc);
+		destroy_arr2d(cmd_new);
 	}
 	else
-		select_command(minishell, cmd, 1);
-	if (file_exists(minishell->here_document))
-		unlink(minishell->here_document);
+		select_command(minishell, cmd, newproc);
+	return (1);
 }
 
 static t_bool	redir_handler_utils(t_minishell *minishell, char **cmd,
@@ -78,25 +80,32 @@ static t_bool	launch_redirs(t_minishell *minishell, t_commands *node_cmd,
 	return (1);
 }
 
-void	redir_handler(t_minishell *minishell, t_commands *node_cmd)
+t_bool	redir_handler(t_minishell *minishell, t_commands *node_cmd, int n_proc,
+	t_bool newproc)
 {
-	int		redir_pos;
-	t_bool	dual_redir;
+	int		r_pos;
+	t_bool	status;
 
-	redir_pos = -1;
-	if (save_std_descriptors(&minishell->stdstreams))
+	r_pos = -1;
+	status = 1;
+	if (!save_std_descriptors(&minishell->stdstreams))
 	{
 		dup_ehandler(minishell);
-		return ;
+		return (0);
 	}
-	dual_redir = 0;
-	// redir_dual_input(minishell, node_cmd, &dual_redir);
-	if (launch_redirs(minishell, node_cmd, &redir_pos))
+	if (launch_redirs(minishell, node_cmd, &r_pos))
 	{
-		if (dual_redir)
-			minishell->exit_status = ft_redir(minishell->here_document, O_RDONLY, 0, 0);
-		exec_cmd(minishell, node_cmd->cmd, redir_pos);
+		if (!launch_dual_redir(minishell, n_proc))
+			status = 0;
+		if (status == 1 && !exec_cmd(minishell, node_cmd->cmd, r_pos, newproc))
+			status = 0;
 	}
-	if (revert_std_descriptors(&minishell->stdstreams))
+	else
+		status = 0;
+	if (!revert_std_descriptors(&minishell->stdstreams))
+	{
+		status = 0;
 		dup_ehandler(minishell);
+	}
+	return (status);
 }

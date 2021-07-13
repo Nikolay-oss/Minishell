@@ -29,7 +29,7 @@ t_node	*getvar_node(t_list *vars, const char *var_name)
 	return (NULL);
 }
 
-char	*getvar_value(t_list *vars, const char *var_name)
+char	*getvar_value(t_minishell *shell, t_list *vars, const char *var_name)
 {
 	t_node	*node_var;
 	char	*var_value;
@@ -39,27 +39,8 @@ char	*getvar_value(t_list *vars, const char *var_name)
 		return (NULL);
 	var_value = ft_strdup(ft_strchr(node_var->content, '=') + 1);
 	if (!var_value)
-		return (NULL); // error
+		ft_malloc_error(shell);
 	return (var_value);
-}
-
-void	init_env(t_list **env, char **envp)
-{
-	t_uint	i;
-	char	*env_variable;
-
-	*env = ft_create_lst();
-	if (!*env)
-		; // error
-	i = 0;
-	while (*(envp + i))
-	{
-		env_variable = ft_strdup(*(envp + i));
-		if (!env_variable)
-			; // errror
-		ft_push_back(*env, env_variable);
-		i++;
-	}
 }
 
 int	ft_env(t_list *env)

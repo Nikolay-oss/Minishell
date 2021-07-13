@@ -12,7 +12,7 @@
 
 #include "ft_parser.h"
 
-void	destroy_command_buf(char **command)
+void	destroy_arr2d(char **command)
 {
 	t_uint	i;
 
@@ -65,7 +65,7 @@ static char	**create_command_buf(t_minishell *minishell, t_node **cmd_node,
 		*(*flags + i) = *(int *)(*f_node)->content;
 		if (!*(cmd + i))
 		{
-			destroy_command_buf(cmd);
+			destroy_arr2d(cmd);
 			return (NULL);
 		}
 		*cmd_node = (*cmd_node)->next;
@@ -101,10 +101,4 @@ void	commands_handler(t_minishell *minishell)
 		}
 	}
 	shell_handler(minishell);
-	/*
-		где-то тут должен быть обработчик пайпов
-	*/
-//	minishell->flag = 0;
-	
-//	exec_pipeline(minishell, minishell->commands, 0, STDIN_FILENO);
 }

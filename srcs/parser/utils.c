@@ -45,11 +45,14 @@ void	change_flag(t_bool *flag)
 		*flag = 1;
 }
 
-char	*check_memory(char **str)
+t_bool	check_memory(t_minishell *minishell, void *str)
 {
-	if (!*str)
-		; // error
-	return (*str);
+	if (!str)
+	{
+		ft_malloc_error(minishell);
+		return (0);
+	}
+	return (1);
 }
 
 void	init_range(t_uint *start, t_uint *end, t_uint s_val, t_uint e_val)

@@ -40,39 +40,21 @@ static int	add_to_vars(t_minishell *minishell, t_list *vars,
 	return (0);
 }
 
-static char	*getvar_name(char *var, t_uint var_type)
-{
-	char	*var_name;
-	t_uint	name_size;
-
-	name_size = 0;
-	if (var_type == 2)
-		var_name = var;
-	else
-	{
-		name_size = (t_uint)(ft_strchr(var, '=') - var);
-		var_name = ft_substr(var, 0, name_size);
-		if (!var_name)
-			return (NULL);
-	}
-	return (var_name);
-}
-
 static int	add_var(t_minishell *minishell, char *var, t_uint var_type)
 {
 	t_node	*envvar_node;
-	char	*var_name;
 	int		errorcode;
+	char	*p_equal;
 
 	errorcode = 0;
-	var_name = getvar_name(var, var_type);
-	if (!var_name)
-	{
-		ft_malloc_error(minishell);
-		return (errno);
-	}
-	if (!var_name)
-	envvar_node = getvar_node(minishell->env, var_name);
+	p_equal = ft_strchr(var, '=');
+	if (p_equal)
+		*p_equal = 0;
+	if (!ft_strcmp(var, "_"))
+		return (errorcode);
+	envvar_node = getvar_node(minishell->env, var);
+	if (p_equal)
+		*p_equal = '=';
 	if (var_type == 1)
 		errorcode = add_to_vars(minishell, minishell->env, &envvar_node, var);
 	else if (var_type == 2)

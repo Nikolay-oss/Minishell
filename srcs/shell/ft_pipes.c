@@ -7,14 +7,9 @@ void	ft_delay(int count)
 		count--;
 }
 
-//void	ft_child_prcs()
-//{
-//
-//}
-
 void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 {
-	int			fd[2];
+	int			fd[2]; //0 - read; 1 - write
 	int			status;
 	pid_t		pid;
 
@@ -26,7 +21,6 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 		printf("bash: pipe: %s\n", strerror(errno));
 		return ;
 	}
-	minishell->cnt_prcs++;
 	pid = fork();
 	ft_delay(2000000);
 	if (pid < 0)
@@ -37,6 +31,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 	}
 	if (pid == 0)
 	{
+		//// child process
 		if (dup2(fd_old, STDIN_FILENO) == -1)
 		{
 			printf("bash: dup2: %s\n", strerror(errno));
@@ -53,17 +48,19 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 		close(fd[0]);
 		select_command(minishell, node->cmd, 0);
 		exit((int)minishell->exit_status);
-	}
-	else
-	{
+		}
+		else
+		{
+		//// parent process
 		close(fd[1]);
 		fd_old = fd[0];
-	}
-	node = node->next;
-	ft_pipes(minishell, node, fd_old);
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid, &status, 0);
-	if (node == NULL)
-		minishell->exit_status = WEXITSTATUS(status);
+//		minishell->exit_status = status;
+		}
+		node = node->next;
+		ft_pipes(minishell, node, fd_old);
+		close(fd[0]);
+		close(fd[1]);
+		waitpid(pid, &status, 0);
+		if (node == NULL)
+			minishell->exit_status = WIFEXITED(status);
 }

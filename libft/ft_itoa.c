@@ -36,7 +36,7 @@ char	*ft_itoa(int n)
 
 	size = init_size(n);
 	num = n;
-	str = (char *)ft_calloc(size + 1, 1);
+	str = (char *)ft_calloc(size + 1, sizeof(char));
 	if (!str)
 		return (str);
 	if (num < 0)
@@ -48,7 +48,7 @@ char	*ft_itoa(int n)
 	{
 		*(str + --size) = (num % 10) + '0';
 		num /= 10;
-		if (*(str + size - 1) == '-' && size == 1)
+		if (size == 1 && *(str + size - 1) == '-')
 			break ;
 	}
 	return (str);

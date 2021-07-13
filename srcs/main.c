@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include <signal.h>
-// #include <termios.h>
-
 #include "ft_parser.h"
 
 #include "readline/readline.h"
@@ -25,6 +23,7 @@ t_signal	signals;
 
 void	rl_replace_line();
 
+// засунь обработчики сигналов в отдельный файл
 void	ft_handler(int sig)
 {
 	signals.sig_int = 1;
@@ -35,28 +34,11 @@ void	ft_handler(int sig)
 	rl_redisplay();
 }
 
-int	main(int ac, char **av, char **envp)
+static void	ft_loop(t_minishell *minishell)
 {
-	char		*buf;
-	t_minishell	*minishell;
-	int			status;
-	// struct termios	term;
+	char	*buf;
 
-	(void)ac;
-	(void)av;
 	buf = NULL;
-	minishell = ft_calloc(1, sizeof(t_minishell));
-	if (!minishell)
-		return (errno);
-	init_env(&minishell->env, envp); // в инит лучше передавать указаьтель на минишелл
-	minishell->exit_status = (long long int)NULL; // 1
-	minishell->home_path = (char *)NULL; // 2
-	signals.sig_int = 0; // 3
-	signals.sig_quit = 0; // 4
-	minishell->home_path = getvar_value(minishell->env, "HOME");
-	minishell->here_document = ft_strdup(".here-document");
-	minishell->env_secret = ft_create_lst();
-	signal(SIGINT, &ft_handler);
 	while (1)
 	{
 		minishell->ismem_error = 0;
@@ -67,12 +49,27 @@ int	main(int ac, char **av, char **envp)
 		ft_parser(minishell, buf);
 		free(buf);
 	}
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_minishell	*minishell;
+	int			status;
+
+	(void)ac;
+	(void)av;
+	minishell = ft_calloc(1, sizeof(t_minishell));
+	if (!minishell)
+	{
+		ft_putendl_fd(strerror(errno), 2);
+		return (errno);
+	}
+	if (!init_shell(minishell, envp))
+		return ((int)minishell->exit_status);
+	signal(SIGINT, &ft_handler);
+	ft_loop(minishell);
 	status = minishell->exit_status;
-	ft_lst_clear(minishell->env, &free);
-	ft_lst_clear(minishell->env_secret, &free);
-	free(minishell->home_path);
-	free(minishell->here_document);
-	free(minishell);
+	destroy_shell(minishell);
 	write(1, "exit\n", 5);
 	return (status);
 }

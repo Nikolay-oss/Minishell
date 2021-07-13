@@ -12,20 +12,20 @@
 
 #include "libft.h"
 
-void	ft_lst_clear(t_list *lst, void (*del)(void*))
+void	ft_lst_clear(t_list **lst, void (*del)(void*))
 {
 	t_node	*current;
 	t_node	*node_old;
 
-	if (!lst)
+	if (!*lst)
 		return ;
-	if (!lst->head)
+	if (!(*lst)->head)
 	{
-		free(lst);
-		lst = NULL;
+		free(*lst);
+		*lst = NULL;
 		return ;
 	}
-	current = lst->head;
+	current = (*lst)->head;
 	while (current)
 	{
 		node_old = current->next;
@@ -34,6 +34,6 @@ void	ft_lst_clear(t_list *lst, void (*del)(void*))
 		free(current);
 		current = node_old;
 	}
-	free(lst);
-	lst = NULL;
+	free(*lst);
+	*lst = NULL;
 }

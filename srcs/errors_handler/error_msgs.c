@@ -16,7 +16,7 @@ void	command_not_found(char *str, int errorcode)
 	if (errorcode == 127)
 	{
 		ft_putstr_fd(str, 2);
-		ft_putendl_fd(": command not found", 2);
+		ft_putstr_fd(": command not found\n", 2);
 	}
 }
 
@@ -24,7 +24,7 @@ void	syntax_error(char *token)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
 	ft_putstr_fd(token, 2);
-	ft_putendl_fd("'", 2);
+	ft_putstr_fd("'\n", 2);
 }
 
 void	ft_malloc_error(t_minishell *minishell)

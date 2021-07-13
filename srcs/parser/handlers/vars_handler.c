@@ -1,7 +1,5 @@
 #include "ft_parser.h"
 
-#define DEBUG
-
 static void	special_cases_handler(t_minishell *minishell, t_node **node)
 {
 	char	*var;
@@ -25,14 +23,13 @@ static void	swap_nametovalue(t_minishell *minishell, t_list **str_parts)
 	{
 		if (*(char *)node->content == '$')
 		{
-			search_var_value(minishell, &var, node);
+			if (!search_var_value(minishell, &var, node))
+				return ;
 			if (var)
 			{
 				tmp = (char *)node->content;
-				node->content = (void *)ft_strdup(var);
+				node->content = (void *)var;
 				free(tmp);
-				if (!node->content)
-					return ; // error
 			}
 			else
 				special_cases_handler(minishell, &node);
@@ -43,44 +40,57 @@ static void	swap_nametovalue(t_minishell *minishell, t_list **str_parts)
 
 static t_uint	skip_varname(char *str, t_uint end)
 {
+	t_bool	num_flag;
+
 	if (*(str + end) == '?')
 	{
 		end++;
 	}
 	else
 	{
-		while (ft_isalpha(*(str + end)))
+		num_flag = 0;
+		while (*(str + end))
+		{
+			if (ft_isalpha(*(str + end)) || *(str + end) == '_')
+				num_flag = 1;
+			else if (!num_flag && ft_isdigit(*(str + end)))
+				return (++end);
+			else if (!ft_isalnum(*(str + end)) && *(str + end) != '_')
+				return (end);
 			end++;
+		}
 	}
 	return (end);
 }
 
-static void	split_str_into_vars(t_list **str_parts, char *str)
+static void	split_str_into_vars(t_minishell *minishell, t_list **str_parts,
+	char *str)
 {
 	t_uint	start;
 	t_uint	end;
 	char	*p_var;
 	char	*str_part;
 
-	init_range(&start, &end, 0, 0);
+	init_vars_in_split_into_vars(&str_part, &start, &end);
 	p_var = ft_strchr(str, '$');
 	while (p_var)
 	{
 		start = (t_uint)(end + (p_var - (str + end)));
 		str_part = ft_substr(str, end, start - end);
-		ft_push_back(*str_parts, check_memory(&str_part));
-		end = ++start;
-		end = skip_varname(str, end);
+		if (!str_part)
+			break ;
+		ft_push_back(*str_parts, str_part);
+		end = skip_varname(str, ++start);
 		str_part = ft_substr(str, start - 1, end - (start - 1));
-		ft_push_back(*str_parts, check_memory(&str_part));
+		if (!str_part)
+			break ;
+		ft_push_back(*str_parts, str_part);
 		p_var = ft_strchr(++p_var, '$');
 	}
-	// вынести данный блок в отдельную функцию
-	if (*(str + end) && !ft_strchr(str + end, '$'))
-	{
-		str_part = ft_substr(str, end, (size_t)(ft_strchr(str + end, 0) - end));
-		ft_push_back(*str_parts, check_memory(&str_part));
-	}
+	if (!str_part)
+		ft_malloc_error(minishell);
+	else
+		check_last_var(minishell, str_parts, str, end);
 }
 
 char	*get_str_withvars(t_minishell *minishell, char *str)
@@ -89,27 +99,21 @@ char	*get_str_withvars(t_minishell *minishell, char *str)
 	char	*new_arg;
 
 	str_parts = ft_create_lst();
-	split_str_into_vars(&str_parts, str);
+	if (!check_memory(minishell, (void *)str_parts))
+		return (NULL);
+	split_str_into_vars(minishell, &str_parts, str);
+	if (minishell->ismem_error)
+		return (NULL);
 	if (!str_parts->head)
 	{
-		ft_lst_clear(str_parts, &free);
+		ft_lst_clear(&str_parts, &free);
 		return (NULL);
 	}
 	swap_nametovalue(minishell, &str_parts);
+	if (minishell->ismem_error)
+		return (NULL);
 	new_arg = ft_lst_to_str(str_parts);
-	#ifndef DEBUG
-		t_node *node;
-
-		node = str_parts->head;
-		while (node)
-		{
-			printf("|%s|\n", (char *)node->content);
-			node = node->next;
-		}
-	#endif
-	ft_lst_clear(str_parts, &free);
-	if (new_arg)
-		return (new_arg);
-	else
-		return (NULL); // error
+	ft_lst_clear(&str_parts, &free);
+	check_memory(minishell, (void *)new_arg);
+	return (new_arg);
 }
