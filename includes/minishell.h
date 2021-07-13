@@ -45,6 +45,7 @@ typedef struct s_minishell
 	long long int	exit_status;
 	pid_t 			pid;
 	int				flag;
+	int				fd_old;
 	int				cnt_prcs;
 }					t_minishell;
 
@@ -55,6 +56,7 @@ typedef struct	s_signal
 	t_bool	sig_quit;
 	pid_t	pid;
 }				t_signal;
+extern t_signal signals;
 //end region
 
 // region shell_handler
@@ -123,6 +125,7 @@ t_bool	launch_dual_redir(t_minishell *minishell, int n_proc);
 
 // region pipes
 void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old);
+//void	ft_pipes(t_minishell *minishell, t_commands *node);
 //void exec_pipeline(t_minishell *minishell, t_commands *cmds, int pos, int in_fd);
 // end region
 

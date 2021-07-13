@@ -32,6 +32,14 @@ void	ft_handler(int sig)
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
+	if (signals.pid)
+	{
+		//child
+	}
+	else
+	{
+
+	}
 }
 
 static void	ft_loop(t_minishell *minishell)
@@ -64,6 +72,10 @@ int	main(int ac, char **av, char **envp)
 		ft_putendl_fd(strerror(errno), 2);
 		return (errno);
 	}
+	signals.pid = 0; /// init
+	signals.sig_int = 0;
+	signals.sig_quit = 0;
+
 	if (!init_shell(minishell, envp))
 		return ((int)minishell->exit_status);
 	signal(SIGINT, &ft_handler);
