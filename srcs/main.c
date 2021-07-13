@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 18:24:13 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 21:09:43 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/14 00:31:43 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,11 @@ static void	ft_loop(t_minishell *minishell)
 		minishell->ismem_error = 0;
 		buf = readline(PROMPT);
 		if (!buf)
+		{
+			write(1, "\x1B[1F", 4);
+			printf("%sexit\n", PROMPT);
 			break ;
+		}
 		add_history(buf);
 		ft_parser(minishell, buf);
 		free(buf);
@@ -82,7 +86,7 @@ int	main(int ac, char **av, char **envp)
 	ft_loop(minishell);
 	status = minishell->exit_status;
 	destroy_shell(minishell);
-	write(1, "exit\n", 5);
+	// write(1, "exit\n", 5);
 	return (status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:17 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:51:18 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/13 23:46:58 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	command_not_found(char *str, int errorcode)
 {
 	if (errorcode == 127)
 	{
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": command not found\n", 2);
 	}

@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:49:50 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:49:51 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/14 00:32:56 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ static t_bool	save_to_heredoc(t_minishell *minishell, const char *stop_value,
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			write(1, "\x1B[1F", 4);
+			ft_putstr_fd("> ", 1);
 			break ;
+		}
 		if (!ft_strcmp(line, stop_value))
 		{
 			free(line);

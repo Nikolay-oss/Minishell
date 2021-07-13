@@ -3,3 +3,4 @@
 /objs
 /libft/*.o
 /libft/libft.a
+/minishell.dSYM
