@@ -42,6 +42,7 @@ typedef struct s_minishell
 	long long int	exit_status;
 	pid_t 			pid;
 	int				flag;
+	int				cnt_prcs;
 }					t_minishell;
 
 //region global structure
@@ -110,7 +111,7 @@ void	redir_dual_input(t_minishell *minishell, t_commands *node_cmd,
 
 // region pipes
 void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old);
-void exec_pipeline(t_minishell *minishell, t_commands *cmds, int pos, int in_fd);
+//void exec_pipeline(t_minishell *minishell, t_commands *cmds, int pos, int in_fd);
 // end region
 
 // region execute

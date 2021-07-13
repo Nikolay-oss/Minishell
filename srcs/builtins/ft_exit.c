@@ -53,7 +53,7 @@ static void ft_exit_handler(t_minishell *minishell, char **var, int *i, int *fla
 	if (signals.sig_int)
 		exit(130);
 	else if (!*flag)
-		exit(0);
+		exit((int)minishell->exit_status);
 	else if (*flag == 2 && ft_count_args(var) > 2)
 		exit(*flag);
 }
