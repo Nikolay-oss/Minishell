@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pipes.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brice <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/13 21:23:06 by brice             #+#    #+#             */
+/*   Updated: 2021/07/13 21:24:04 by brice            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <sys/wait.h>
 
@@ -7,12 +19,12 @@ static	void	ft_delay(int count)
 		count--;
 }
 
-static	void	ft_chd_prcs(const pid_t *pid, int *fd_old, t_commands *node,
+static	void	ft_chd_prcs(const pid_t *pid, t_commands *node,
 							  t_minishell *minishell, int *fd)
 {
 	if (*pid == 0)
 	{
-		if (dup2(*fd_old, STDIN_FILENO) == -1)
+		if (dup2(minishell->fd_old, STDIN_FILENO) == -1)
 		{
 			printf("bash: dup2: %s\n", strerror(errno));
 			exit(errno);
@@ -32,17 +44,18 @@ static	void	ft_chd_prcs(const pid_t *pid, int *fd_old, t_commands *node,
 	else
 	{
 		close(fd[1]);
-		*fd_old = fd[0];
+		minishell->fd_old = fd[0];
 	}
 }
 
-static void ft_ret_recur(int *fd, const pid_t *pid, t_commands *node,
+static void	ft_ret_recur(int *fd, pid_t *pid, t_commands *node,
 						 t_minishell *minishell)
 {
 	int	status;
 
 	close(fd[0]);
 	close(fd[1]);
+	signals.pid = *pid;
 	waitpid(*pid, &status, 0);
 	if (node == NULL)
 		minishell->exit_status = WIFEXITED(status);
@@ -54,7 +67,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 	pid_t	pid;
 
 	if (!node)
-		return;
+		return ;
 	if (pipe(fd) == -1)
 	{
 		minishell->exit_status = errno;
@@ -70,8 +83,9 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 		minishell->exit_status = errno;
 		return ;
 	}
-	ft_chd_prcs(&pid, &fd_old, node, minishell, fd);
+	minishell->fd_old = fd_old;
+	ft_chd_prcs(&pid, node, minishell, fd);
 	node = node->next;
-	ft_pipes(minishell, node, fd_old);
+	ft_pipes(minishell, node, minishell->fd_old);
 	ft_ret_recur(fd, &pid, node, minishell);
 }
