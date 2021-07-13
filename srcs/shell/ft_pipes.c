@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "wait.h"
+#include <sys/wait.h>
 
 void	ft_delay(int count)
 {

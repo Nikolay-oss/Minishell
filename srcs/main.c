@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 18:24:13 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/06/22 19:44:46 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/13 19:51:07 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	ft_loop(t_minishell *minishell)
 	while (1)
 	{
 		minishell->ismem_error = 0;
-		buf = readline("\033[0;32mprompt> \033[0m");
+		buf = readline(PROMPT);
 		if (!buf)
 			break ;
 		add_history(buf);

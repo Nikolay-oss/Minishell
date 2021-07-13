@@ -20,6 +20,8 @@
 # define FPERMISSIONS 0666
 # define HEREDOCNAME ".heredoc"
 
+# define PROMPT "\033[0;32mprompt> \033[0m"
+
 // region redirect
 typedef struct s_stdstreams
 {
