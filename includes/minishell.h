@@ -51,6 +51,7 @@ typedef struct	s_signal
 {
 	t_bool	sig_int;
 	t_bool	sig_quit;
+	pid_t	pid;
 }				t_signal;
 //end region
 
