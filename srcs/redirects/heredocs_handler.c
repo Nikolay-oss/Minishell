@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredocs_handler.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/13 20:49:06 by dkenchur          #+#    #+#             */
+/*   Updated: 2021/07/13 20:49:07 by dkenchur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_bool	create_heredocs_arr(t_minishell *minishell)
@@ -70,7 +82,14 @@ void	destroy_heredocs(t_minishell *minishell)
 
 	i = 0;
 	while (i < minishell->pipes_count + 1)
+	{
+		if (*(minishell->heredocs + i))
+		{
+			if (file_exists(*(minishell->heredocs + i)))
+				unlink(*(minishell->heredocs + i));
+		}
 		free(*(minishell->heredocs + i++));
+	}
 	free(minishell->heredocs);
 }
 

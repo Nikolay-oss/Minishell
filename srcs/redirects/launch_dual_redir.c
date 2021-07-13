@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_parser.c                                       :+:      :+:    :+:   */
+/*   launch_dual_redir.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/13 20:50:32 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:50:33 by dkenchur         ###   ########.fr       */
+/*   Created: 2021/07/13 20:47:49 by dkenchur          #+#    #+#             */
+/*   Updated: 2021/07/13 20:47:50 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <fcntl.h>
 
-t_bool	var_parser(char *str)
+t_bool	launch_dual_redir(t_minishell *minishell, int n_proc)
 {
-	t_uint	i;
-	t_bool	num_flag;
+	int status;
 
-	if (*str == '=')
-		return (0);
-	num_flag = 0;
-	i = 0;
-	while (*(str + i) && *(str + i) != '=')
+	status = 0;
+	if (*(minishell->heredocs + n_proc))
 	{
-		if (ft_isalpha(*(str + i)) || *(str + i) == '_')
-			num_flag = 1;
-		else if (!num_flag && ft_isdigit(*(str + i)))
+		status = ft_redir(*(minishell->heredocs + n_proc), O_RDONLY, 0, 0);
+		if (status > 0)
 			return (0);
-		else if (!ft_isalnum(*(str + i)) && *(str + i) != '_')
-			return (0);
-		i++;
 	}
 	return (1);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   errors_handlers.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/13 20:51:15 by dkenchur          #+#    #+#             */
+/*   Updated: 2021/07/13 20:51:16 by dkenchur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_parser.h"
 
 t_bool	search_arg_ehandler(t_minishell *minishell, int isquotes, char **arg,
