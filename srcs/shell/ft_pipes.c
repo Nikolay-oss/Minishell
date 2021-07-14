@@ -26,14 +26,14 @@ static	void	ft_chd_prcs(const pid_t *pid, t_commands *node,
 	{
 		if (dup2(minishell->fd_old, STDIN_FILENO) == -1)
 		{
-			printf("bash: dup2: %s\n", strerror(errno));
+			print_error("dup2", errno);
 			exit(errno);
 		}
 		if ((node->next) != NULL)
 		{
 			if (dup2(fd[1], STDOUT_FILENO) == -1)
 			{
-				printf("bash: dup2: %s\n", strerror(errno));
+				print_error("dup2", errno);
 				exit(errno);
 			}
 		}
