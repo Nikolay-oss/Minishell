@@ -6,12 +6,13 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:24 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/15 01:37:04 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 01:48:26 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/wait.h>
+#include <signal.h>
 
 void	make_path_to_bin(t_minishell *minishell, char *path, char *cmd_bin,
 	char **cmd_bin_out)
@@ -59,11 +60,16 @@ void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
 		return ;
 	if (create_proc)
 	{
+		signal(SIGINT, SIG_IGN);
 		signals.pid = fork();
 		if (signals.pid == 0)
 			execve(path_to_bin, cmd, envp);
 		else
+		{
 			waitpid(signals.pid, &status, 0);
+			signals.pid = 0;
+		}
+		signal(SIGINT, &sigint_handler);
 		signals.exit_status = WEXITSTATUS(status);
 	}
 	else
