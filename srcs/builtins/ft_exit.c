@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-extern	t_signal	signals;
-
 static int ft_is_string_digit(char *str)
 {
 	int i;
@@ -27,11 +25,12 @@ static int ft_return_value(t_minishell *minishell)
 
 static void ft_print_error(int c, char *var)
 {
-	printf("exit\nexit: %s: a numeric argument is required\n", var);
+	printf("exit\nminishell: exit: %s: numeric argument required\n", var);
 	exit(c);
 }
 
-static void ft_exit_handler(t_minishell *minishell, char **var, int *i, int *flag)
+static void ft_exit_handler(t_minishell *minishell, char **var,
+							int *i, int *flag)
 {
 	int res;
 
@@ -63,6 +62,7 @@ void	ft_exit(t_minishell *minishell, char **var)
 	int			i;
 	static int	flag;
 
+	minishell->exit_status = signals.exit_status;
 	i = 1;
 	if (flag == 1)
 		exit(1);
@@ -70,12 +70,13 @@ void	ft_exit(t_minishell *minishell, char **var)
 	{
 		if (ft_is_string_digit(var[i]))
 		{
-			printf("exit: too many arguments\n");
+			printf("exit\nminishell: exit: too many arguments\n");
 			flag = 1;
 		}
 		else
 		{
-			printf("exit\nexit: %s: a numeric argument is required\n", var[i]);
+			printf("exit\nminishell: exit: %s: a"
+				   "numeric argument is required\n", var[i]);
 			flag = 2;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:23:06 by brice             #+#    #+#             */
-/*   Updated: 2021/07/13 23:07:49 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/14 23:04:45 by brice            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 	if (pipe(fd) == -1)
 	{
 		minishell->exit_status = errno;
-		printf("bash: pipe: %s\n", strerror(errno));
+		print_error("pipe", errno);
 		return ;
 	}
 	minishell->cnt_prcs++;
@@ -79,7 +79,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 	ft_delay(2000000);
 	if (pid < 0)
 	{
-		printf("bash: fork: %s\n", strerror(errno));
+		print_error("fork", errno);
 		minishell->exit_status = errno;
 		return ;
 	}

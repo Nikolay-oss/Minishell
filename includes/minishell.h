@@ -63,6 +63,7 @@ extern t_signal signals;
 // region signals
 void	ft_signals(int sig);
 void	sigint_handler(int sig);
+void	sigquit_handler(int sig);
 // end region
 
 // region shell_handler

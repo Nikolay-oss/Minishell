@@ -6,7 +6,13 @@ void	shell_handler(t_minishell *minishell)
 	minishell->cnt_prcs = -1;
 	if (minishell->pipes_count > 0)
 	{
+		signal(SIGQUIT, &sigquit_handler);
+		if (errno == (int) SIG_ERR)
+			print_error("signal", errno);
 		ft_pipes(minishell, minishell->commands, 0);
+		signal(SIGQUIT, SIG_IGN);
+		if (errno == (int) SIG_ERR)
+			print_error("signal", errno);
 	}
 	else
 	{

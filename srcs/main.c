@@ -89,6 +89,8 @@ int	main(int ac, char **av, char **envp)
 	if (!init_shell(minishell, envp))
 		return ((int)minishell->exit_status);
 	signal(SIGINT, &sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+//	signal(SIGQUIT, &sigquit_handler);
 	ft_loop(minishell);
 	status = minishell->exit_status;
 	destroy_shell(minishell);
