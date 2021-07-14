@@ -3,17 +3,12 @@
 #include <signal.h>
 #include "readline/readline.h"
 
-void	ft_signals(int sig)
-{
-
-}
-
 void	sigint_handler(int sig)
 {
 	char	*buf;
 
 	buf = NULL;
-	if (sig == SIGINT)
+	if (sig == SIGINT && !signals.pid)
 	{
 		buf = ft_strdup(rl_line_buffer);
 		if (!buf)
@@ -26,5 +21,19 @@ void	sigint_handler(int sig)
 		rl_redisplay();
 		free(buf);
 		signals.exit_status = 1;
+	}
+	else
+	{
+		write(1, "\n", 1);
+		signals.exit_status = 130;
+		signals.pid = 0;
+	}
+}
+
+void	sigquit_handler(int sig)
+{
+	if (sig == SIGQUIT && signals.pid)
+	{
+		printf("Quite:\n");
 	}
 }
