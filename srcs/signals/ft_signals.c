@@ -21,11 +21,13 @@ void	sigint_handler(int sig)
 		rl_redisplay();
 		free(buf);
 		signals.exit_status = 1;
+		printf("if\n");
 	}
 	else
 	{
 		write(1, "\n", 1);
 		signals.exit_status = 130;
+		signals.sig_int = 1;
 		signals.pid = 0;
 	}
 }
