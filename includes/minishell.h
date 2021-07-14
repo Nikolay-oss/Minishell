@@ -55,9 +55,15 @@ typedef struct	s_signal
 	t_bool	sig_int;
 	t_bool	sig_quit;
 	pid_t	pid;
+	int		exit_status;
 }				t_signal;
 extern t_signal signals;
 //end region
+
+// region signals
+void	ft_signals(int sig);
+void	sigint_handler(int sig);
+// end region
 
 // region shell_handler
 void	shell_handler(t_minishell *minishell);

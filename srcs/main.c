@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 18:24:13 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/14 00:31:43 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/14 22:53:23 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,23 @@ t_signal	signals;
 void	rl_replace_line();
 
 // засунь обработчики сигналов в отдельный файл
-void	ft_handler(int sig)
-{
-	signals.sig_int = 1;
-	(void)sig; // temprorary
-	rl_replace_line("", 0);
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_redisplay();
-	if (signals.pid)
-	{
-		//child
-	}
-	else
-	{
+// void	ft_handler(int sig)
+// {
+// 	signals.sig_int = 1;
+// 	(void)sig; // temprorary
+// 	rl_replace_line("", 0);
+// 	write(1, "\n", 1);
+// 	rl_on_new_line();
+// 	rl_redisplay();
+// 	if (signals.pid)
+// 	{
+// 		//child
+// 	}
+// 	else
+// 	{
 
-	}
-}
+// 	}
+// }
 
 static void	ft_loop(t_minishell *minishell)
 {
@@ -49,6 +49,11 @@ static void	ft_loop(t_minishell *minishell)
 	buf = NULL;
 	while (1)
 	{
+		if (signals.exit_status > 0)
+		{
+			minishell->exit_status = signals.exit_status;
+			signals.exit_status = 0;
+		}
 		minishell->ismem_error = 0;
 		buf = readline(PROMPT);
 		if (!buf)
@@ -79,10 +84,11 @@ int	main(int ac, char **av, char **envp)
 	signals.pid = 0; /// init
 	signals.sig_int = 0;
 	signals.sig_quit = 0;
+	signals.exit_status = 0;
 
 	if (!init_shell(minishell, envp))
 		return ((int)minishell->exit_status);
-	signal(SIGINT, &ft_handler);
+	signal(SIGINT, &sigint_handler);
 	ft_loop(minishell);
 	status = minishell->exit_status;
 	destroy_shell(minishell);

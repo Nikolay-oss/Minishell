@@ -22,6 +22,8 @@ ANALYZ_DIR	= $(PARSER_DIR)analyzer/
 
 SHELL_DIR	= $(SRCS_DIR)shell/
 
+SIG_DIR		= $(SRCS_DIR)signals/
+
 OBJ_DIR		= objs/
 
 SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
@@ -41,7 +43,8 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 			  $(PARSER_DIR)var_parser.c				$(ERROR_DIR)errors_handlers.c \
 			  $(SHELL_DIR)shell_handler.c			$(SHELL_DIR)ft_pipes.c \
 			  $(REDIR_DIR)heredocs_handler.c		$(SHELL_DIR)init_shell.c \
-			  $(SHELL_DIR)destroy_shell.c			$(REDIR_DIR)launch_dual_redir.c
+			  $(SHELL_DIR)destroy_shell.c			$(REDIR_DIR)launch_dual_redir.c \
+			  $(SIG_DIR)ft_signals.c
 
 CFLAGS		= #-Wall -Wextra -Werror
 
@@ -73,6 +76,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)execute/
 	@mkdir -p $(OBJ_DIR)parser/analyzer/
 	@mkdir -p $(OBJ_DIR)shell/
+	@mkdir -p $(OBJ_DIR)signals/
 
 clean:
 	rm -rf $(OBJS)
