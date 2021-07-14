@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:50:15 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:50:16 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 00:11:16 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_bool	search_var_value(t_minishell *minishell, char **var, t_node *node)
 {
 	if (!ft_strcmp(node->content, "$?"))
 	{
-		*var = ft_itoa(minishell->exit_status);
+		*var = ft_itoa(signals.exit_status);
 	}
 	else
 	{

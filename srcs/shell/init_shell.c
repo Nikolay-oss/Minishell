@@ -1,7 +1,5 @@
 #include "ft_parser.h"
 
-extern	t_signal	signals;
-
 static t_bool	init_env(t_minishell *minishell, char **envp)
 {
 	t_uint	i;
@@ -22,8 +20,17 @@ static t_bool	init_env(t_minishell *minishell, char **envp)
 	return (1);
 }
 
+static void	t_signals_init()
+{
+	signals.pid = 0;
+	signals.sig_int = 0;
+	signals.sig_quit = 0;
+	signals.exit_status = 0;
+}
+
 t_bool	init_shell(t_minishell *minishell, char **envp)
 {
+	t_signals_init();
 	if (!init_env(minishell, envp))
 		return (0);
 	minishell->exit_status = (long long int)NULL; // 1

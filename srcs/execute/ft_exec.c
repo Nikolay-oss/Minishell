@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:24 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 22:24:13 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 01:37:04 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	make_path_to_bin(t_minishell *minishell, char *path, char *cmd_bin,
 
 	if (!path)
 	{
-		minishell->exit_status = 127;
+		signals.exit_status = 127;
 		return ;
 	}
 	tmp = ft_strjoin(path, "/");
@@ -64,7 +64,7 @@ void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
 			execve(path_to_bin, cmd, envp);
 		else
 			waitpid(signals.pid, &status, 0);
-		minishell->exit_status = WEXITSTATUS(status);
+		signals.exit_status = WEXITSTATUS(status);
 	}
 	else
 		execve(path_to_bin, cmd, envp);

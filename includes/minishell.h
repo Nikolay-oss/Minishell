@@ -80,7 +80,7 @@ void	syntax_error(char *token);
 void	ft_malloc_error(t_minishell *minishell);
 t_bool	search_arg_ehandler(t_minishell *minishell, int isquotes, char **arg,
 					char *buf);
-void	dup_ehandler(t_minishell *minishell);
+void	dup_ehandler();
 // end region
 
 // region init

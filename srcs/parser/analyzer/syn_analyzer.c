@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:50:03 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:50:04 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 00:01:22 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_bool	analyzer(t_minishell *minishell)
 	{
 		if (check_token(node_cmd, node_f))
 		{
-			minishell->exit_status = 2;
+			signals.exit_status = 2;
 			return (1);
 		}
 		node_cmd = node_cmd->next;

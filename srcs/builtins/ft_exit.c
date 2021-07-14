@@ -63,6 +63,7 @@ void	ft_exit(t_minishell *minishell, char **var)
 	int			i;
 	static int	flag;
 
+	minishell->exit_status = signals.exit_status;
 	i = 1;
 	if (flag == 1)
 		exit(1);

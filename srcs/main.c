@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 18:24:13 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/14 22:53:23 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 00:41:19 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,6 @@ static void	ft_loop(t_minishell *minishell)
 	buf = NULL;
 	while (1)
 	{
-		if (signals.exit_status > 0)
-		{
-			minishell->exit_status = signals.exit_status;
-			signals.exit_status = 0;
-		}
 		minishell->ismem_error = 0;
 		buf = readline(PROMPT);
 		if (!buf)
@@ -71,7 +66,6 @@ static void	ft_loop(t_minishell *minishell)
 int	main(int ac, char **av, char **envp)
 {
 	t_minishell	*minishell;
-	int			status;
 
 	(void)ac;
 	(void)av;
@@ -81,19 +75,13 @@ int	main(int ac, char **av, char **envp)
 		ft_putendl_fd(strerror(errno), 2);
 		return (errno);
 	}
-	signals.pid = 0; /// init
-	signals.sig_int = 0;
-	signals.sig_quit = 0;
-	signals.exit_status = 0;
-
 	if (!init_shell(minishell, envp))
-		return ((int)minishell->exit_status);
+		return (signals.exit_status);
 	signal(SIGINT, &sigint_handler);
 	ft_loop(minishell);
-	status = minishell->exit_status;
 	destroy_shell(minishell);
 	// write(1, "exit\n", 5);
-	return (status);
+	return (signals.exit_status);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:30 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:51:31 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 00:30:30 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,24 @@ static void	check_file(t_minishell *minishell, char *cmd_bin,
 	isexists = stat((const char *)cmd_bin, &buf);
 	if (isexists < 0)
 	{
-		minishell->exit_status = 127;
+		signals.exit_status = 127;
 		print_error(cmd_bin, errno);
 	}
 	else if (S_ISDIR(buf.st_mode))
 	{
-		minishell->exit_status = 126;
+		signals.exit_status = 126;
 		print_error(cmd_bin, 21);
 	}
 	else
 	{
-		minishell->exit_status = 0;
+		signals.exit_status = 0;
 		*cmd_bin_out = ft_strdup(cmd_bin);
 		if (!*cmd_bin_out)
 			ft_malloc_error(minishell);
 	}
 }
 
-static void	cmp_filenames(t_minishell *minishell, char *cmd_bin, DIR *dir)
+static void	cmp_filenames(char *cmd_bin, DIR *dir)
 {
 	struct dirent	*ent;
 
@@ -49,11 +49,11 @@ static void	cmp_filenames(t_minishell *minishell, char *cmd_bin, DIR *dir)
 	{
 		if (!ft_strcmp(cmd_bin, ent->d_name))
 		{
-			minishell->exit_status = 0;
+			signals.exit_status = 0;
 			break ;
 		}
 		else
-			minishell->exit_status = 127;
+			signals.exit_status = 127;
 		ent = readdir(dir);
 	}
 }
@@ -70,18 +70,18 @@ static void	check_filenames(t_minishell *minishell, char *cmd_bin,
 		dir = opendir(*(paths + i));
 		if (dir)
 		{
-			cmp_filenames(minishell, cmd_bin, dir);
+			cmp_filenames(cmd_bin, dir);
 			closedir(dir);
 		}
 		else
-			minishell->exit_status = 127;
-		if (minishell->exit_status == 0)
+			signals.exit_status = 127;
+		if (signals.exit_status == 0)
 			break ;
 		i++;
 	}
-	if (minishell->exit_status == 0)
+	if (signals.exit_status == 0)
 		make_path_to_bin(minishell, *(paths + i), cmd_bin, cmd_bin_out);
-	command_not_found(cmd_bin, minishell->exit_status);
+	command_not_found(cmd_bin, signals.exit_status);
 }
 
 static void	search_bin_file(t_minishell *minishell, char *cmd_bin,

@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:15 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:51:16 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 00:37:35 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ t_bool	add_pipe_ehandler(t_minishell *minishell, char *buf)
 	return (1);
 }
 
-void	dup_ehandler(t_minishell *minishell)
+void	dup_ehandler()
 {
-	minishell->exit_status = errno;
-	ft_putendl_fd(strerror(errno), 2);
+	signals.exit_status = errno;
+	print_error("dup", errno);
 }
