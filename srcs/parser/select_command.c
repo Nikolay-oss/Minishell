@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:50:27 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:50:28 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/14 23:16:43 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	select_command(t_minishell *minishell, char **command, t_bool newproc)
 		return ;
 	if (!ft_strcmp(*command, "echo"))
 	{
-		minishell->exit_status = ft_echo(command + 1);
+		signals.exit_status = ft_echo(command + 1);
 	}
 	else if (!ft_strcmp(*command, "cd"))
 	{
@@ -27,11 +27,11 @@ void	select_command(t_minishell *minishell, char **command, t_bool newproc)
 	}
 	else if (!ft_strcmp(*command, "pwd"))
 	{
-		minishell->exit_status = ft_pwd();
+		signals.exit_status = ft_pwd();
 	}
 	else if (!ft_strcmp(*command, "export"))
 	{
-		minishell->exit_status = ft_export(minishell, command + 1);
+		signals.exit_status = ft_export(minishell, command + 1);
 	}
 	else if (!ft_strcmp(*command, "unset"))
 	{
@@ -39,7 +39,7 @@ void	select_command(t_minishell *minishell, char **command, t_bool newproc)
 	}
 	else if (!ft_strcmp(*command, "env"))
 	{
-		minishell->exit_status = ft_env(minishell->env);
+		signals.exit_status = ft_env(minishell->env);
 	}
 	else if (!ft_strcmp(*command, "exit"))
 	{

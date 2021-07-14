@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:23:06 by brice             #+#    #+#             */
-/*   Updated: 2021/07/14 23:04:45 by brice            ###   ########.fr       */
+/*   Updated: 2021/07/15 01:37:56 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static	void	ft_chd_prcs(const pid_t *pid, t_commands *node,
 		}
 		close(fd[0]);
 		redir_handler(minishell, node, minishell->cnt_prcs, 0);
-		exit((int)minishell->exit_status);
+		exit(signals.exit_status);
 	}
 	else
 	{
@@ -48,8 +48,7 @@ static	void	ft_chd_prcs(const pid_t *pid, t_commands *node,
 	}
 }
 
-static void	ft_ret_recur(int *fd, pid_t *pid, t_commands *node,
-						 t_minishell *minishell)
+static void	ft_ret_recur(int *fd, pid_t *pid, t_commands *node)
 {
 	int	status;
 
@@ -58,7 +57,7 @@ static void	ft_ret_recur(int *fd, pid_t *pid, t_commands *node,
 	signals.pid = *pid;
 	waitpid(*pid, &status, 0);
 	if (node == NULL)
-		minishell->exit_status = WIFEXITED(status);
+		signals.exit_status = WEXITSTATUS(status);
 }
 
 void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
@@ -87,5 +86,5 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 	ft_chd_prcs(&pid, node, minishell, fd);
 	node = node->next;
 	ft_pipes(minishell, node, minishell->fd_old);
-	ft_ret_recur(fd, &pid, node, minishell);
+	ft_ret_recur(fd, &pid, node);
 }

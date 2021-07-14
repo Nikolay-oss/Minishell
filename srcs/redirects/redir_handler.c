@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:49:41 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 23:07:24 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 00:34:52 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	select_redirect(t_minishell *minishell, char *redir,
 			FPERMISSIONS, 1);
 	}
 	if (status != -1)
-		minishell->exit_status = status;
+		signals.exit_status = status;
 	return (status);
 }
 
@@ -102,7 +102,7 @@ t_bool	redir_handler(t_minishell *minishell, t_commands *node_cmd, int n_proc,
 	status = 1;
 	if (!save_std_descriptors(&minishell->stdstreams))
 	{
-		dup_ehandler(minishell);
+		dup_ehandler();
 		return (0);
 	}
 	if (launch_redirs(minishell, node_cmd, &r_pos))
@@ -117,7 +117,7 @@ t_bool	redir_handler(t_minishell *minishell, t_commands *node_cmd, int n_proc,
 	if (!revert_std_descriptors(&minishell->stdstreams))
 	{
 		status = 0;
-		dup_ehandler(minishell);
+		dup_ehandler();
 	}
 	return (status);
 }

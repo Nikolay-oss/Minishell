@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:49:50 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/14 00:32:56 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 00:07:11 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_bool	redir2_input(t_minishell *minishell, const char *stop_value,
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd < 0)
 	{
-		minishell->exit_status = errno;
+		signals.exit_status = errno;
 		print_error((char *)filename, errno);
 		return (0);
 	}
