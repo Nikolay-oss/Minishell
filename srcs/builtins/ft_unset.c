@@ -27,41 +27,47 @@ static	int	ft_un_parser(char *var)
 	return (1);
 }
 
-void	ft_unset(t_list *env, char **var)
+void	ft_unset(t_minishell *minishell, char **var)
 {
 	t_node	*node;
 	int 	i;
 
 	i = 1;
-	node = getvar_node(env, var[i]);
-//	write(1, "HHHHHHH\n", 8);
-//	printf("var1: |%s|\n", var[i]);
-//	printf("node1: |%s|\n", node);
-//	if (ft_strcmp(ft_un_parser(var), "(null)"));
-//	printf("parser1: |%d|\n", ft_un_parser(var[i]));
+	printf("node: |%s|\n", minishell->old_pwd);
 	if(ft_un_parser(var[i]))
 	{
-		node = getvar_node(env, var[i]);
-		if (node)
-			ft_del_node(env, &free, node);
+		node = getvar_node(minishell->env, var[i]);
+		if (!strcmp(var[i], "OLDPWD") && node)
+		{
+			printf("lalalal\n");
+//			printf("content |%s|\n", (char *)node->content);
+			minishell->old_pwd = ft_strdup((char *)node->content);
+			printf("old pwd - |%s|\n", minishell->old_pwd);
+//			write(1, "123\n", 4);
+			printf("addr: %p\n", node);
+		}
+		if (node) //&& strcmp(var[i], "OLDPWD") != 0)
+		{
+			printf("adadsasdasd\n");
+			free(node);
+			ft_del_node(minishell->env, &free, node);
+		}
+		write(1, "222\n", 4);
 	}
 	else
 		printf("unset: %s not a valid identifier\n", var[i]);
-//	printf("var2: |%s|\n", var[i]);
-//	printf("node2: |%s|\n", node);
-//	if (ft_strcmp(ft_un_parser(var), "(null)"));
-//	printf("parser2: |%d|\n", ft_un_parser(var[i]));
 	i++;
+	printf("node: |%s|\n", minishell->old_pwd);
 	while (var[i])
 	{
 //		printf("var: |%s|\n", var[i]);
-//		printf("node: |%s|\n", node);
+		printf("node12: |%s|\n", node);
 
 		if(ft_un_parser(var[i]))
 		{
-			node = getvar_node(env, var[i]);
+			node = getvar_node(minishell->env, var[i]);
 			if (node)
-				ft_del_node(env, &free, node);
+				ft_del_node(minishell->env, &free, node);
 		}
 		else
 			printf("unset: %s not a valid identifier\n", var[i]);
