@@ -74,11 +74,14 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 	minishell->home_path = (char *)NULL; // 2
 	signals.sig_int = 0; // 3
 	signals.sig_quit = 0; // 4
+	minishell->old_pwd = 0;
+	minishell->pwd = 0;
 	// get pwd
 	node = getvar_node(minishell->env, "PWD");
 	if(!node)
 	{
 		buf = getcwd(NULL, PATH_MAX);
+//		minishell->pwd = strdup(buf);
 		ft_push_back(minishell->env,
 					 ft_strjoin("PWD=", buf)); //free getcwd
 		free(buf);
