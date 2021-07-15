@@ -45,13 +45,13 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 	signals.sig_quit = 0; // 4
 	//get pwd
 	node = getvar_node(minishell->env, "PWD");
-	if(!node)
-	{
-		buf = getcwd(NULL, PATH_MAX);
-		ft_push_back(minishell->env,
-					 ft_strjoin("PWD=", buf)); //free getcwd
-		free(buf);
-	}
+//	if(!node)
+//	{
+//		buf = getcwd(NULL, PATH_MAX);
+//		ft_push_back(minishell->env,
+//					 ft_strjoin("PWD=", buf)); //free getcwd
+//		free(buf);
+//	}
 	minishell->home_path = getvar_value(minishell, minishell->env, "HOME");
 	if (minishell->ismem_error)
 		return (0);

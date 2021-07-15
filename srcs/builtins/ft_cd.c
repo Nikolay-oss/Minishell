@@ -49,8 +49,8 @@ void	ft_cd(t_minishell *minishell, char *path)
 //		printf("|%s|\n", buf);
  		char *tmp = ft_strjoin("PWD=", buf);
 		printf("node ad: |%p|\n", minishell->env->tail);
-//		ft_push_back(minishell->env, tmp); //free getcwd
-		add_var(minishell, tmp, 1);
+		ft_push_back(minishell->env, tmp); //free getcwd
+//		add_var(minishell, tmp, 1);
 		printf("node: |%s|\n", (char *)minishell->env->tail->content);
 		printf("node ad: |%p|\n", minishell->env->tail);
 		node = getvar_node(minishell->env, "PWD");
@@ -69,6 +69,6 @@ void	ft_cd(t_minishell *minishell, char *path)
 		printf("hey\n");
 		write(1, "123\n", 4);
 //		ft_cd_handler(&buf, node, node_old, (minishell->env));
-		// ft_cd_handler(&buf, node, node_old, (minishell->env));
+		 ft_cd_handler(&buf, node, node_old, (minishell->env));
 	}
 }
