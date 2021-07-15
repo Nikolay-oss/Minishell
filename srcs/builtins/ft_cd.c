@@ -32,7 +32,7 @@ void	ft_cd(t_minishell *minishell, char *path)
 	int		res;
 	char	*buf;
 	t_node	*node;
-	t_node	*node_old;
+	t_node *node_old;
 
 	if (!path || !ft_strcmp(path, "~"))
 		path = minishell->home_path;
@@ -64,6 +64,6 @@ void	ft_cd(t_minishell *minishell, char *path)
 	{
 		printf("hey\n");
 		write(1, "123\n", 4);
-		ft_cd_handler(&buf, node, node_old, (minishell->env));
+//		ft_cd_handler(&buf, node, node_old, (minishell->env));
 	}
 }
