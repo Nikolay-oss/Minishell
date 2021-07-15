@@ -75,7 +75,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 		return ;
 	if (pipe(fd) == -1)
 	{
-		minishell->exit_status = errno;
+		signals.exit_status = errno;
 		print_error("pipe", errno);
 		return ;
 	}
@@ -85,7 +85,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 	if (pid < 0)
 	{
 		print_error("fork", errno);
-		minishell->exit_status = errno;
+		signals.exit_status = errno;
 		return ;
 	}
 	minishell->fd_old = fd_old;

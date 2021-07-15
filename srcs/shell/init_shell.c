@@ -30,6 +30,9 @@ static void	t_signals_init()
 
 t_bool	init_shell(t_minishell *minishell, char **envp)
 {
+	t_node	*node;
+	char *buf;
+
 	t_signals_init();
 	if (!init_env(minishell, envp))
 		return (0);
@@ -37,6 +40,15 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 	minishell->home_path = (char *)NULL; // 2
 	signals.sig_int = 0; // 3
 	signals.sig_quit = 0; // 4
+	//get pwd
+	node = getvar_node(minishell->env, "PWD");
+	if(!node)
+	{
+		buf = getcwd(NULL, PATH_MAX);
+		ft_push_back(minishell->env,
+					 ft_strjoin("PWD=", buf)); //free getcwd
+		free(buf);
+	}
 	minishell->home_path = getvar_value(minishell, minishell->env, "HOME");
 	if (minishell->ismem_error)
 		return (0);

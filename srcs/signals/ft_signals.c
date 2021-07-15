@@ -25,6 +25,7 @@ void	sigint_handler(int sig)
 	}
 	else
 	{
+		printf("hey\n");
 		write(1, "\n", 1);
 		signals.exit_status = 130;
 		signals.sig_int = 1;
