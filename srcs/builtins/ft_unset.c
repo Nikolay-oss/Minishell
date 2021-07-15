@@ -49,7 +49,7 @@ void	ft_unset(t_minishell *minishell, char **var)
 		if (node) //&& strcmp(var[i], "OLDPWD") != 0)
 		{
 			printf("adadsasdasd\n");
-			free(node);
+			// free(node);
 			ft_del_node(minishell->env, &free, node);
 		}
 		write(1, "222\n", 4);
@@ -61,7 +61,7 @@ void	ft_unset(t_minishell *minishell, char **var)
 	while (var[i])
 	{
 //		printf("var: |%s|\n", var[i]);
-		printf("node12: |%s|\n", node);
+		// printf("node12: |%s|\n", (char *)node->content);
 
 		if(ft_un_parser(var[i]))
 		{

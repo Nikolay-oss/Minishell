@@ -21,14 +21,31 @@ void	check_tail(t_list *lst, t_node *cur, t_node *prev)
 	}
 }
 
+int	check_head(t_list *lst, t_node *node, void (*del)(void*))
+{
+	t_node	*next;
+
+	if (lst->head == node)
+	{
+		next = lst->head->next;
+		if (del)
+			del(lst->head->content);
+		free(lst->head);
+		lst->head = next;
+		lst->size--;
+		return (1);
+	}
+	return (0);
+}
+
 void	ft_del_node(t_list *lst, void (*del)(void*),
 	t_node *node)
 {
 	t_node	*current;
 	t_node	*prev;
 
-	if (lst->size == 1)
-		ft_lst_delfirst(lst, del);
+	if (check_head(lst, node, del))
+		return ;
 	current = lst->head;
 	prev = NULL;
 	while (current)

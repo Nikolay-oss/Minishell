@@ -35,7 +35,7 @@ void	select_command(t_minishell *minishell, char **command, t_bool newproc)
 	}
 	else if (!ft_strcmp(*command, "unset"))
 	{
-		ft_unset(minishell->env, command); //двумерный массив сам ансет и аргументы
+		ft_unset(minishell, command); //двумерный массив сам ансет и аргументы
 	}
 	else if (!ft_strcmp(*command, "env"))
 	{
