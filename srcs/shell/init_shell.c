@@ -40,10 +40,9 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 		return (0);
 	minishell->exit_status = (long long int)NULL; // 1
 	minishell->home_path = (char *)NULL; // 2
-	minishell->shlvl = 1;
 	signals.sig_int = 0; // 3
 	signals.sig_quit = 0; // 4
-	//get pwd
+	// get pwd
 	node = getvar_node(minishell->env, "PWD");
 //	if(!node)
 //	{

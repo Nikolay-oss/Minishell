@@ -48,14 +48,16 @@ void	ft_cd(t_minishell *minishell, char *path)
 		buf = "/lalal/"; //getcwd(NULL, PATH_MAX);
 //		printf("|%s|\n", buf);
  		char *tmp = ft_strjoin("PWD=", buf);
-		printf("node ad: |%p|\n", minishell->env->tail);
+		printf("tail -> |%s|\n", (char *)minishell->env->tail->content);
+		// printf("node ad: |%p|\n", minishell->env->tail);
 		ft_push_back(minishell->env, tmp); //free getcwd
-//		add_var(minishell, tmp, 1);
-		printf("node: |%s|\n", (char *)minishell->env->tail->content);
-		printf("node ad: |%p|\n", minishell->env->tail);
+		printf("tail -> |%s|\n", (char *)minishell->env->tail->content);
+		printf("%p\n", minishell->env);
+		// add_var(minishell, tmp, 1);
+		// printf("node ad: |%p|\n", minishell->env->tail);
 		node = getvar_node(minishell->env, "PWD");
+		// printf("node: |%p|\n", node);
 		printf("node: |%p|\n", node);
-		printf("node: |%p|\n", minishell->env->tail);
 //		free(buf);
 	}
 	if(res < 0 && (ft_strcmp(path, "-") > 0 || ft_strcmp(path, "_") < 0))
@@ -69,6 +71,6 @@ void	ft_cd(t_minishell *minishell, char *path)
 		printf("hey\n");
 		write(1, "123\n", 4);
 //		ft_cd_handler(&buf, node, node_old, (minishell->env));
-		 ft_cd_handler(&buf, node, node_old, (minishell->env));
+		ft_cd_handler(&buf, node, node_old, (minishell->env));
 	}
 }

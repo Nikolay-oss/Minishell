@@ -1,6 +1,7 @@
 #include <signal.h>
 #include <bits/signum-generic.h>
 #include "minishell.h"
+#include <signal.h>
 
 void	shell_handler(t_minishell *minishell)
 {

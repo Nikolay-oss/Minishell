@@ -78,8 +78,8 @@ void				ft_push_back(t_list *lst, void *data);
 void				ft_lst_clear(t_list **lst, void (*del)(void*));
 char				*ft_lst_to_str(t_list *lst);
 char				**ft_lst_to_strs(t_list *lst);
-void				ft_lst_delfirst(t_list **lst, void (*del)(void*));
-void				ft_del_node(t_list **lst, void (*del)(void*),
+void				ft_lst_delfirst(t_list *lst, void (*del)(void*));
+void				ft_del_node(t_list *lst, void (*del)(void*),
 						t_node *node);
 
 #endif
