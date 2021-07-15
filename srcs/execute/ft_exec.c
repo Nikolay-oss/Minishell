@@ -6,13 +6,12 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:24 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/15 01:48:26 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 05:59:02 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/wait.h>
-#include <signal.h>
 
 void	make_path_to_bin(t_minishell *minishell, char *path, char *cmd_bin,
 	char **cmd_bin_out)
@@ -45,35 +44,40 @@ static t_bool	check_envp(t_minishell *minishell, char **envp, char **path)
 	return (1);
 }
 
+static void	child_proc_handler(char *bin_path, char **cmd, char **envp)
+{
+	int	status;
+
+	status = 0;
+	signals.pid = fork();
+	if (signals.pid == 0)
+	{
+		execve(bin_path, cmd, envp);
+	}
+	else
+	{
+		waitpid(signals.pid, &status, 0);
+		sigint_save_status(status);
+	}
+}
+
 void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
 {
-	char	*path_to_bin;
+	char	*bin_path;
 	int		status;
 	char	**envp;
 
-	path_to_bin = NULL;
-	save_path_to_bin(minishell, *cmd, &path_to_bin);
-	if (!path_to_bin)
+	bin_path = NULL;
+	save_path_to_bin(minishell, *cmd, &bin_path);
+	if (!bin_path)
 		return ;
 	envp = ft_lst_to_strs(minishell->env);
-	if (!check_envp(minishell, envp, &path_to_bin))
+	if (!check_envp(minishell, envp, &bin_path))
 		return ;
 	if (create_proc)
-	{
-		signal(SIGINT, SIG_IGN);
-		signals.pid = fork();
-		if (signals.pid == 0)
-			execve(path_to_bin, cmd, envp);
-		else
-		{
-			waitpid(signals.pid, &status, 0);
-			signals.pid = 0;
-		}
-		signal(SIGINT, &sigint_handler);
-		signals.exit_status = WEXITSTATUS(status);
-	}
+		child_proc_handler(bin_path, cmd, envp);
 	else
-		execve(path_to_bin, cmd, envp);
+		execve(bin_path, cmd, envp);
 	destroy_arr2d(envp);
-	free(path_to_bin);
+	free(bin_path);
 }

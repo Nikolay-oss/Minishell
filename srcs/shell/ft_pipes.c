@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:23:06 by brice             #+#    #+#             */
-/*   Updated: 2021/07/15 02:18:55 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 02:37:04 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,7 @@ static void	ft_ret_recur(int *fd, pid_t *pid, t_commands *node)
 	signals.pid = *pid;
 	waitpid(*pid, &status, 0);
 	if (node == NULL)
-	{
-		if (!signals.sig_int)
-		{
-			signals.exit_status = WEXITSTATUS(status);
-			signals.sig_int = 0;
-		}
-	}
+		sigint_save_status(status);
 }
 
 void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)

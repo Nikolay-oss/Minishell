@@ -14,6 +14,8 @@ static t_bool	init_env(t_minishell *minishell, char **envp)
 		env_variable = ft_strdup(*(envp + i));
 		if (!check_memory(minishell, (void *)env_variable))
 			return (0);
+		if (ft_strnstr(env_variable, "SHLVL=", 100))
+			(*(env_variable + 6))++;
 		ft_push_back(minishell->env, env_variable);
 		i++;
 	}
@@ -35,8 +37,7 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 		return (0);
 	minishell->exit_status = (long long int)NULL; // 1
 	minishell->home_path = (char *)NULL; // 2
-	signals.sig_int = 0; // 3
-	signals.sig_quit = 0; // 4
+	minishell->shlvl = 1;
 	minishell->home_path = getvar_value(minishell, minishell->env, "HOME");
 	if (minishell->ismem_error)
 		return (0);
