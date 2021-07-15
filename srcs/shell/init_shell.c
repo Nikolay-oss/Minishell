@@ -1,5 +1,36 @@
 #include "ft_parser.h"
 
+static t_bool	shlvl_handler(t_minishell *minishell)
+{
+	t_node	*node_shlvl;
+	char	*new_shlvl;
+	char	*tmp;
+	int		shlvl;
+
+	node_shlvl = getvar_node(minishell->env, "SHLVL");
+	if (node_shlvl)
+	{
+		shlvl = (int)ft_atoi((char *)node_shlvl->content + 6);
+		printf("str-lvl -> %s\n", (char *)node_shlvl->content);
+		printf("lvl -> %d\n", shlvl);
+		tmp = ft_itoa(shlvl);
+		new_shlvl = ft_strjoin("SHLVL=", tmp);
+		free(tmp);
+	}
+	else
+	{
+		new_shlvl = ft_strdup("SHLVL=1");
+	}
+	if (!new_shlvl)
+	{
+		ft_malloc_error(minishell);
+		return (0);
+	}
+	free(node_shlvl->content);
+	node_shlvl->content = (char *)new_shlvl;
+	return (1);
+}
+
 static t_bool	init_env(t_minishell *minishell, char **envp)
 {
 	t_uint	i;
@@ -14,12 +45,13 @@ static t_bool	init_env(t_minishell *minishell, char **envp)
 		env_variable = ft_strdup(*(envp + i));
 		if (!check_memory(minishell, (void *)env_variable))
 			return (0);
-		if (ft_strnstr(env_variable, "SHLVL=", 100))
-			(*(env_variable + 6))++;
+		// if (ft_strnstr(env_variable, "SHLVL=", 100))
+		// 	env_variable[6]++;
 		ft_push_back(minishell->env, env_variable);
 		i++;
 	}
 	return (1);
+	// return (shlvl_handler(minishell));
 }
 
 static void	t_signals_init()
