@@ -40,7 +40,6 @@ typedef struct s_minishell
 	t_stdstreams	stdstreams;
 	t_uint			pipes_count;
 	t_bool			ismem_error;
-	t_uint			shlvl;
 	char			*home_path;
 	char			**heredocs;
 	long long int	exit_status;

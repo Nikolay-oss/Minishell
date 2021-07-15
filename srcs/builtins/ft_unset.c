@@ -43,7 +43,7 @@ void	ft_unset(t_list *env, char **var)
 	{
 		node = getvar_node(env, var[i]);
 		if (node)
-			ft_del_node(&env, &free, node);
+			ft_del_node(env, &free, node);
 	}
 	else
 		printf("unset: %s not a valid identifier\n", var[i]);
@@ -61,7 +61,7 @@ void	ft_unset(t_list *env, char **var)
 		{
 			node = getvar_node(env, var[i]);
 			if (node)
-				ft_del_node(&env, &free, node);
+				ft_del_node(env, &free, node);
 		}
 		else
 			printf("unset: %s not a valid identifier\n", var[i]);

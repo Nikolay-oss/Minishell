@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <signal.h>
 
 void	shell_handler(t_minishell *minishell)
 {
