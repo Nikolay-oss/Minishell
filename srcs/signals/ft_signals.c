@@ -37,6 +37,7 @@ void	sigint_handler(int sig)
 	}
 	else
 	{
+		printf("hey\n");
 		write(1, "\n", 1);
 		// rl_on_new_line();
 		// // rl_replace_line("", 0);

@@ -26,14 +26,14 @@ static	void	ft_chd_prcs(const pid_t *pid, t_commands *node,
 	{
 		if (dup2(minishell->fd_old, STDIN_FILENO) == -1)
 		{
-			printf("bash: dup2: %s\n", strerror(errno));
+			print_error("dup2", errno);
 			exit(errno);
 		}
 		if ((node->next) != NULL)
 		{
 			if (dup2(fd[1], STDOUT_FILENO) == -1)
 			{
-				printf("bash: dup2: %s\n", strerror(errno));
+				print_error("dup2", errno);
 				exit(errno);
 			}
 		}
@@ -69,7 +69,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 		return ;
 	if (pipe(fd) == -1)
 	{
-		minishell->exit_status = errno;
+		signals.exit_status = errno;
 		print_error("pipe", errno);
 		return ;
 	}
@@ -79,7 +79,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 	if (pid < 0)
 	{
 		print_error("fork", errno);
-		minishell->exit_status = errno;
+		signals.exit_status = errno;
 		return ;
 	}
 	minishell->fd_old = fd_old;
