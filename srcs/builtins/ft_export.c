@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:24:09 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 21:24:10 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 07:00:47 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ static int	add_to_vars(t_minishell *minishell, t_list *vars,
 	t_node **var_node, char *var)
 {
 	char	*new_var;
+	char	*tmp;
 
+	tmp = NULL;
 	new_var = ft_strdup(var);
 	if (!new_var)
 	{
@@ -48,7 +50,11 @@ static int	add_to_vars(t_minishell *minishell, t_list *vars,
 		(*var_node)->content = (void *)new_var;
 	}
 	else
-		ft_push_back(vars, new_var);
+	{
+		tmp = (char *)vars->tail->content;
+		vars->tail->content = (void *)new_var;
+		ft_push_back(vars, tmp);
+	}
 	return (0);
 }
 
