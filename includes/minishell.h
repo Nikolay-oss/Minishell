@@ -109,7 +109,6 @@ void	ft_cd(t_minishell *minishell, char *path);
 void	ft_unset(t_list *env, char **var);
 // subregion export
 int		ft_export(t_minishell *minishell, char **vars);
-int	add_var(t_minishell *minishell, char *var, t_uint var_type);
 int		print_declare_env(t_minishell *minishell);
 t_bool	var_parser(char *str);
 // end subregion

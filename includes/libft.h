@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 13:01:35 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/06/29 19:00:39 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 06:50:41 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void				ft_push_back(t_list *lst, void *data);
 void				ft_lst_clear(t_list **lst, void (*del)(void*));
 char				*ft_lst_to_str(t_list *lst);
 char				**ft_lst_to_strs(t_list *lst);
-void				ft_lst_delfirst(t_list *lst, void (*del)(void*));
-void				ft_del_node(t_list *lst, void (*del)(void*),
+void				ft_lst_delfirst(t_list **lst, void (*del)(void*));
+void				ft_del_node(t_list **lst, void (*del)(void*),
 						t_node *node);
 
 #endif

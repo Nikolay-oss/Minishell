@@ -6,31 +6,31 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 22:01:51 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 22:01:52 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 06:51:03 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_del_node(t_list *lst, void (*del)(void*),
+void	ft_del_node(t_list **lst, void (*del)(void*),
 	t_node *node)
 {
 	t_node	*current;
 	t_node	*prev;
 
-	if (lst->size == 1)
+	if ((*lst)->size == 1)
 		ft_lst_delfirst(lst, del);
-	current = lst->head;
+	current = (*lst)->head;
 	prev = NULL;
 	while (current)
 	{
 		if (current == node)
 		{
-			lst->size--;
+			(*lst)->size--;
 			if (prev)
 				prev->next = current->next;
 			else
-				lst->head = current->next;
+				(*lst)->head = current->next;
 			if (del)
 				del(current->content);
 			free(current);

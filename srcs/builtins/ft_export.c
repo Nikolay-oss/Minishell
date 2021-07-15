@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:24:09 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/15 05:25:22 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 07:00:47 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	add_to_vars(t_minishell *minishell, t_list *vars,
 	return (0);
 }
 
-int	add_var(t_minishell *minishell, char *var, t_uint var_type)
+static int	add_var(t_minishell *minishell, char *var, t_uint var_type)
 {
 	t_node	*envvar_node;
 	int		errorcode;
