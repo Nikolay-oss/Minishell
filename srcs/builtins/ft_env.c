@@ -24,6 +24,7 @@ t_node	*getvar_node(t_list *vars, const char *var_name)
 	current = vars->head;
 	while (current)
 	{
+		printf("node ->%s\n", (char *)current->content);
 		p_equal = ft_strchr((char *)current->content, '=');
 		if (p_equal)
 		{

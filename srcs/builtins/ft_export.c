@@ -58,7 +58,7 @@ static int	add_to_vars(t_minishell *minishell, t_list *vars,
 	return (0);
 }
 
-static int	add_var(t_minishell *minishell, char *var, t_uint var_type)
+int	add_var(t_minishell *minishell, char *var, t_uint var_type)
 {
 	t_node	*envvar_node;
 	int		errorcode;

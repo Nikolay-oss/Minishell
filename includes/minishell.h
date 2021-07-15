@@ -145,5 +145,7 @@ void	save_path_to_bin(t_minishell *minishell, char *cmd_bin,
 void	make_path_to_bin(t_minishell *minishell, char *path, char *cmd_bin,
 					char **cmd_bin_out);
 // end region
-
+// test
+int	add_var(t_minishell *minishell, char *var, t_uint var_type);
+//
 #endif
