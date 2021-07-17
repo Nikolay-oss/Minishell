@@ -39,17 +39,15 @@ void	ft_unset(t_minishell *minishell, char **var)
 		node = getvar_node(minishell->env, var[i]);
 		if (!strcmp(var[i], "OLDPWD") && node)
 		{
-			printf("lalalal\n");
-//			printf("content |%s|\n", (char *)node->content);
 			minishell->old_pwd = ft_strdup((char *)node->content);
 			printf("old pwd - |%s|\n", minishell->old_pwd);
-//			write(1, "123\n", 4);
-			printf("addr: %p\n", node);
+		}
+		if (!strcmp(var[i], "PWD") && node)
+		{
+			minishell->pwd = ft_strdup((char *)node->content);
 		}
 		if (node) //&& strcmp(var[i], "OLDPWD") != 0)
 		{
-			printf("adadsasdasd\n");
-			// free(node);
 			ft_del_node(minishell->env, &free, node);
 		}
 		write(1, "222\n", 4);

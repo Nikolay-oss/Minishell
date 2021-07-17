@@ -15,7 +15,7 @@
 
 void	select_command(t_minishell *minishell, char **command, t_bool newproc)
 {
-	if (!command)// || !*command)
+	if (!command)
 		return ;
 	if (!ft_strcmp(*command, "echo"))
 	{

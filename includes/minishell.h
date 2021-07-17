@@ -66,8 +66,9 @@ extern t_signal signals;
 // region signals
 void	ft_signals(int sig);
 void	sigint_handler(int sig);
-void	sigquit_handler(int sig);
 void	sigint_save_status(int status);
+void	sigquit_handler(int sig);
+void	sigquit_save_status(int status);
 // end region
 
 // region shell_handler
@@ -136,8 +137,6 @@ t_bool	launch_dual_redir(t_minishell *minishell, int n_proc);
 
 // region pipes
 void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old);
-//void	ft_pipes(t_minishell *minishell, t_commands *node);
-//void exec_pipeline(t_minishell *minishell, t_commands *cmds, int pos, int in_fd);
 // end region
 
 // region execute

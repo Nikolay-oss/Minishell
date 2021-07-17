@@ -16,6 +16,20 @@ void	sigint_save_status(int status)
 	signals.pid = 0;
 }
 
+void	sigquit_save_status(int status)
+{
+	printf("QQQQQ\n");
+	if (!signals.sig_quit)
+	{
+		signals.exit_status = WEXITSTATUS(status);
+	}
+	else
+	{
+		signals.sig_quit = 0;
+	}
+	signals.pid = 0;
+}
+
 void	sigint_handler(int sig)
 {
 	char	*buf;
@@ -50,8 +64,28 @@ void	sigint_handler(int sig)
 
 void	sigquit_handler(int sig)
 {
-	if (sig == SIGQUIT && signals.pid)
+	char *nbr;
+
+	nbr = ft_itoa(sig);
+	if (!signals.pid)
 	{
-		printf("Quite:\n");
+		signals.exit_status = 131;
+//
+//		ft_putstr_fd("Quite: ", 2);
+//		ft_putstr_fd(nbr, 2);
+//		ft_putstr_fd("\n", 2);
+//		signals.exit_status = 130;
+//		signals.sig_quit = 1;
+		exit(signals.exit_status);
+	}
+	else
+	{
+		//child
+		ft_putstr_fd("Quite: ", 2);
+		ft_putstr_fd(nbr, 2);
+		ft_putstr_fd("\n", 2);
+		signals.exit_status = 130;
+		signals.sig_quit = 1;
+		signals.pid = 0;
 	}
 }

@@ -58,13 +58,13 @@ static void	child_proc_handler(char *bin_path, char **cmd, char **envp)
 	{
 		waitpid(signals.pid, &status, 0);
 		sigint_save_status(status);
+		sigquit_save_status(status);
 	}
 }
 
 void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
 {
 	char	*bin_path;
-	int		status;
 	char	**envp;
 
 	bin_path = NULL;
@@ -76,8 +76,9 @@ void	ft_exec(t_minishell *minishell, char **cmd, t_bool create_proc)
 		return ;
 	if (create_proc)
 		child_proc_handler(bin_path, cmd, envp);
-	else
+	else {
 		execve(bin_path, cmd, envp);
+	}
 	destroy_arr2d(envp);
 	free(bin_path);
 }
