@@ -67,11 +67,7 @@ void	ft_unset(t_minishell *minishell, char **var)
 		{
 			node = getvar_node(minishell->env, var[i]);
 			if (node)
-<<<<<<< HEAD
-				ft_del_node(&minishell->env, free, node);
-=======
 				ft_del_node(minishell->env, &free, node);
->>>>>>> 5d207f3f99ddf86d125ed029167168e1292d505d
 		}
 		else
 			printf("unset: %s not a valid identifier\n", var[i]);

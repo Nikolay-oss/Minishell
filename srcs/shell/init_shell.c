@@ -81,13 +81,9 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 	if(!node)
 	{
 		buf = getcwd(NULL, PATH_MAX);
-<<<<<<< HEAD
-		ft_push_back(minishell->env, ft_strjoin("PWD=", buf)); //free getcwd
-=======
 //		minishell->pwd = strdup(buf);
 		ft_push_back(minishell->env,
 					 ft_strjoin("PWD=", buf)); //free getcwd
->>>>>>> 5d207f3f99ddf86d125ed029167168e1292d505d
 		free(buf);
 	}
 	minishell->home_path = getvar_value(minishell, minishell->env, "HOME");
