@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:24:04 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 21:24:05 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/17 15:31:49 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_node	*getvar_node(t_list *vars, const char *var_name)
 	current = vars->head;
 	while (current)
 	{
+		// printf("node -> %s\n", (char *)current->content);
 		p_equal = ft_strchr((char *)current->content, '=');
 		if (p_equal)
 		{

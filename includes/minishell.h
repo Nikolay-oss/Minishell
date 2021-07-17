@@ -39,6 +39,7 @@ typedef struct s_minishell
 	t_commands		*commands;
 	t_stdstreams	stdstreams;
 	t_uint			pipes_count;
+	t_uint			cursor_pos;
 	t_bool			ismem_error;
 	char			*home_path;
 	char 			*old_pwd;

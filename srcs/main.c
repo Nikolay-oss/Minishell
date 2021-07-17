@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 18:24:13 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/15 00:41:19 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/17 16:20:15 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ static void	ft_loop(t_minishell *minishell)
 		buf = readline(PROMPT);
 		if (!buf)
 		{
-			write(1, "\x1B[1F", 4);
-			printf("%sexit\n", PROMPT);
+			printf("\x1B[1F\e[%luC exit\n", minishell->cursor_pos + ft_strlen("prompt>"));
 			break ;
 		}
 		add_history(buf);

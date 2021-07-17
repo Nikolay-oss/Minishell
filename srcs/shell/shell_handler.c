@@ -1,5 +1,9 @@
 #include <signal.h>
+<<<<<<< HEAD
 //#include <bits/signum-generic.h>
+=======
+// #include <bits/signum-generic.h>
+>>>>>>> 758c28cf67f6d344a59882ad521dddd1cf3ea55c
 #include "minishell.h"
 #include <signal.h>
 

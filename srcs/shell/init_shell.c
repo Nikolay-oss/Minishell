@@ -76,6 +76,7 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 	signals.sig_quit = 0; // 4
 	minishell->old_pwd = 0;
 	minishell->pwd = 0;
+	minishell->cursor_pos = 0;
 	// get pwd
 	node = getvar_node(minishell->env, "PWD");
 	if(!node)

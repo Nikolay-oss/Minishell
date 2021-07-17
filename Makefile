@@ -48,10 +48,17 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 
 CFLAGS		= #-Wall -Wextra -Werror
 
+<<<<<<< HEAD
 # INCLUDES	= -I includes/ # ubuntu
 INCLUDES	= -I includes/ -I /Users/$(USER)/.brew/opt/readline/include # macOS
 
 # LIBS		= -lreadline -Llibft -lft # ubuntu
+=======
+#  INCLUDES	= -I includes/ # ubuntu
+INCLUDES	= -I includes/ -I /Users/$(USER)/.brew/opt/readline/include # macOS
+
+#  LIBS		= -lreadline -Llibft -lft # ubuntu
+>>>>>>> 758c28cf67f6d344a59882ad521dddd1cf3ea55c
 LIBS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft # macOS
 
 OBJS		= $(patsubst $(SRCS_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS)) 
