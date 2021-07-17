@@ -14,7 +14,7 @@ static t_bool	init_env(t_minishell *minishell, char **envp)
 		env_variable = ft_strdup(*(envp + i));
 		if (!check_memory(minishell, (void *)env_variable))
 			return (0);
-		if (ft_strnstr(env_variable, "SHLVL=", 100))
+		if (ft_strnstr(env_variable, "SHLVL=", 8))
 			(*(env_variable + 6))++;
 		ft_push_back(minishell->env, env_variable);
 		i++;
@@ -40,7 +40,6 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 		return (0);
 	minishell->exit_status = (long long int)NULL; // 1
 	minishell->home_path = (char *)NULL; // 2
-	minishell->shlvl = 1;
 	signals.sig_int = 0; // 3
 	signals.sig_quit = 0; // 4
 	//get pwd
@@ -48,8 +47,7 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 	if(!node)
 	{
 		buf = getcwd(NULL, PATH_MAX);
-		ft_push_back(minishell->env,
-					 ft_strjoin("PWD=", buf)); //free getcwd
+		ft_push_back(minishell->env, ft_strjoin("PWD=", buf)); //free getcwd
 		free(buf);
 	}
 	minishell->home_path = getvar_value(minishell, minishell->env, "HOME");

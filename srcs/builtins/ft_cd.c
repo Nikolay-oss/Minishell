@@ -48,8 +48,23 @@ void	ft_cd(t_minishell *minishell, char *path)
 		buf = getcwd(NULL, PATH_MAX);
 //		printf("|%s|\n", buf);
 		char *tmp = ft_strjoin("PWD=", buf);
-		ft_push_back(minishell->env,
-					 tmp); //free getcwd
+		// ft_push_back(minishell->env,
+		// 			 tmp); //free getcwd
+		t_node	*new;
+
+	new = ft_create_node(tmp);
+	if (!new)
+		return ;
+	if (!minishell->env->tail)
+	{
+		minishell->env->head = new;
+		minishell->env->tail = new;
+		minishell->env->size++;
+		return ;
+	}
+	minishell->env->tail->next = new;
+	minishell->env->tail = new;
+	minishell->env->size++;
 		printf("node: |%s|\n", (char *)minishell->env->tail->content);
 		node = getvar_node(minishell->env, "PWD");
 		printf("node: |%p|\n", node);

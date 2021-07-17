@@ -106,7 +106,7 @@ char	*getvar_value(t_minishell *shell, t_list *vars, const char *var_name);
 int		ft_echo(char **command);
 int		ft_env(t_list *env);
 void	ft_cd(t_minishell *minishell, char *path);
-void	ft_unset(t_list *env, char **var);
+void	ft_unset(t_minishell *minishell, char **var);
 // subregion export
 int		ft_export(t_minishell *minishell, char **vars);
 int		print_declare_env(t_minishell *minishell);

@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:50:27 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/14 23:16:43 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/15 08:10:26 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	select_command(t_minishell *minishell, char **command, t_bool newproc)
 	}
 	else if (!ft_strcmp(*command, "unset"))
 	{
-		ft_unset(minishell->env, command); //двумерный массив сам ансет и аргументы
+		ft_unset(minishell, command); //двумерный массив сам ансет и аргументы
 	}
 	else if (!ft_strcmp(*command, "env"))
 	{

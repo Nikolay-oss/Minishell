@@ -27,13 +27,13 @@ static	int	ft_un_parser(char *var)
 	return (1);
 }
 
-void	ft_unset(t_list *env, char **var)
+void	ft_unset(t_minishell *minishell, char **var)
 {
 	t_node	*node;
 	int 	i;
 
 	i = 1;
-	node = getvar_node(env, var[i]);
+	node = getvar_node(minishell->env, var[i]);
 //	write(1, "HHHHHHH\n", 8);
 //	printf("var1: |%s|\n", var[i]);
 //	printf("node1: |%s|\n", node);
@@ -41,9 +41,9 @@ void	ft_unset(t_list *env, char **var)
 //	printf("parser1: |%d|\n", ft_un_parser(var[i]));
 	if(ft_un_parser(var[i]))
 	{
-		node = getvar_node(env, var[i]);
+		node = getvar_node(minishell->env, var[i]);
 		if (node)
-			ft_del_node(&env, free, node);
+			ft_del_node(&minishell->env, free, node);
 	}
 	else
 		printf("unset: %s not a valid identifier\n", var[i]);
@@ -59,9 +59,9 @@ void	ft_unset(t_list *env, char **var)
 
 		if(ft_un_parser(var[i]))
 		{
-			node = getvar_node(env, var[i]);
+			node = getvar_node(minishell->env, var[i]);
 			if (node)
-				ft_del_node(&env, free, node);
+				ft_del_node(&minishell->env, free, node);
 		}
 		else
 			printf("unset: %s not a valid identifier\n", var[i]);
