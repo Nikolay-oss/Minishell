@@ -1,76 +1,104 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brice <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/18 20:01:22 by brice             #+#    #+#             */
+/*   Updated: 2021/07/18 20:02:01 by brice            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static	int	ft_is_env(int c)
+int	*alloc_int(char **cmd)
 {
-	if (c >= 'A' && c <= 'Z')
-		return (1);
-	else if (c >= 'a' && c <= 'z')
-		return (1);
-	else if (c == '_')
-		return (1);
-	else
-		return (0);
+	int	*arr_new;
+	int	size;
+	int	i;
+
+	size = 0;
+	i = 0;
+	while (cmd[size])
+		size++;
+	arr_new = (int *)ft_calloc(size + 1, sizeof(int));
+	if (!arr_new)
+		return (NULL);
+	while (i < size)
+		arr_new[i++] = 0;
+	arr_new[i] = 0;
+	return (arr_new);
 }
 
-static	int	ft_un_parser(char *var)
+int	parser_cycle(char **cmd, int *arr, const int *i, const int *j)
 {
-	int i;
-
-	i = 0;
-	while (var[i])
+	if ((ft_isdigit(cmd[*i][*j]) && *j == 0)
+		|| (!cmd[*i][*j + 1] && cmd[*i][*j] == '$') || !is_env(cmd[*i][*j]))
 	{
-		if(ft_is_env(var[i]))
-			i++;
-		else
-			return (0);
+		arr[*i] = ERROR;
+		return (ERROR);
 	}
+	else
+		arr[*i] = 1;
 	return (1);
+}
+
+int	*parser_commands(char **cmd)
+{
+	int	i;
+	int	j;
+	int	*arr;
+
+	i = 1;
+	arr = alloc_int(cmd);
+	if (arr == NULL)
+		return (NULL);
+	while (cmd[i])
+	{
+		j = 0;
+		while (cmd[i][j])
+		{
+			if (parser_cycle(cmd, arr, &i, &j) == -1)
+				break ;
+			j++;
+		}
+		i++;
+	}
+	return (arr);
+}
+
+void	delete_node(t_minishell *minishell, char *var)
+{
+	t_node	*node;
+
+	node = getvar_node(minishell->env, var);
+	if (!node)
+		return ;
+	else
+		ft_del_node(minishell->env, &free, node);
 }
 
 void	ft_unset(t_minishell *minishell, char **var)
 {
-	t_node	*node;
-	int 	i;
+	int	i;
+	int	*ret;
 
 	i = 1;
-	printf("node: |%s|\n", minishell->old_pwd);
-	if(ft_un_parser(var[i]))
+	ret = parser_commands(var);
+	if (ret == NULL)
 	{
-		node = getvar_node(minishell->env, var[i]);
-		if (!strcmp(var[i], "OLDPWD") && node)
-		{
-			minishell->old_pwd = ft_strdup((char *)node->content);
-			printf("old pwd - |%s|\n", minishell->old_pwd);
-		}
-		if (!strcmp(var[i], "PWD") && node)
-		{
-			minishell->pwd = ft_strdup((char *)node->content);
-		}
-		if (node) //&& strcmp(var[i], "OLDPWD") != 0)
-		{
-			ft_del_node(minishell->env, &free, node);
-		}
-		write(1, "222\n", 4);
+		print_error("malloc", errno);
+		minishell->exit_status = errno;
+		return ;
 	}
-	else
-		printf("unset: %s not a valid identifier\n", var[i]);
-	i++;
-	printf("node: |%s|\n", minishell->old_pwd);
 	while (var[i])
 	{
-//		printf("var: |%s|\n", var[i]);
-		// printf("node12: |%s|\n", (char *)node->content);
-
-		if(ft_un_parser(var[i]))
-		{
-			node = getvar_node(minishell->env, var[i]);
-			if (node)
-				ft_del_node(minishell->env, &free, node);
-		}
+		if (ret[i] == ERROR)
+			error_handler(var[i]);
 		else
-			printf("unset: %s not a valid identifier\n", var[i]);
+			delete_node(minishell, var[i]);
 		i++;
 	}
-//	if (!node && var[i])
-//		printf("unset: %s not a valid identifier\n", var[i]);
+	free(ret);
 }
