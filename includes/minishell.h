@@ -17,7 +17,7 @@
 // # define STDER	2
 // ----------
 # define ERROR			(-1)
-# define SUCCESS		(1)
+# define ERR_SIGNAL		(1)
 # define FPERMISSIONS	0666
 # define HEREDOCNAME	".heredoc"
 
@@ -112,7 +112,7 @@ int		ft_env(t_list *env);
 void	ft_cd(t_minishell *minishell, char *path);
 void	ft_unset(t_minishell *minishell, char **var);
 //region unset tools
-//void	print_error_str(char *str1, char *str2, char *str3);
+void	print_error_str(char *str1, char *str2, char *str3);
 int		*alloc_int(char **cmd);
 void	error_handler(char *var);
 int		is_env(int c);
