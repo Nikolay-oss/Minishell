@@ -8,7 +8,7 @@
 //	if (!(*buf))
 //	{
 //		print_error("getcwd", errno);
-//		signals.exit_status = 1;
+//		g_signals.exit_status = 1;
 //		return ;
 //	}
 //	node_old = getvar_node(env, "OLDPWD");
@@ -30,7 +30,7 @@
 //	minishell->old_pwd = minishell->pwd;
 //	minishell->pwd = swap;
 //
-//	signals.exit_status = 0;
+//	g_signals.exit_status = 0;
 //}
 
 void print_error_cd(void *str1, void *str2, int err)
@@ -77,7 +77,7 @@ void	update_path(int arg, t_minishell *minishell, char **path)
 		if (!node)
 		{
 			print_error_str("cd", NULL, "HOME not set");
-			signals.exit_status = ERR_SIGNAL;
+			g_signals.exit_status = ERR_SIGNAL;
 			return;
 		}
 		else
@@ -114,7 +114,7 @@ void	update_path(int arg, t_minishell *minishell, char **path)
 		if (chdir(*path) == -1)
 		{
 			print_error_cd("cd", *path, errno);
-			signals.exit_status = 1;
+			g_signals.exit_status = 1;
 		}
 		if (!node)
 		{
@@ -140,7 +140,7 @@ void	update_path(int arg, t_minishell *minishell, char **path)
 			else
 			{
 				print_error_cd("cd", path, errno);
-				signals.exit_status = 1;
+				g_signals.exit_status = 1;
 			}
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brice <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/18 20:02:07 by brice             #+#    #+#             */
-/*   Updated: 2021/07/18 20:03:18 by brice            ###   ########.fr       */
+/*   Updated: 2021/07/19 23:38:22 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	error_handler(char *var)
 	print_error_str("unset", arg_sec, "not a valid identifier");
 	free(arg);
 	free(arg_sec);
-	signals.exit_status = 1;
+	g_signals.exit_status = 1;
 }
 
 int	is_env(int c)

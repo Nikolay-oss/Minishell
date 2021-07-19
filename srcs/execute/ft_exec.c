@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:24 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/19 21:43:26 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 23:53:00 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	make_path_to_bin(t_minishell *minishell, char *path, char *cmd_bin,
 
 	if (!path)
 	{
-		signals.exit_status = 127;
+		g_signals.exit_status = 127;
 		return ;
 	}
 	tmp = ft_strjoin(path, "/");
@@ -59,8 +59,8 @@ static void	child_proc_handler(char *bin_path, char **cmd, char **envp)
 	int	status;
 
 	status = 0;
-	signals.pid = fork();
-	if (signals.pid == 0)
+	g_signals.pid = fork();
+	if (g_signals.pid == 0)
 	{
 		status = execve(bin_path, cmd, envp);
 		status = check_permission(bin_path, status);
@@ -68,11 +68,8 @@ static void	child_proc_handler(char *bin_path, char **cmd, char **envp)
 	}
 	else
 	{
-		waitpid(signals.pid, &status, 0);
+		waitpid(g_signals.pid, &status, 0);
 		save_status(status);
-		// signals.exit_status = WEXITSTATUS(status);
-		// sigint_save_status(status);
-		// sigquit_save_status(status);
 	}
 }
 

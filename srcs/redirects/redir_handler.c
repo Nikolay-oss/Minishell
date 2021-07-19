@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:49:41 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/15 00:34:52 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 00:01:13 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ static int	select_redirect(t_minishell *minishell, char *redir,
 	else if (!ft_strcmp(">", redir))
 	{
 		status = ft_redir(filename, O_CREAT | O_WRONLY | O_TRUNC,
-			FPERMISSIONS, 1);
+				FPERMISSIONS, 1);
 	}
 	else if (!ft_strcmp(">>", redir))
 	{
 		status = ft_redir(filename, O_CREAT | O_WRONLY | O_APPEND,
-			FPERMISSIONS, 1);
+				FPERMISSIONS, 1);
 	}
 	if (status != -1)
-		signals.exit_status = status;
+		g_signals.exit_status = status;
 	return (status);
 }
 
@@ -67,7 +67,7 @@ static t_bool	redir_handler_utils(t_minishell *minishell, char **cmd,
 		if (*redir_pos == -1)
 			*redir_pos = i;
 		status = select_redirect(minishell, *(cmd + i),
-			(const char *)*(cmd + i + 1));
+				(const char *)*(cmd + i + 1));
 		if (status > 0)
 		{
 			print_error(*(cmd + i + 1), errno);

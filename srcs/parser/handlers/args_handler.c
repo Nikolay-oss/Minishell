@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:50:07 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:50:08 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 23:54:13 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static void	simple_arg_handler(t_minishell *minishell, char **arg, char *buf)
 		add_to_arg(minishell, arg, buf);
 }
 
-static t_uint	quote_handler(t_minishell *minishell, char **arg, char *buf, char type)
+static t_uint	quote_handler(t_minishell *minishell, char **arg, char *buf,
+	char type)
 {
 	t_uint	i;
 	char	chr_old;
@@ -83,7 +84,7 @@ static t_uint	quote_handler(t_minishell *minishell, char **arg, char *buf, char 
 static void	arg_handler_tool(char *buf, t_uint *i_end, char *quote_type)
 {
 	while (!ft_memchr("\"'", *(buf + *i_end), 3))
-			(*i_end)++;
+		(*i_end)++;
 	*quote_type = *(buf + *i_end);
 }
 

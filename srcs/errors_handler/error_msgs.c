@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:17 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/14 23:43:13 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 23:38:22 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ void	syntax_error(char *token)
 void	ft_malloc_error(t_minishell *minishell)
 {
 	ft_putendl_fd(strerror(errno), 2);
-	signals.exit_status = errno;
+	g_signals.exit_status = errno;
 	minishell->ismem_error = 1;
 }

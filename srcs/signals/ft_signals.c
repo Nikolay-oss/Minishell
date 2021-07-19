@@ -5,14 +5,14 @@
 void	save_status(int status)
 {
 	if (WIFEXITED(status))
-		signals.exit_status = WEXITSTATUS(status);
+		g_signals.exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		signals.exit_status = 128 + WTERMSIG(status);
+		g_signals.exit_status = 128 + WTERMSIG(status);
 }
 
 void	sigint_handler(int sig)
 {
-	if (!signals.pid)
+	if (!g_signals.pid)
 	{
 		rl_on_new_line();
 		rl_redisplay();
@@ -20,7 +20,7 @@ void	sigint_handler(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		signals.exit_status = 1;
+		g_signals.exit_status = 1;
 	}
 	else
 	{
@@ -30,10 +30,10 @@ void	sigint_handler(int sig)
 
 void	sigquit_handler(int sig)
 {
-	char *nbr;
+	char	*nbr;
 
 	nbr = ft_itoa(sig);
-	if (signals.pid)
+	if (g_signals.pid)
 	{
 		ft_putstr_fd("Quit: ", 2);
 		ft_putstr_fd(nbr, 2);

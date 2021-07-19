@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:47:49 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:47:50 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 00:00:11 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 t_bool	launch_dual_redir(t_minishell *minishell, int n_proc)
 {
-	int status;
+	int	status;
 
 	status = 0;
 	if (*(minishell->heredocs + n_proc))

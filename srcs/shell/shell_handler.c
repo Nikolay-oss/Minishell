@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_handler.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/20 00:39:49 by dkenchur          #+#    #+#             */
+/*   Updated: 2021/07/20 00:39:50 by dkenchur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <signal.h>
 #include "minishell.h"
 
@@ -19,5 +31,5 @@ void	shell_handler(t_minishell *minishell)
 	}
 	if (minishell->heredocs)
 		destroy_heredocs(minishell);
-	signals.pid = 0;
+	g_signals.pid = 0;
 }

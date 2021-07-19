@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 18:24:06 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/06/29 18:43:40 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 23:59:24 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ t_uint	skip_spaces(char *str)
 	return (i);
 }
 
-t_bool	add_command_to_allcommands(t_minishell *minishell, char *buf, t_uint idx)
+t_bool	add_command_to_allcommands(t_minishell *minishell, char *buf,
+	t_uint idx)
 {
 	char	*str_cmd;
 	char	chr_endcmd;

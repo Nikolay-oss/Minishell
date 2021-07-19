@@ -6,19 +6,16 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 18:24:13 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/19 22:19:45 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 23:38:22 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include "ft_parser.h"
-
 #include "readline/readline.h"
 #include "readline/history.h"
 
-t_signal	signals;
-
-void	rl_replace_line();
+t_signal	g_signals;
 
 static void	ft_loop(t_minishell *minishell)
 {
@@ -53,31 +50,10 @@ int	main(int ac, char **av, char **envp)
 		return (errno);
 	}
 	if (!init_shell(minishell, envp))
-		return (signals.exit_status);
+		return (g_signals.exit_status);
 	signal(SIGINT, &sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
-//	signal(SIGQUIT, &sigquit_handler);
 	ft_loop(minishell);
 	destroy_shell(minishell);
-	// write(1, "exit\n", 5);
-	return (signals.exit_status);
+	return (g_signals.exit_status);
 }
-
-
-/*
-"\4" - ^D
-*/
-/*
-  export LDFLAGS="-L/Users/dkenchur/.brew/opt/readline/lib"
-  export CPPFLAGS="-I/Users/dkenchur/.brew/opt/readline/include"
-*/
-
-// free(buf);
-// tcgetattr(STDIN_FILENO, &term);
-// term.c_lflag &= ~(ISIG);
-// tcsetattr(STDIN_FILENO, TCSANOW, &term);
-
-// environment variables
-// int i = 0;
-// while (*(envp + i))
-// 	printf("%s\n", *(envp + i++));

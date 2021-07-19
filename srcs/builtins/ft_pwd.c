@@ -6,13 +6,13 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:24:13 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 21:24:14 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 23:43:58 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_pwd()
+int	ft_pwd(void)
 {
 	char	*path;
 

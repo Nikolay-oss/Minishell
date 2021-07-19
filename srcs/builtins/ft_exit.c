@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-static int ft_is_string_digit(char *str)
+static int	ft_is_string_digit(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -14,25 +14,25 @@ static int ft_is_string_digit(char *str)
 	return (1);
 }
 
-static int ft_return_value(t_minishell *minishell)
+static int	ft_return_value(t_minishell *minishell)
 {
-	int res;
+	int	res;
 
 	res = (int)((minishell->exit_status) % 256);
 	printf("exit\n");
 	exit(res);
 }
 
-static void ft_print_error(int c, char *var)
+static void	ft_print_error(int c, char *var)
 {
 	printf("exit\nminishell: exit: %s: numeric argument required\n", var);
 	exit(c);
 }
 
-static void ft_exit_handler(t_minishell *minishell, char **var,
+static void	ft_exit_handler(t_minishell *minishell, char **var,
 							int *i, int *flag)
 {
-	int res;
+	int	res;
 
 	if (var[*i] && ft_count_args(var) <= 2)
 	{
@@ -60,7 +60,7 @@ void	ft_exit(t_minishell *minishell, char **var)
 	int			i;
 	static int	flag;
 
-	minishell->exit_status = signals.exit_status;
+	minishell->exit_status = g_signals.exit_status;
 	i = 1;
 	if (flag == 1)
 		exit(1);

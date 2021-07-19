@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_shell.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/20 00:40:31 by dkenchur          #+#    #+#             */
+/*   Updated: 2021/07/20 00:40:32 by dkenchur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_parser.h"
 
 static t_bool	shlvl_handler(t_minishell *minishell)
@@ -49,40 +61,48 @@ static t_bool	init_env(t_minishell *minishell, char **envp)
 	return (shlvl_handler(minishell));
 }
 
-static void	t_signals_init()
+static void	t_signals_init(void)
 {
-	signals.pid = 0;
-	// signals.sig_int = 0;
-	// signals.sig_quit = 0;
-	signals.exit_status = 0;
+	g_signals.pid = 0;
+	g_signals.exit_status = 0;
+}
+
+static void	init_pwd(t_minishell *minishell)
+{
+	t_node	*node;
+	char	*pwd;
+	char	*pwd_var;
+
+	node = getvar_node(minishell->env, "PWD");
+	pwd_var = NULL;
+	if (!node)
+	{
+		pwd = getcwd(NULL, PATH_MAX);
+		if (!pwd)
+		{
+			ft_malloc_error(minishell);
+			return ;
+		}
+		pwd_var = ft_strjoin("PWD=", pwd);
+		if (!pwd_var)
+		{
+			ft_malloc_error(minishell);
+			return ;
+		}
+		free(pwd);
+	}
 }
 
 t_bool	init_shell(t_minishell *minishell, char **envp)
 {
-	t_node	*node;
-	char *buf;
-
 	t_signals_init();
 	if (!init_env(minishell, envp))
 		return (0);
-	minishell->exit_status = (long long int)NULL; // 1
-	minishell->home_path = (char *)NULL; // 2
-	// signals.sig_int = 0; // 3
-	// signals.sig_quit = 0; // 4
+	minishell->exit_status = 0;
+	minishell->home_path = (char *) NULL;
 	minishell->old_pwd = 0;
 	minishell->pwd = 0;
-	minishell->cursor_pos = 0;
-	// get pwd
-	node = getvar_node(minishell->env, "PWD");
-	if(!node)
-	{
-		buf = getcwd(NULL, PATH_MAX);
-		minishell->pwd = strdup(buf);
-		ft_push_back(minishell->env,
-					 ft_strjoin("PWD=", buf));
-		free(buf);
-	}
-//	minishell->home_path = getvar_value(minishell, minishell->env, "HOME");
+	init_pwd(minishell);
 	if (minishell->ismem_error)
 		return (0);
 	minishell->env_secret = ft_create_lst();

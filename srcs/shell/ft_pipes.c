@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:23:06 by brice             #+#    #+#             */
-/*   Updated: 2021/07/19 22:57:35 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 23:38:22 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static	void	ft_chd_prcs(const pid_t *pid, t_commands *node,
 		}
 		close(fd[0]);
 		redir_handler(minishell, node, minishell->cnt_prcs, 0);
-		exit(signals.exit_status);
+		exit(g_signals.exit_status);
 	}
 	else
 	{
@@ -54,7 +54,7 @@ static void	ft_ret_recur(int *fd, pid_t *pid, t_commands *node)
 
 	close(fd[0]);
 	close(fd[1]);
-	signals.pid = *pid;
+	g_signals.pid = *pid;
 	waitpid(*pid, &status, 0);
 	if (node == NULL)
 		save_status(status);
@@ -69,7 +69,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 		return ;
 	if (pipe(fd) == -1)
 	{
-		signals.exit_status = errno;
+		g_signals.exit_status = errno;
 		print_error("pipe", errno);
 		return ;
 	}
@@ -79,7 +79,7 @@ void	ft_pipes(t_minishell *minishell, t_commands *node, int fd_old)
 	if (pid < 0)
 	{
 		print_error("fork", errno);
-		signals.exit_status = errno;
+		g_signals.exit_status = errno;
 		return ;
 	}
 	minishell->fd_old = fd_old;

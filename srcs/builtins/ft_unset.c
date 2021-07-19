@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/18 20:01:22 by brice             #+#    #+#             */
-/*   Updated: 2021/07/19 20:38:31 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 23:38:22 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_unset(t_minishell *minishell, char **var)
 	if (ret == NULL)
 	{
 		print_error("malloc", errno);
-		signals.exit_status = errno;
+		g_signals.exit_status = errno;
 		return ;
 	}
 	while (var[i])

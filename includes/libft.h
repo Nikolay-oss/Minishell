@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 13:01:35 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/15 06:50:41 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 00:39:29 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ char				*ft_itoa(int n);
 int					ft_get_index_symbol(char *str, char find);
 int					ft_count_args(char **var);
 char				*ft_del_substr(const char *s, const char *set);
-char				*ft_insert_substr(const char *s, const char *substr, size_t pos);
+char				*ft_insert_substr(const char *s, const char *substr,
+						size_t pos);
 
 typedef struct s_node
 {

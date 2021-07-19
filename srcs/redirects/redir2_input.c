@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:49:50 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/19 20:34:54 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 00:00:41 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_bool	redir2_input(t_minishell *minishell, const char *stop_value,
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd < 0)
 	{
-		signals.exit_status = errno;
+		g_signals.exit_status = errno;
 		print_error((char *)filename, errno);
 		return (0);
 	}
@@ -88,7 +88,7 @@ t_bool	redir_dual_input(t_minishell *minishell, t_commands *node_cmd,
 			&& !*(node_cmd->flags_quotes + i))
 		{
 			status = redir2_input(minishell, *(node_cmd->cmd + i + 1),
-				*(node_cmd->flags_quotes + i + 1), filename);
+					*(node_cmd->flags_quotes + i + 1), filename);
 			if (!status)
 				return (0);
 		}
