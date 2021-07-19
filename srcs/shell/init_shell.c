@@ -84,10 +84,10 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 		buf = getcwd(NULL, PATH_MAX);
 		minishell->pwd = strdup(buf);
 		ft_push_back(minishell->env,
-					 ft_strjoin("PWD=", buf)); //free getcwd
+					 ft_strjoin("PWD=", buf));
 		free(buf);
 	}
-	minishell->home_path = getvar_value(minishell, minishell->env, "HOME");
+//	minishell->home_path = getvar_value(minishell, minishell->env, "HOME");
 	if (minishell->ismem_error)
 		return (0);
 	minishell->env_secret = ft_create_lst();

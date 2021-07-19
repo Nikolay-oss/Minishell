@@ -16,8 +16,11 @@ void	print_error_str(char *str1, char *str2, char *str3)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(str1, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(str2, 2);
+	if (str2 != NULL)
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(str2, 2);
+	}
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(str3, 2);
 }
