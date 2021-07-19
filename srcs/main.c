@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 18:24:13 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/17 16:20:15 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 22:19:45 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,10 @@
 
 #include "readline/readline.h"
 #include "readline/history.h"
-/*
-	global struct signals
-*/
 
 t_signal	signals;
 
 void	rl_replace_line();
-
-// засунь обработчики сигналов в отдельный файл
-// void	ft_handler(int sig)
-// {
-// 	signals.sig_int = 1;
-// 	(void)sig; // temprorary
-// 	rl_replace_line("", 0);
-// 	write(1, "\n", 1);
-// 	rl_on_new_line();
-// 	rl_redisplay();
-// 	if (signals.pid)
-// 	{
-// 		//child
-// 	}
-// 	else
-// 	{
-
-// 	}
-// }
 
 static void	ft_loop(t_minishell *minishell)
 {
@@ -53,7 +31,7 @@ static void	ft_loop(t_minishell *minishell)
 		buf = readline(PROMPT);
 		if (!buf)
 		{
-			printf("\x1B[1F\e[%luC exit\n", minishell->cursor_pos + ft_strlen("prompt>"));
+			printf("\x1B[1F\e[%luC exit\n", ft_strlen("prompt>"));
 			break ;
 		}
 		add_history(buf);

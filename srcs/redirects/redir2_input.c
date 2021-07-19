@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:49:50 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/17 17:44:00 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 20:34:54 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,7 @@ static t_bool	save_to_heredoc(t_minishell *minishell, const char *stop_value,
 	{
 		line = readline("> ");
 		if (!line)
-		{
-			minishell->cursor_pos += 2;
-			write(1, "\x1B[1F> ", 6);
-			// printf("\e[%uC", minishell->cursor_pos);
 			break ;
-		}
 		if (!ft_strcmp(line, stop_value))
 		{
 			free(line);

@@ -57,8 +57,6 @@ typedef struct s_minishell
 //region global structure
 typedef struct	s_signal
 {
-	t_bool	sig_int;
-	t_bool	sig_quit;
 	pid_t	pid;
 	int		exit_status;
 }				t_signal;
@@ -71,6 +69,7 @@ void	sigint_handler(int sig);
 void	sigint_save_status(int status);
 void	sigquit_handler(int sig);
 void	sigquit_save_status(int status);
+void	save_status(int status);
 // end region
 
 // region shell_handler

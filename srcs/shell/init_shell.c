@@ -11,9 +11,7 @@ static t_bool	shlvl_handler(t_minishell *minishell)
 	if (node_shlvl)
 	{
 		shlvl = (int)ft_atoi((char *)node_shlvl->content + 6);
-		printf("str-lvl -> %s\n", (char *)node_shlvl->content);
-		printf("lvl -> %d\n", shlvl);
-		tmp = ft_itoa(shlvl);
+		tmp = ft_itoa(++shlvl);
 		new_shlvl = ft_strjoin("SHLVL=", tmp);
 		free(tmp);
 	}
@@ -45,20 +43,17 @@ static t_bool	init_env(t_minishell *minishell, char **envp)
 		env_variable = ft_strdup(*(envp + i));
 		if (!check_memory(minishell, (void *)env_variable))
 			return (0);
-		// if (ft_strnstr(env_variable, "SHLVL=", 100))
-		// 	env_variable[6]++;
 		ft_push_back(minishell->env, env_variable);
 		i++;
 	}
-	return (1);
-	// return (shlvl_handler(minishell));
+	return (shlvl_handler(minishell));
 }
 
 static void	t_signals_init()
 {
 	signals.pid = 0;
-	signals.sig_int = 0;
-	signals.sig_quit = 0;
+	// signals.sig_int = 0;
+	// signals.sig_quit = 0;
 	signals.exit_status = 0;
 }
 
@@ -72,8 +67,8 @@ t_bool	init_shell(t_minishell *minishell, char **envp)
 		return (0);
 	minishell->exit_status = (long long int)NULL; // 1
 	minishell->home_path = (char *)NULL; // 2
-	signals.sig_int = 0; // 3
-	signals.sig_quit = 0; // 4
+	// signals.sig_int = 0; // 3
+	// signals.sig_quit = 0; // 4
 	minishell->old_pwd = 0;
 	minishell->pwd = 0;
 	minishell->cursor_pos = 0;

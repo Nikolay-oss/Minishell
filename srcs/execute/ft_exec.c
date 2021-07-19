@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:24 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/15 05:59:02 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/19 21:43:26 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ static void	child_proc_handler(char *bin_path, char **cmd, char **envp)
 	else
 	{
 		waitpid(signals.pid, &status, 0);
-		sigint_save_status(status);
-		sigquit_save_status(status);
+		save_status(status);
+		// signals.exit_status = WEXITSTATUS(status);
+		// sigint_save_status(status);
+		// sigquit_save_status(status);
 	}
 }
 
