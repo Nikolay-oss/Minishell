@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/20 00:40:31 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/20 00:40:32 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 22:15:15 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static t_bool	init_env(t_minishell *minishell, char **envp)
 	return (shlvl_handler(minishell));
 }
 
-static void	t_signals_init(void)
+static void	g_signals_init(void)
 {
 	g_signals.pid = 0;
 	g_signals.exit_status = 0;
@@ -89,13 +89,14 @@ static void	init_pwd(t_minishell *minishell)
 			ft_malloc_error(minishell);
 			return ;
 		}
+		add_var(minishell, pwd_var, 1);
 		free(pwd);
 	}
 }
 
 t_bool	init_shell(t_minishell *minishell, char **envp)
 {
-	t_signals_init();
+	g_signals_init();
 	if (!init_env(minishell, envp))
 		return (0);
 	minishell->exit_status = 0;

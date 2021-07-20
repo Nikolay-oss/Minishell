@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:24:09 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/15 07:00:47 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 21:25:47 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ static int	add_to_vars(t_minishell *minishell, t_list *vars,
 		ft_malloc_error(minishell);
 		return (errno);
 	}
-	if (var_node && *var_node)
+	if (vars->size == 0)
+		ft_push_back(vars, new_var);
+	else if (var_node && *var_node)
 	{
 		free((*var_node)->content);
 		(*var_node)->content = (void *)new_var;
