@@ -6,13 +6,13 @@
 /*   By: brice <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/20 20:52:19 by brice             #+#    #+#             */
-/*   Updated: 2021/07/20 22:35:42 by brice            ###   ########.fr       */
+/*   Updated: 2021/07/20 23:03:09 by brice            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int err_check_home(t_minishell *minishell, t_node *curr_pwd, char *str)
+int	err_check_home(t_minishell *minishell, t_node *curr_pwd, char *str)
 {
 	char	*current_pwd;
 	char	*err;
@@ -35,7 +35,7 @@ int err_check_home(t_minishell *minishell, t_node *curr_pwd, char *str)
 int	home_set(t_minishell *minishell, t_node	*curr_pwd, char *path)
 {
 	t_node	*old_pwd;
-	t_node *home_pwd;
+	t_node	*home_pwd;
 
 	old_pwd = getvar_node(minishell->env, "OLDPWD");
 	home_pwd = getvar_node(minishell->env, "HOME");
@@ -43,7 +43,7 @@ int	home_set(t_minishell *minishell, t_node	*curr_pwd, char *path)
 	{
 		if (err_check_home(minishell, old_pwd, "OLDPWD=") == ERROR)
 			 return (ERROR);
-		if(chdir(&((home_pwd->content)[5])) == ERROR)
+		if (chdir(&((home_pwd->content)[5])) == ERROR)
 		{
 			print_error_cd("cd", path, errno);
 			g_signals.exit_status = 1;
