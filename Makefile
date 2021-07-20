@@ -6,7 +6,7 @@
 #    By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/20 00:19:11 by dkenchur          #+#    #+#              #
-#    Updated: 2021/07/20 00:19:12 by dkenchur         ###   ########.fr        #
+#    Updated: 2021/07/20 22:19:59 by dkenchur         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,12 +61,6 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 
 CFLAGS		= #-Wall -Wextra -Werror
 
-
-# INCLUDES	= -I includes/ # ubuntu
-INCLUDES	= -I includes/ -I /Users/$(USER)/.brew/opt/readline/include # macOS
-
-# LIBS		= -lreadline -Llibft -lft # ubuntu
-
 #  INCLUDES	= -I includes/ # ubuntu
 INCLUDES	= -I includes/ -I /Users/$(USER)/.brew/opt/readline/include # macOS
 
@@ -75,7 +69,7 @@ LIBS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -Llibft -lft # macOS
 
 OBJS		= $(patsubst $(SRCS_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS)) 
 
-$(OBJ_DIR)%.o:	$(SRCS_DIR)%.c
+$(OBJ_DIR)%.o:	$(SRCS_DIR)%.c $(INCLUDES)
 	$(CC) -g $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(NAME):	$(OBJ_DIR) $(OBJS)

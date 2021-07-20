@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_signals.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/20 22:09:07 by dkenchur          #+#    #+#             */
+/*   Updated: 2021/07/20 22:09:08 by dkenchur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <signal.h>
 #include "readline/readline.h"
@@ -16,7 +28,7 @@ void	sigint_handler(int sig)
 	{
 		rl_on_new_line();
 		rl_redisplay();
-		write(1, "  \n", 3);
+		write(2, "  \n", 3);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -36,7 +48,7 @@ void	sigquit_handler(int sig)
 	if (g_signals.pid)
 	{
 		ft_putstr_fd("Quit: ", 2);
-		ft_putstr_fd(nbr, 2);
-		ft_putstr_fd("\n", 2);
+		ft_putendl_fd(nbr, 2);
 	}
+	free(nbr);
 }
