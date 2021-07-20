@@ -64,6 +64,7 @@ typedef struct s_minishell
 	int				flag;
 	int				fd_old;
 	int				cnt_prcs;
+	int				flag_cd;
 }					t_minishell;
 
 void	shell_handler(t_minishell *minishell);
@@ -132,6 +133,9 @@ char	*getvar_value(t_minishell *shell, t_list *vars, const char *var_name);
 int		ft_echo(char **command);
 int		ft_env(t_list *env);
 void	ft_cd(t_minishell *minishell, char *path);
+void	print_error_cd(void *str1, void *str2, int err);
+int		pwd_error(char **current_pwd, char *path);
+int		else_argument(t_minishell *minishell, t_node *curr_pwd, char **path);
 void	ft_unset(t_minishell *minishell, char **var);
 
 void	print_error_str(char *str1, char *str2, char *str3);

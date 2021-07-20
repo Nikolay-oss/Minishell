@@ -57,6 +57,7 @@ SRCS		= $(SRCS_DIR)main.c						$(PARSER_DIR)ft_parser.c \
 			  $(REDIR_DIR)heredocs_handler.c		$(SHELL_DIR)init_shell.c \
 			  $(SHELL_DIR)destroy_shell.c			$(REDIR_DIR)launch_dual_redir.c \
 			  $(SIG_DIR)ft_signals.c				$(BUILTINS_DIR)unset_tools.c \
+			  $(BUILTINS_DIR)cd_tools.c \
 
 CFLAGS		= #-Wall -Wextra -Werror
 

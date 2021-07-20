@@ -1,163 +1,97 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brice <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/20 20:52:19 by brice             #+#    #+#             */
+/*   Updated: 2021/07/20 22:35:42 by brice            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-//void	ft_cd_handler(char **buf, t_node *node, t_node *node_old, t_list *env, t_minishell *minishell)
-//{
-//	int		i;
-//	char 	*swap;
-//	(*buf) = getcwd(NULL, PATH_MAX); 							// protect
-//	if (!(*buf))
-//	{
-//		print_error("getcwd", errno);
-//		g_signals.exit_status = 1;
-//		return ;
-//	}
-//	node_old = getvar_node(env, "OLDPWD");
-//	if (!node_old && !minishell->old_pwd)
-//	{
-//		ft_push_back(env, ft_strjoin("OLDPWD=",
-//									 getcwd(NULL, PATH_MAX)));
-//		node_old = getvar_node(env, "OLDPWD");
-//	}
-//	free(node_old->content);
-//	i = ft_get_index_symbol(node->content, '=');
-//	if (!minishell->old_pwd)
-//		node_old->content = (void *)ft_strjoin("OLDPWD=", (node->content + ++i)); // free
-//	free(node->content);
-//	if (!minishell->pwd)
-//		node->content = (void *)ft_strjoin("PWD=", (*buf));  // edit
-//	free((*buf));
-//	swap = (char *)minishell->old_pwd; // pwd
-//	minishell->old_pwd = minishell->pwd;
-//	minishell->pwd = swap;
-//
-//	g_signals.exit_status = 0;
-//}
-
-void print_error_cd(void *str1, void *str2, int err)
+int err_check_home(t_minishell *minishell, t_node *curr_pwd, char *str)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(str1, 2);
-	if (str2 != NULL)
+	char	*current_pwd;
+	char	*err;
+
+	current_pwd = getcwd(NULL, PATH_MAX);
+	if (current_pwd && curr_pwd)
 	{
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(str2, 2);
+		err = ft_strjoin(str, current_pwd);
+		if (!err)
+		{
+			ft_malloc_error(minishell);
+			return (ERROR);
+		}
+		add_var(minishell, err, 1);
 	}
-	ft_putstr_fd(": ", 2);
-	ft_putendl_fd(strerror(err), 2);
+	free(current_pwd);
+	return (0);
 }
 
-void swap_cd()
+int	home_set(t_minishell *minishell, t_node	*curr_pwd, char *path)
 {
+	t_node	*old_pwd;
+	t_node *home_pwd;
 
-}
-
-void	update_cd(t_minishell *minishell, t_node *node, char **cwd, int index, char *str)
-{
-	node =	getvar_node(minishell->env, str);
-	if (node)
+	old_pwd = getvar_node(minishell->env, "OLDPWD");
+	home_pwd = getvar_node(minishell->env, "HOME");
+	if (home_pwd)
 	{
-		index = ft_get_index_symbol(node->content, '=');
-		add_var(minishell, ft_strjoin("OLDPWD=", (node->content + index + 1)), 1);
+		if (err_check_home(minishell, old_pwd, "OLDPWD=") == ERROR)
+			 return (ERROR);
+		if(chdir(&((home_pwd->content)[5])) == ERROR)
+		{
+			print_error_cd("cd", path, errno);
+			g_signals.exit_status = 1;
+		}
+		if (err_check_home(minishell, curr_pwd, "PWD=") == ERROR)
+			return (ERROR);
 	}
-	add_var(minishell, ft_strjoin("PWD=", *cwd), 1);
-	free(*cwd);
+	else
+	{
+		print_error_cd("cd", "HOME not set\n", -10);
+		g_signals.exit_status = 1;
+	}
+	return (0);
 }
 
 void	update_path(int arg, t_minishell *minishell, char **path)
 {
-	t_node *node = NULL;
-	t_node *node_old = NULL;
-	char *cwd;
-	int index;
+	t_node	*curr_pwd;
+	t_node	*old_pwd;
+	char	*current_pwd;
 
+	g_signals.exit_status = 0;
+	curr_pwd = getvar_node(minishell->env, "PWD");
+	old_pwd = getvar_node(minishell->env, "OLDPWD");
 	if (arg == 0)
-	{
-		node = getvar_node(minishell->env, "HOME");
-
-		if (!node)
-		{
-			print_error_str("cd", NULL, "HOME not set");
-			g_signals.exit_status = ERR_SIGNAL;
-			return;
-		}
-		else
-		{
-			index = ft_get_index_symbol(node->content, '=');
-			cwd = getcwd(NULL, PATH_MAX);
-			if (cwd)
-			{
-//				update_cd(minishell, node, cwd, index, "PWD");
-				if (chdir(((char *)node->content) + index + 1) == -1)
-				{
-					print_error("cd", errno);
-					return;
-				}
-//				update_cd(minishell, node, &cwd, index, "PWD");
-				node =	getvar_node(minishell->env, "PWD");
-				if (node)
-				{
-					index = ft_get_index_symbol(node->content, '=');
-					add_var(minishell, ft_strjoin("OLDPWD=", (node->content + index + 1)), 1);
-				}
-				add_var(minishell, ft_strjoin("PWD=", cwd), 1);
-				free(cwd);
-			}
-		}
-	}
+		home_set(minishell, curr_pwd, *path);
 	else if (arg == 1)
 	{
-		swap_cd();
-	}
-	else if (arg == 2)
-	{
-		node = getvar_node(minishell->env, "PWD");
-		if (chdir(*path) == -1)
+		current_pwd = getcwd(NULL, PATH_MAX);
+		if (pwd_error(&current_pwd, *path) == ERROR)
+			return ;
+		if (old_pwd)
+			add_var(minishell, ft_strjoin("OLDPWD=", current_pwd), 1);
+		free(current_pwd);
+		if (chdir(*path) == ERROR)
 		{
 			print_error_cd("cd", *path, errno);
 			g_signals.exit_status = 1;
 		}
-		if (!node)
-		{
-			ft_del_node(minishell->env, free, node); //free node ?
-			add_var(minishell, ft_strjoin("OLDPWD=", ""), 1);
-		}
 		else
-		{
-			index = ft_get_index_symbol(node->content, '=');
-			cwd = getcwd(NULL, PATH_MAX);
-			if(cwd)
-			{
-				node_old = getvar_node(minishell->env, "OLDPWD");
-//				update_cd(minishell, node_old, &cwd, index, "OLDPWD");
-				if (node_old)
-				{
-					index = ft_get_index_symbol(node->content, '=');
-					add_var(minishell, ft_strjoin("OLDPWD=", &(node->content)[index + 1]), 1);
-				}
-				add_var(minishell, ft_strjoin("PWD=", cwd), 1);
-				free(cwd);
-			}
-			else
-			{
-				print_error_cd("cd", path, errno);
-				g_signals.exit_status = 1;
-			}
-		}
+			else_argument(minishell, curr_pwd, path);
 	}
 }
 
-
 void	ft_cd(t_minishell *minishell, char *path)
 {
-	int		res;
-	char	*buf;
-	t_node	*node;
-	t_node *node_old;
-
 	if (!path || !ft_strcmp(path, "~"))
 		update_path(0, minishell, &path);
-	else if(!ft_strcmp(path, "-"))
-		update_path(1, minishell, &path);
 	else
-		update_path(2, minishell, &path);
+		update_path(1, minishell, &path);
 }
