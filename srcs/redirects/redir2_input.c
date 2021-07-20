@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:49:50 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/20 00:00:41 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 23:07:59 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_bool	redir_dual_input(t_minishell *minishell, t_commands *node_cmd,
 t_bool	update_cmd_buf(char **cmd, int redir_pos, char ***cmd_new)
 {
 	t_list	*cmd_buf;
-	t_uint	i;
+	int		i;
 
 	cmd_buf = ft_create_lst();
 	if (!cmd_buf)

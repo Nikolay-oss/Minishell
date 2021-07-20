@@ -6,13 +6,13 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:50:03 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/19 23:38:22 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 23:08:50 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_parser.h"
 
-static t_bool	check_next_token(t_node *node_cmd, t_node *node_f)
+static t_bool	check_next_token(t_node *node_cmd)
 {
 	if (ispipe(*(char *)node_cmd->content))
 	{
@@ -46,7 +46,7 @@ static t_bool	check_token(t_node *node_cmd, t_node *node_f)
 	if (node_cmd->next && *(int *)node_f->content == 0)
 	{
 		if (*(int *)node_f->next->content == 0)
-			iserror = check_next_token(node_cmd, node_f);
+			iserror = check_next_token(node_cmd);
 	}
 	else
 	{

@@ -6,13 +6,13 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:50:18 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 20:50:19 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 23:05:52 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_parser.h"
 
-static void	special_cases_handler(t_minishell *minishell, t_node **node)
+static void	special_cases_handler(t_node **node)
 {
 	char	*var;
 
@@ -44,7 +44,7 @@ static void	swap_nametovalue(t_minishell *minishell, t_list **str_parts)
 				free(tmp);
 			}
 			else
-				special_cases_handler(minishell, &node);
+				special_cases_handler(&node);
 		}
 		node = node->next;
 	}

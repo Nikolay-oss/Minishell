@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:51:30 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/19 23:38:22 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 23:08:20 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ void	save_path_to_bin(t_minishell *minishell, char *cmd_bin,
 	char **cmd_bin_out)
 {
 	char	*p_slesh;
-	char	*paths;
 
 	p_slesh = ft_strchr(cmd_bin, '/');
 	if (p_slesh)

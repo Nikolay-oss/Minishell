@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/29 19:09:21 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/19 23:50:00 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 23:06:32 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static t_uint	get_command_size(t_node *cmd_node, t_node *f_node)
 	return (size);
 }
 
-static char	**create_command_buf(t_minishell *minishell, t_node **cmd_node,
-	t_node **f_node, int **flags)
+static char	**create_command_buf(t_node **cmd_node, t_node **f_node,
+	int **flags)
 {
 	char	**cmd;
 	t_uint	cmd_size;
@@ -86,7 +86,7 @@ void	commands_handler(t_minishell *minishell)
 	flag_node = minishell->f_quotes->head;
 	while (cmd_node && flag_node)
 	{
-		cmd = create_command_buf(minishell, &cmd_node, &flag_node, &flags);
+		cmd = create_command_buf(&cmd_node, &flag_node, &flags);
 		if (cmd)
 			add_to_command_list(&minishell->commands, cmd, flags);
 		else

@@ -6,15 +6,14 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:49:41 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/20 00:01:13 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 23:04:56 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_parser.h"
 #include <fcntl.h>
 
-static int	select_redirect(t_minishell *minishell, char *redir,
-	const char *filename)
+static int	select_redirect(char *redir, const char *filename)
 {
 	int	status;
 
@@ -56,8 +55,7 @@ static t_bool	exec_cmd(t_minishell *minishell, char **cmd, int redir_pos,
 	return (1);
 }
 
-static t_bool	redir_handler_utils(t_minishell *minishell, char **cmd,
-	t_uint i, int *redir_pos)
+static t_bool	redir_handler_utils(char **cmd, t_uint i, int *redir_pos)
 {
 	int	status;
 
@@ -66,8 +64,7 @@ static t_bool	redir_handler_utils(t_minishell *minishell, char **cmd,
 	{
 		if (*redir_pos == -1)
 			*redir_pos = i;
-		status = select_redirect(minishell, *(cmd + i),
-				(const char *)*(cmd + i + 1));
+		status = select_redirect(*(cmd + i), (const char *)*(cmd + i + 1));
 		if (status > 0)
 		{
 			print_error(*(cmd + i + 1), errno);
@@ -77,15 +74,14 @@ static t_bool	redir_handler_utils(t_minishell *minishell, char **cmd,
 	return (1);
 }
 
-static t_bool	launch_redirs(t_minishell *minishell, t_commands *node_cmd,
-	int *redir_pos)
+static t_bool	launch_redirs(t_commands *node_cmd, int *redir_pos)
 {
 	t_uint	i;
 
 	i = 0;
 	while (*(node_cmd->cmd + i))
 	{
-		if (!redir_handler_utils(minishell, node_cmd->cmd, i, redir_pos))
+		if (!redir_handler_utils(node_cmd->cmd, i, redir_pos))
 			return (0);
 		i++;
 	}
@@ -105,7 +101,7 @@ t_bool	redir_handler(t_minishell *minishell, t_commands *node_cmd, int n_proc,
 		dup_ehandler();
 		return (0);
 	}
-	if (launch_redirs(minishell, node_cmd, &r_pos))
+	if (launch_redirs(node_cmd, &r_pos))
 	{
 		if (!launch_dual_redir(minishell, n_proc))
 			status = 0;

@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:24:04 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/19 23:41:36 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 23:03:15 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ t_node	*getvar_node(t_list *vars, const char *var_name)
 {
 	t_node	*current;
 	char	*p_equal;
-	char	*tmp;
 	char	buf;
 
 	if (!vars)

@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 21:24:06 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/13 21:24:07 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 23:09:43 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	copy_vars(char **env_arr, t_list *vars, t_uint *idx)
 	}
 }
 
-static int	create_env_arr(t_minishell *minishell, char **env_arr, t_uint size)
+static int	create_env_arr(t_minishell *minishell, char **env_arr)
 {
 	t_uint	i;
 
@@ -85,13 +85,12 @@ static void	print_declare_env_utils(char *var)
 int	print_declare_env(t_minishell *minishell)
 {
 	char	**env_arr;
-	char	*p_equal;
 	t_uint	arr_size;
 	t_uint	i;
 
 	arr_size = (t_uint)(minishell->env->size + minishell->env_secret->size);
 	env_arr = (char **)malloc((arr_size + 1) * sizeof(char *));
-	if (create_env_arr(minishell, env_arr, arr_size))
+	if (create_env_arr(minishell, env_arr))
 		return (errno);
 	*(env_arr + arr_size) = NULL;
 	bubble_sort(env_arr, arr_size);

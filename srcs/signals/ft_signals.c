@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/20 22:09:07 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/20 22:09:08 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/20 23:10:02 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	save_status(int status)
 
 void	sigint_handler(int sig)
 {
+	(void)sig;
 	if (!g_signals.pid)
 	{
 		rl_on_new_line();
