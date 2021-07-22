@@ -6,7 +6,7 @@
 /*   By: dkenchur <dkenchur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 20:49:50 by dkenchur          #+#    #+#             */
-/*   Updated: 2021/07/20 23:07:59 by dkenchur         ###   ########.fr       */
+/*   Updated: 2021/07/22 14:00:17 by dkenchur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,11 @@ t_bool	update_cmd_buf(char **cmd, int redir_pos, char ***cmd_new)
 			i++;
 	}
 	*cmd_new = ft_lst_to_strs(cmd_buf);
-	ft_lst_clear(&cmd_buf, NULL);
-	if (!*cmd_new && cmd_buf->size != 0)
+	if (cmd_buf->size != 0 && !*cmd_new)
+	{
+		ft_lst_clear(&cmd_buf, NULL);
 		return (0);
+	}
+	ft_lst_clear(&cmd_buf, NULL);
 	return (1);
 }
