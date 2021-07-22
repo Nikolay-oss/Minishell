@@ -27,13 +27,11 @@ void	destroy_arr2d(char **command)
 static t_uint	get_command_size(t_node *cmd_node, t_node *f_node)
 {
 	t_node	*cur_cmdnode;
-	t_node	*cur_fnode;
 	t_uint	size;
 	char	c;
 
 	size = 0;
 	cur_cmdnode = cmd_node;
-	cur_fnode = f_node;
 	while (cur_cmdnode)
 	{
 		c = *(char *)cur_cmdnode->content;

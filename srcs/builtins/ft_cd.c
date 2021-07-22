@@ -43,7 +43,7 @@ int	home_set(t_minishell *minishell, t_node	*curr_pwd, char *path)
 	{
 		if (err_check_home(minishell, old_pwd, "OLDPWD=") == ERROR)
 			 return (ERROR);
-		if (chdir(&((home_pwd->content)[5])) == ERROR)
+		if (chdir(((char *)(home_pwd->content) + 5)) == ERROR)
 		{
 			print_error_cd("cd", path, errno);
 			g_signals.exit_status = 1;
